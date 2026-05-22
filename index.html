@@ -147,7 +147,7 @@
         }
 
         /* ==========================================================================
-           SECCIÓN XUNZEL (Copiada exactamente de tu archivo)
+           SECCIÓN XUNZEL (Tu estructura clonada exacta)
            ========================================================================== */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .item { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid #334155; cursor: pointer; transition: 0.2s; position: relative; }
@@ -451,7 +451,7 @@
                             <span class="tag">🌳 Exterior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span>
                         </div>
                         <div class="argument-box">
-                            <strong>Clave de venta:</strong> La solución rotativa de exterior más económica. Ideal para fachadas o garajes conectados a corriente sin disparar el presupuesto.
+                            <strong>Clave de venta:</strong> La solución rotativa de exterior más económica. Ideal para fachadas o garajes conectados a corriente sin gastar de más.
                         </div>
                     </div>
 
@@ -566,7 +566,7 @@
     <script>
         // Cambiar entre las pantallas principales
         function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById(viewId).classList.add('active');
             if (viewId === 'ezviz-view') {
                 resetFilters();
@@ -575,14 +575,14 @@
 
         // Cambiar entre pestañas de productos Ezviz
         function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
             
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
 
-        // --- LÓGICA DE TU CALCULADORA XUNZEL ORIGINAL ---
+        // --- LÓGICA DE LA CALCULADORA XUNZEL ---
         let currentW = 0;
         function toggle(el, watts) {
             el.classList.toggle('active');
@@ -593,7 +593,7 @@
 
         function resetSolar() {
             currentW = 0;
-            document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
             updateSolar();
         }
 
@@ -641,13 +641,14 @@
                 desc = "Exceso de potencia simultánea para packs estándar."; 
             }
 
-            res.innerHTML = `
-                <div class="pack-card">
-                    <span class="pack-name"><i class="fa-solid fa-box-open"></i> ${pack}</span>
-                    \${info ? `<span class="pack-info">\${info}</span>` : ''}
-                    <span class="pack-desc">\${desc}</span>
-                </div>
-            `;
+            let htmlContent = '<div class="pack-card">';
+            htmlContent += '<span class="pack-name"><i class="fa-solid fa-box-open"></i> ' + pack + '</span>';
+            if (info) {
+                htmlContent += '<span class="pack-info">' + info + '</span>';
+            }
+            htmlContent += '<span class="pack-desc">' + desc + '</span></div>';
+            
+            res.innerHTML = htmlContent;
         }
 
         // --- LÓGICA DE FILTROS INTERACTIVOS PARA CÁMARAS ---
@@ -661,7 +662,7 @@
                 btn.classList.remove('active');
                 activeFilters[type] = null;
             } else {
-                btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
                 btn.classList.add('active');
                 activeFilters[type] = value;
             }
@@ -672,7 +673,7 @@
             const cards = document.querySelectorAll('#cameras-list .product-card');
             let visibles = 0;
 
-            cards.forEach(card => {
+            cards.forEach(function(card) {
                 const cardLoc = card.getAttribute('data-loc');
                 const cardPwr = card.getAttribute('data-pwr');
                 const cardMov = card.getAttribute('data-mov');
@@ -694,7 +695,7 @@
 
         function resetFilters() {
             activeFilters = { loc: null, pwr: null, mov: null };
-            document.querySelectorAll('.filter-section .filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-section .filter-btn').forEach(function(b) { b.classList.remove('active'); });
             applyFilters();
         }
     </script>
