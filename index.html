@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Súper App Confort - Leroy Merlin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           ESTILOS GLOBALES (Basados en tu Calculadora Solar)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            background: linear-gradient(90deg, #38bdf8, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        /* Botones de acción principal */
+        .btn-main {
+            background: linear-gradient(90deg, #0284c7, #22c55e);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-main:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #334155;
+            color: #94a3b8;
+            border: 1px solid #475569;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           VISTAS / PANTALLAS
+           ========================================================================== */
+        .view {
+            display: none;
+            width: 100%;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Pantalla de Inicio */
+        #menu-view {
+            text-align: center;
+            padding-top: 30px;
+        }
+
+        .logo-subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+            border: 2px solid #334155;
+            border-radius: 16px;
+            padding: 25px 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+        }
+
+        .menu-card.solar::before { background: #22c55e; }
+        .menu-card.ezviz::before { background: #0284c7; }
+
+        .menu-card:active {
+            transform: translateY(2px);
+            background: rgba(47, 61, 85, 0.5);
+        }
+
+        .menu-card.solar { border-color: rgba(34, 197, 94, 0.3); }
+        .menu-card.ezviz { border-color: rgba(2, 132, 199, 0.3); }
+
+        .menu-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .menu-card.solar h2 { color: #4ade80; }
+        .menu-card.ezviz h2 { color: #38bdf8; }
+
+        .menu-card p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        /* Header de la App */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 12px;
+        }
+
+        .btn-back {
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #f8fafc;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           ESTILOS SECCIÓN SOLAR (Fórmulas y Estructura Intactas)
+           ========================================================================== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #22c55e;
+        }
+
+        .results-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px dashed #334155;
+        }
+
+        .result-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            padding-bottom: 6px;
+        }
+
+        .result-line:last-child {
+            border: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-val {
+            font-weight: 600;
+            color: #4ade80;
+        }
+
+        /* ==========================================================================
+           ESTILOS UNIVERSO EZVIZ (Pestañas y Filtros Inteligentes)
+           ========================================================================== */
+        /* Sistema de Pestañas */
+        .tabs-nav {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .tabs-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+        .tab-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Bloque estático informativo (Cerraduras, Mirillas...) */
+        .info-block {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid #38bdf8;
+            margin-bottom: 15px;
+        }
+
+        .info-block h4 {
+            color: #38bdf8;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Botonera de Filtros Interactivos para Cámaras */
+        .filter-section {
+            background: #0f172a;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #334155;
+        }
+
+        .filter-title {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .filter-row:last-child { margin-bottom: 0; }
+
+        .filter-btn {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(90deg, #0284c7, #0369a1);
+            border-color: #38bdf8;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Tarjetas de Cámaras/Productos */
+        .product-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .product-card.hidden {
+            display: none;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .prod-title {
+            font-size: 1rem;
+            color: #f8fafc;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .pyxis-badge {
+            background: #0f172a;
+            border: 1px solid #ff9800;
+            color: #ff9800;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: nowrap;
+        }
+
+        .tags-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            background: rgba(51, 65, 85, 0.5);
+            color: #94a3b8;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .argument-box {
+            background: rgba(2, 132, 199, 0.1);
+            border-left: 3px solid #38bdf8;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        /* Alerta de "No hay resultados" */
+        #no-results-msg {
+            display: none;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="menu-view" class="view active">
+            <h1>DEPARTAMENTO CONFORT</h1>
+            <p class="logo-subtitle">Asistente de Ventas</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card solar" onclick="switchView('solar-view')">
+                    <h2>☀️ Calculadora Solar</h2>
+                    <p>Estudio rápido de paneles, potencias e inversores para clientes.</p>
+                </div>
+                
+                <div class="menu-card ezviz" onclick="switchView('ezviz-view')">
+                    <h2>🛡️ Universo Ezviz</h2>
+                    <p>Asistente de cámaras interactivo, motores, mirillas y porteros.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="solar-view" class="view">
+            <div class="app-header">
+                <button class="btn-back" onclick="switchView('menu-view')">⬅️ Menú</button>
+                <h2>Calculadora Solar</h2>
+                <div style="width: 50px;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Gasto Mensual (€):</label>
+                <input type="number" id="gastoMensual" placeholder="Ej: 120" oninput="calcularSolar()">
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Tejado:</label>
+                <select id="tipoTejado" onchange="calcularSolar()">
+                    <option value="unifamiliar">Unifamiliar (Coplanar)</option>
+                    <option value="plano">Tejado Plano (Inclinado)</option>
+                </select>
+            </div>
+
+            <button class="btn-main" onclick="calcularSolar()">Calcular Proyecto ☀️</button>
+
+            <div class="results-box">
+                <div class="result-line">
+                    <span>Nº Paneles aprox:</span>
+                    <span class="result-val" id="resPaneles">-</span>
+                </div>
+                <div class="result-line">
+                    <span>Potencia Recomendada:</span>
+                    <span class="result-val" id="resPotencia">-</span>
+                </div>
+                <div class="result-line">
+                    <span>Inversor Sugerido:</span>
+                    <span class="result-val" id="resInversor">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="ezviz-view" class="view">
+            <div class="app-header">
+                <button class="btn-back" onclick="switchView('menu-view')">⬅️ Menú</button>
+                <h2>Universo Ezviz</h2>
+                <div style="width: 50px;"></div>
+            </div>
+
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('tab-camaras', this)">📸 Cámaras</button>
+                <button class="tab-btn" onclick="switchTab('tab-motores', this)">⚙️ Motores</button>
+                <button class="tab-btn" onclick="switchTab('tab-porteros', this)">📞 Porteros</button>
+                <button class="tab-btn" onclick="switchTab('tab-mirillas', this)">👁️ Mirillas</button>
+                <button class="tab-btn" onclick="switchTab('tab-cerraduras', this)">🔒 Cerraduras</button>
+            </div>
+
+            <div id="tab-camaras" class="tab-content active">
+                
+                <div class="filter-section">
+                    <div class="filter-title">¿Dónde se instalará?</div>
+                    <div class="filter-row">
+                        <button class="filter-btn" data-filter="loc" data-val="interior" onclick="toggleFilter(this)">🏠 Interior</button>
+                        <button class="filter-btn" data-filter="loc" data-val="exterior" onclick="toggleFilter(this)">🌳 Exterior</button>
+                    </div>
+
+                    <div class="filter-title" style="margin-top: 8px;">¿Alimentación eléctrica?</div>
+                    <div class="filter-row">
+                        <button class="filter-btn" data-filter="pwr" data-val="cable" onclick="toggleFilter(this)">🔌 Con Cable</button>
+                        <button class="filter-btn" data-filter="pwr" data-val="bateria" onclick="toggleFilter(this)">🔋 A Batería</button>
+                    </div>
+
+                    <div class="filter-title" style="margin-top: 8px;">¿Tipo de Movimiento?</div>
+                    <div class="filter-row">
+                        <button class="filter-btn" data-filter="mov" data-val="rotativa" onclick="toggleFilter(this)">🔄 Rotación 360º</button>
+                        <button class="filter-btn" data-filter="mov" data-val="doble" onclick="toggleFilter(this)">👁️ Doble Lente</button>
+                    </div>
+                    
+                    <button class="btn-secondary" style="margin: 8px 0 0 0; padding: 6px;" onclick="resetFilters()">Limpiar Filtros 🚫</button>
+                </div>
+
+                <div id="cameras-list">
+                    
+                    <div class="product-card" data-loc="interior" data-pwr="cable" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H6c G1 (5MP)</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 98571263</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🏠 Interior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">💎 Alta Nitidez</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Vigilar estancias completas con gran nitidez. Seguimiento automático inteligente, perfecto para salones o habitaciones con un enchufe cerca.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="interior" data-pwr="cable" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H6c G1 (8MP / 4K)</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 98229339</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🏠 Interior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">👑 Ultra Alta / 4K</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Clientes exigentes que buscan máxima definición. Permite hacer zoom digital sin pixelar, ideal para comercios, cajas o ver detalles mínimos.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="interior" data-pwr="cable" data-mov="rotativa doble">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H7c Dual</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 91639710</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🏠 Interior</span><span class="tag">🔌 Cable</span><span class="tag">👁️ Doble Lente</span><span class="tag">🔄 Rotativa + Fija</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Doble seguridad en una sola cámara. Una lente vigila un punto fijo crítico (como la puerta) mientras la otra rota siguiendo el movimiento por la sala.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="exterior" data-pwr="cable" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H8c (2MP)</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 85856663</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🌳 Exterior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">💰 Económica</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> La opción rotativa de exterior más accesible. Perfecta para cubrir fachadas, garajes o patios conectados a la corriente sin gastar de más.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="exterior" data-pwr="cable" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H8c Pro (5MP)</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 92360605</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🌳 Exterior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">✨ Visión Nocturna Pro</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Plus de seguridad en exteriores. Mayor resolución (5MP) para identificar rostros a más distancia y una visión nocturna en color muy mejorada.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="exterior" data-pwr="cable" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H8c SE (2K / 3MP)</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 94050025</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🌳 Exterior</span><span class="tag">🔌 Cable</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">⚖️ Equilibrio 2K</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> El término medio perfecto. Ofrece una resolución intermedia 2K ideal para ampliar imágenes sin perder nitidez, manteniendo un precio muy competitivo.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="exterior" data-pwr="cable" data-mov="rotativa doble">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz H9c Dual 2K</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 91639667</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🌳 Exterior</span><span class="tag">🔌 Cable</span><span class="tag">👁️ Doble Lente</span><span class="tag">🛡️ Blindaje Fijo+Rotativo</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Protección perimetral absoluta en chalets o parcelas. Una cámara fija custodia la zona principal mientras la rotativa barre el jardín sin dejar puntos ciegos.
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-loc="exterior interior" data-pwr="bateria" data-mov="rotativa">
+                        <div class="card-header">
+                            <div class="prod-title">Ezviz HB8 Lite 2K</div>
+                            <div class="pyxis-badge">Ref. Pyxis: 94705513</div>
+                        </div>
+                        <div class="tags-wrapper">
+                            <span class="tag">🌳 Exterior</span><span class="tag">🔋 A Batería</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">☀️ Opción Solar</span>
+                        </div>
+                        <div class="argument-box">
+                            <strong>Ideal para:</strong> Instalaciones 100% sin cables. Perfecta si el cliente no tiene un enchufe exterior o no quiere taladrar la fachada. Compatible con panel solar para olvidarse de cargarla.
+                        </div>
+                    </div>
+
+                    <div id="no-results-msg">❌ Ninguna cámara coincide exactamente con esa combinación de filtros.</div>
+                </div>
+            </div>
+
+            <div id="tab-motores" class="tab-content">
+                <div class="info-block">
+                    <h4>Motor Corredera Ezviz (Hasta 400kg)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Solución conectada para portones estándar.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #22c55e;">
+                    <h4>Motor Corredera Ezviz Pro (Hasta 600kg)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Uso intensivo o portones pesados/forja.</p>
+                </div>
+            </div>
+
+            <div id="tab-porteros" class="tab-content">
+                <div class="info-block">
+                    <h4>Videoportero Ezviz HP5</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Gama de entrada conectada al móvil.</p>
+                </div>
+                <div class="info-block">
+                    <h4>Videoportero Ezviz HP7 / Pro</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Pantalla premium, máxima calidad de imagen y apertura remota estable.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #ff9800;">
+                    <h4>Videoportero Inalámbrico Ezviz</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Ideal para reformas donde no se pueden tirar cables nuevos hacia la calle.</p>
+                </div>
+            </div>
+
+            <div id="tab-mirillas" class="tab-content">
+                <div class="info-block">
+                    <h4>Mirilla Digital Ezviz (Color Oro)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Diseño clásico para herrajes dorados con pantalla interior.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #94a3b8;">
+                    <h4>Mirilla Digital Ezviz (Color Plata)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Estilo moderno/cromo para puertas contemporáneas.</p>
+                </div>
+            </div>
+
+            <div id="tab-cerraduras" class="tab-content">
+                <div class="info-block">
+                    <h4>Cerradura Inteligente Ezviz (Cuerpo Suelto)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Para adaptar sobre el cilindro existente compatible.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #22c55e;">
+                    <h4>Kit de Cerradura Ezviz + Teclado Numérico</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">El pack completo para accesos con código, ideal para alquileres o comodidad familiar.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Cambiar entre pantallas principales (Menú, Solar, Ezviz)
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if(viewId === 'ezviz-view') {
+                resetFilters(); // Resetea filtros al entrar a Ezviz
+            }
+        }
+
+        // Cambiar entre pestañas dentro del Universo Ezviz
+        function switchTab(tabId, buttonElement) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            buttonElement.classList.add('active');
+        }
+
+        // --- LÓGICA DE LA CALCULADORA SOLAR (Fórmulas originales) ---
+        function calcularSolar() {
+            let gasto = parseFloat(document.getElementById('gastoMensual').value);
+            let tejado = document.getElementById('tipoTejado').value;
+
+            if (isNaN(gasto) || gasto <= 0) {
+                document.getElementById('resPaneles').innerText = "-";
+                document.getElementById('resPotencia').innerText = "-";
+                document.getElementById('resInversor').innerText = "-";
+                return;
+            }
+
+            let numPaneles = Math.ceil(gasto / 18);
+            if (numPaneles < 4) numPaneles = 4;
+
+            let potenciaTotal = (numPaneles * 450) / 1000; 
+            let inversor = "";
+
+            if (potenciaTotal <= 2.5) inversor = "Inversor 2 kW";
+            else if (potenciaTotal <= 4) inversor = "Inversor 3.6 kW";
+            else if (potenciaTotal <= 5.5) inversor = "Inversor 5 kW";
+            else inversor = "Inversor 6 kW o superior";
+
+            document.getElementById('resPaneles').innerText = numPaneles + " unidades";
+            document.getElementById('resPotencia').innerText = potenciaTotal.toFixed(2) + " kWp";
+            document.getElementById('resInversor').innerText = inversor;
+        }
+
+        // --- LÓGICA INTERACTIVA DEL ASISTENTE DE CÁMARAS (Filtros Cruzados) ---
+        let activeFilters = {
+            loc: null, // interior | exterior
+            pwr: null, // cable | bateria
+            mov: null  // rotativa | doble
+        };
+
+        function toggleFilter(btn) {
+            const type = btn.getAttribute('data-filter');
+            const value = btn.getAttribute('data-val');
+
+            // Si el botón ya estaba activo, lo apagamos
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                activeFilters[type] = null;
+            } else {
+                // Apagamos los hermanos de la misma fila
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Encendemos el botón actual
+                btn.classList.add('active');
+                activeFilters[type] = value;
+            }
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('#cameras-list .product-card');
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const cardLoc = card.getAttribute('data-loc');
+                const cardPwr = card.getAttribute('data-pwr');
+                const cardMov = card.getAttribute('data-mov');
+
+                let matchLoc = !activeFilters.loc || cardLoc.includes(activeFilters.loc);
+                let matchPwr = !activeFilters.pwr || cardPwr.includes(activeFilters.pwr);
+                let matchMov = !activeFilters.mov || cardMov.includes(activeFilters.mov);
+
+                if (matchLoc && matchPwr && matchMov) {
+                    card.classList.remove('hidden');
+                    visibles++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Mostrar mensaje si no hay resultados
+            const noResults = document.getElementById('no-results-msg');
+            if (visibles === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        }
+
+        function resetFilters() {
+            activeFilters = { loc: null, pwr: null, mov: null };
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            applyFilters();
+        }
+    </script>
+</body>
+</html>
