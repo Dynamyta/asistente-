@@ -503,4 +503,200 @@
                             <span class="tag">🌳 Exterior</span><span class="tag">🔋 A Batería</span><span class="tag">🔄 Rotativa 360º</span><span class="tag">☀️ Opción Solar</span>
                         </div>
                         <div class="argument-box">
-                            <strong>Clave de
+                            <strong>Clave de venta:</strong> Instalación 100% sin cables ni taladros hacia dentro de casa. Autonomía brutal, ideal para acoplarle el panel solar de Ezviz y olvidarse de cargarla.
+                        </div>
+                    </div>
+
+                    <div id="no-results-msg">❌ Ninguna cámara coincide con los filtros seleccionados.</div>
+                </div>
+            </div>
+
+            <div id="tab-motores" class="tab-content">
+                <div class="info-block">
+                    <h4>Motor Corredera Ezviz (Hasta 400kg)</h4>
+                    <p>Solución conectada idónea para la automatización de portones residenciales estándar.</p>
+                </div>
+                <div class="info-block" style="border-left-color: var(--primary);">
+                    <h4>Motor Corredera Ezviz Pro (Hasta 600kg)</h4>
+                    <p>Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).</p>
+                </div>
+            </div>
+
+            <div id="tab-porteros" class="tab-content">
+                <div class="info-block">
+                    <h4>Videoportero Ezviz HP5</h4>
+                    <p>Gama básica conectada para recibir avisos y abrir directamente desde el móvil.</p>
+                </div>
+                <div class="info-block">
+                    <h4>Videoportero Ezviz HP7 / Pro</h4>
+                    <p>Pantalla táctil premium para el interior, calidad de imagen superior y conectividad muy estable.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #eab308;">
+                    <h4>Videoportero Inalámbrico Ezviz</h4>
+                    <p>Perfecto para reformas donde es imposible cablear de nuevo desde la valla hasta la vivienda.</p>
+                </div>
+            </div>
+
+            <div id="tab-mirillas" class="tab-content">
+                <div class="info-block">
+                    <h4>Mirilla Digital Ezviz (Oro)</h4>
+                    <p>Estética clásica a juego con herrajes dorados. Incluye pantalla interior y grabación por movimiento.</p>
+                </div>
+                <div class="info-block" style="border-left-color: #94a3b8;">
+                    <h4>Mirilla Digital Ezviz (Plata)</h4>
+                    <p>Diseño moderno cromado ideal para puertas contemporáneas de block o acorazadas.</p>
+                </div>
+            </div>
+
+            <div id="tab-cerraduras" class="tab-content">
+                <div class="info-block">
+                    <h4>Cerradura Inteligente Ezviz (Cuerpo Suelto)</h4>
+                    <p>Para montar sobre el cilindro compatible existente de la puerta.</p>
+                </div>
+                <div class="info-block" style="border-left-color: var(--primary);">
+                    <h4>Kit Cerradura Ezviz + Teclado Numérico</h4>
+                    <p>Solución completa con apertura por código. Excelente para alquileres o comodidad del día a día.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Cambiar entre las pantallas principales
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if (viewId === 'ezviz-view') {
+                resetFilters();
+            }
+        }
+
+        // Cambiar entre pestañas de productos Ezviz
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // --- LÓGICA DE TU CALCULADORA XUNZEL ORIGINAL ---
+        let currentW = 0;
+        function toggle(el, watts) {
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) currentW += watts;
+            else currentW -= watts;
+            updateSolar();
+        }
+
+        function resetSolar() {
+            currentW = 0;
+            document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+            updateSolar();
+        }
+
+        function updateSolar() {
+            document.getElementById('totalW').innerText = currentW + " W";
+            const res = document.getElementById('packResult');
+            let pack = "";
+            let info = "";
+            let desc = "";
+
+            if (currentW === 0) {
+                res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
+                return;
+            }
+
+            if (currentW <= 400) { 
+                pack = "AX10L / AX19L"; 
+                desc = "Ideal para iluminación y ocio básico.";
+            }
+            else if (currentW <= 1000) { 
+                pack = "AX30L"; 
+                desc = "Perfecto para pequeñas herramientas o batidoras.";
+            }
+            else if (currentW <= 3000) { 
+                pack = "AX70 / AX170"; 
+                desc = "Hogar estándar (Nevera + Lavadora en frío).";
+            }
+            else if (currentW <= 5000) { 
+                pack = "PACK ZERO AX270L / AX370L"; 
+                info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
+                desc = "Vivienda completa con gran consumo diurno.";
+            }
+            else if (currentW <= 7200) { 
+                pack = "PACK ZERO AX390L / AX495L"; 
+                info = "AX390L (7.499€) - Ref: 90769261<br>AX495L (10.490€) - Ref: 98777985";
+                desc = "Independencia total (Piscina, Aire y Cocina).";
+            }
+            else if (currentW <= 14400) {
+                pack = "PACK ZERO AX790L";
+                info = "AX790L (15.990€) - Ref: 98777986";
+                desc = "Máxima potencia. Inversor de 14.4kW y 30kWh batería.";
+            }
+            else { 
+                pack = "SISTEMA A MEDIDA"; 
+                desc = "Exceso de potencia simultánea para packs estándar."; 
+            }
+
+            res.innerHTML = `
+                <div class="pack-card">
+                    <span class="pack-name"><i class="fa-solid fa-box-open"></i> ${pack}</span>
+                    \${info ? `<span class="pack-info">\${info}</span>` : ''}
+                    <span class="pack-desc">\${desc}</span>
+                </div>
+            `;
+        }
+
+        // --- LÓGICA DE FILTROS INTERACTIVOS PARA CÁMARAS ---
+        let activeFilters = { loc: null, pwr: null, mov: null };
+
+        function toggleFilter(btn) {
+            const type = btn.getAttribute('data-filter');
+            const value = btn.getAttribute('data-val');
+
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                activeFilters[type] = null;
+            } else {
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilters[type] = value;
+            }
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('#cameras-list .product-card');
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const cardLoc = card.getAttribute('data-loc');
+                const cardPwr = card.getAttribute('data-pwr');
+                const cardMov = card.getAttribute('data-mov');
+
+                let matchLoc = !activeFilters.loc || cardLoc.includes(activeFilters.loc);
+                let matchPwr = !activeFilters.pwr || cardPwr.includes(activeFilters.pwr);
+                let matchMov = !activeFilters.mov || cardMov.includes(activeFilters.mov);
+
+                if (matchLoc && matchPwr && matchMov) {
+                    card.classList.remove('hidden');
+                    visibles++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+        }
+
+        function resetFilters() {
+            activeFilters = { loc: null, pwr: null, mov: null };
+            document.querySelectorAll('.filter-section .filter-btn').forEach(b => b.classList.remove('active'));
+            applyFilters();
+        }
+    </script>
+</body>
+</html>
