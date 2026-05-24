@@ -15,6 +15,7 @@
             --text: #f8fafc; 
             --accent: #65a30d; 
             --ezviz-blue: #38bdf8;
+            --air-blue: #22d3ee;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Urbanist', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -35,11 +36,13 @@
         .menu-card { background: var(--card); border: 1px solid #334155; border-radius: 20px; padding: 25px 20px; cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden; }
         .menu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; }
         .menu-card.solar-card::before { background: var(--primary); }
-        .menu-card.ezviz-card::before { background: var(--ezviz-blue); }
+        .menu-card.air-card::before { background: var(--air-blue); }
+        .menu-card.catalog-card::before { background: var(--ezviz-blue); }
         .menu-card:active { transform: scale(0.98); background: #25334a; }
         .menu-card h2 { font-size: 1.4rem; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
         .menu-card.solar-card h2 { color: var(--primary); }
-        .menu-card.ezviz-card h2 { color: var(--ezviz-blue); }
+        .menu-card.air-card h2 { color: var(--air-blue); }
+        .menu-card.catalog-card h2 { color: var(--ezviz-blue); }
         .menu-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; }
 
         /* Sección Kits Solares */
@@ -80,7 +83,7 @@
         .tags-wrapper { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
         .tag { background: #0f172a; color: #94a3b8; font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; font-weight: 500; border: 1px solid #1e293b; }
         .argument-box { background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--ezviz-blue); padding: 10px; border-radius: 0 10px 10px 0; font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
-        #products-list-container { min-height: 50px; }
+        .argument-box.air-box { background: rgba(34, 211, 238, 0.08); border-left-color: var(--air-blue); }
         #no-results-msg { display: none; text-align: center; color: #64748b; font-size: 0.9rem; padding: 20px 0; }
     </style>
 </head>
@@ -97,10 +100,15 @@
                     <h2><i class="fa-solid fa-solar-panel"></i> Kit Solar Aislada</h2>
                     <p>Calculadora Xunzel de potencia simultánea y selección de "Grifo" / Pack Zero.</p>
                 </div>
+
+                <div class="menu-card air-card" onclick="openAirDirect()">
+                    <h2><i class="fa-solid fa-snowflake"></i> Aire Acondicionado</h2>
+                    <p>Acceso rápido a las frigorías, características y referencias clave de climatización.</p>
+                </div>
                 
-                <div class="menu-card ezviz-card" onclick="switchView('ezviz-view')">
-                    <h2><i class="fa-solid fa-layer-group"></i> Catálogo Técnico Interactivo</h2>
-                    <p>Filtros rápidos de cámaras, aire acondicionado, motores, mirillas y cerraduras.</p>
+                <div class="menu-card catalog-card" onclick="switchView('catalog-view')">
+                    <h2><i class="fa-solid fa-layer-group"></i> Catálogo Técnico Confort</h2>
+                    <p>Filtros interactivos de seguridad: cámaras, motores, mirillas y cerraduras.</p>
                 </div>
             </div>
         </div>
@@ -135,19 +143,18 @@
             <button class="btn-reset" onclick="resetSolar()">REINICIAR CÁLCULO</button>
         </div>
 
-        <div id="ezviz-view" class="view">
+        <div id="catalog-view" class="view">
             <div class="app-header">
                 <button class="btn-back" onclick="switchView('menu-view')"><i class="fa-solid fa-arrow-left"></i> Menú</button>
-                <h1 style="font-size: 1.4rem; margin: 0; color: var(--ezviz-blue);">Catálogo <span>Expert</span></h1>
+                <h1 id="catalog-title" style="font-size: 1.4rem; margin: 0; color: var(--ezviz-blue);">Catálogo <span>Expert</span></h1>
                 <div style="width: 70px;"></div>
             </div>
 
-            <div class="tabs-nav">
-                <button class="tab-btn active" onclick="switchTab('camaras', this)"><i class="fa-solid fa-camera"></i> Cámaras</button>
-                <button class="tab-btn" onclick="switchTab('aire', this)"><i class="fa-solid fa-snowflake"></i> Aire Acond.</button>
-                <button class="tab-btn" onclick="switchTab('motores', this)"><i class="fa-solid fa-gear"></i> Motores</button>
-                <button class="tab-btn" onclick="switchTab('mirillas', this)"><i class="fa-solid fa-eye"></i> Mirillas</button>
-                <button class="tab-btn" onclick="switchTab('cerraduras', this)"><i class="fa-solid fa-lock"></i> Cerraduras</button>
+            <div id="tabs-wrapper" class="tabs-nav">
+                <button class="tab-btn active" data-tab="camaras" onclick="switchTab('camaras', this)"><i class="fa-solid fa-camera"></i> Cámaras</button>
+                <button class="tab-btn" data-tab="motores" onclick="switchTab('motores', this)"><i class="fa-solid fa-gear"></i> Motores</button>
+                <button class="tab-btn" data-tab="mirillas" onclick="switchTab('mirillas', this)"><i class="fa-solid fa-eye"></i> Mirillas</button>
+                <button class="tab-btn" data-tab="cerraduras" onclick="switchTab('cerraduras', this)"><i class="fa-solid fa-lock"></i> Cerraduras</button>
             </div>
 
             <div id="filter-box" class="filter-section">
@@ -177,7 +184,7 @@
 
     <script>
         // ==========================================================================
-        // BASE DE DATOS INTERNA (AQUÍ AÑADES TUS FUTUROS BOTONES Y PRODUCTOS)
+        // BASE DE DATOS INTERNA (AQUÍ GESTIONAS TUS PRODUCTOS CÓMODAMENTE)
         // ==========================================================================
         const baseDeDatos = [
             // --- CATEGORÍA: CÁMARAS ---
@@ -190,7 +197,7 @@
             { categoria: 'camaras', titulo: 'Ezviz H9c Dual 2K', ref: '91639667', tags: ['🌳 Exterior', '🔌 Cable', '👁️ Doble Lente'], clave: 'Seguridad perimetral absoluta sin puntos ciegos. La cámara superior fija blinda el acceso y la inferior persigue al intruso.', loc: 'exterior', pwr: 'cable', mov: 'doble' },
             { categoria: 'camaras', titulo: 'Ezviz HB8 Lite 2K', ref: '94705513', tags: ['🌳 Exterior', '🔋 A Batería', '🔄 Rotativa 360º', '☀️ Opción Solar'], clave: 'Instalación 100% sin cables ni taladros. Autonomía brutal, ideal para acoplarle el panel solar de Ezviz.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
 
-            // --- CATEGORÍA: AIRE ACONDICIONADO (¡NUEVO BLOQUE!) ---
+            // --- CATEGORÍA: AIRE ACONDICIONADO ---
             { categoria: 'aire', titulo: 'Split Monosplit 3000 Frig.', ref: 'REFERENCIA', tags: ['❄️ Climatización', '☀️ Bomba Calor', '🍃 A++'], clave: 'El modelo estándar y más vendido para salones de hasta 25m². Silencioso y eficiente.' },
             { categoria: 'aire', titulo: 'Split Monosplit 2000 Frig.', ref: 'REFERENCIA', tags: ['❄️ Ideal Dormitorio', '🍃 Consumo Mínimo'], clave: 'Perfecto para habitaciones pequeñas de hasta 15m². Confort térmico sin ruidos molestos por la noche.' },
 
@@ -211,22 +218,48 @@
         let categoriaActual = 'camaras';
         let activeFilters = { loc: null, pwr: null, mov: null };
 
-        // Cambiar entre las pantallas del menú principal
+        // Cambiar pantallas principales
         function switchView(viewId) {
             document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById(viewId).classList.add('active');
-            if (viewId === 'ezviz-view') {
-                switchTab('camaras', document.querySelector('.tab-btn'));
+            
+            // Si volvemos al catálogo clásico, reajustamos estilos originales
+            if (viewId === 'catalog-view') {
+                document.getElementById('tabs-wrapper').style.display = 'flex';
+                document.getElementById('catalog-title').innerHTML = 'Catálogo <span>Expert</span>';
+                document.getElementById('catalog-title').style.color = 'var(--ezviz-blue)';
+                // Activamos la pestaña de cámaras por defecto
+                const firstTab = document.querySelector('.tab-btn[data-tab="camaras"]');
+                switchTab('camaras', firstTab);
             }
         }
 
-        // Cambiar de pestaña en el catálogo
+        // ACCESO DIRECTO DESDE EL MENÚ PRINCIPAL AL AIRE ACONDICIONADO
+        function openAirDirect() {
+            categoriaActual = 'aire';
+            // Ocultamos la barra de pestañas y los filtros para que sea una sección limpia y exclusiva
+            document.getElementById('tabs-wrapper').style.display = 'none';
+            document.getElementById('filter-box').style.display = 'none';
+            
+            // Personalizamos el título superior
+            const titleBox = document.getElementById('catalog-title');
+            titleBox.innerHTML = '<i class="fa-solid fa-snowflake"></i> Climatización';
+            titleBox.style.color = 'var(--air-blue)';
+
+            // Mostramos la vista del contenedor y renderizamos
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById('catalog-view').classList.add('active');
+            
+            resetFilters();
+        }
+
+        // Cambiar de pestaña dentro del catálogo de seguridad
         function switchTab(categoria, btn) {
             categoriaActual = categoria;
             document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
 
-            // Mostrar el bloque de filtros SÓLO en las cámaras
+            // Mostrar filtros solo en cámaras
             const filterBox = document.getElementById('filter-box');
             if (categoria === 'camaras') {
                 filterBox.style.display = 'block';
@@ -234,35 +267,36 @@
                 filterBox.style.display = 'none';
             }
 
-            resetFilters(); // Al cambiar de pestaña limpiamos filtros y redibujamos
+            resetFilters();
         }
 
-        // Dibujar los productos en la pantalla leyendo la "Base de Datos"
+        // Renderizador dinámico de tarjetas
         function renderProducts() {
             const container = document.getElementById('products-list-container');
-            container.innerHTML = ''; // Limpiamos lo que haya
+            container.innerHTML = '';
             let visibles = 0;
 
-            // Filtramos la lista maestra según la pestaña y los botones activos
             const productosFiltrados = baseDeDatos.filter(function(prod) {
                 if (prod.categoria !== categoriaActual) return false;
-
-                // Si estamos en cámaras, aplicamos además los filtros de los botones
                 if (categoriaActual === 'camaras') {
                     let matchLoc = !activeFilters.loc || (prod.loc && prod.loc.includes(activeFilters.loc));
                     let matchPwr = !activeFilters.pwr || (prod.pwr && prod.pwr.includes(activeFilters.pwr));
                     let matchMov = !activeFilters.mov || (prod.mov && prod.mov.includes(activeFilters.mov));
                     return matchLoc && matchPwr && matchMov;
                 }
-
                 return true;
             });
 
-            // Generamos el HTML dinámicamente para cada producto
             productosFiltrados.forEach(function(prod) {
                 visibles++;
                 let card = document.createElement('div');
                 card.className = 'product-card';
+
+                // Si es un aire acondicionado, le aplicamos un borde azul cian diferente al de Ezviz
+                let argumentClass = 'argument-box';
+                if (prod.categoria === 'aire') {
+                    argumentClass += ' air-box';
+                }
 
                 let tagsHTML = '';
                 prod.tags.forEach(function(t) {
@@ -275,18 +309,17 @@
                         '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
                     '</div>' +
                     '<div class="tags-wrapper">' + tagsHTML + '</div>' +
-                    '<div class="argument-box">' +
+                    '<div class="' + argumentClass + '">' +
                         '<strong>Clave de venta:</strong> ' + prod.clave +
                     '</div>';
                 
                 container.appendChild(card);
             });
 
-            // Mensaje de error si no hay nada
             document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
         }
 
-        // Control de botones de filtro
+        // Control de los botones de filtro
         function toggleFilter(btn) {
             const type = btn.getAttribute('data-filter');
             const value = btn.getAttribute('data-val');
@@ -308,8 +341,7 @@
             renderProducts();
         }
 
-
-        // --- LÓGICA DE LA CALCULADORA SOLAR XUNZEL ---
+        // --- CALCULADORA SOLAR XUNZEL ---
         let currentW = 0;
         function toggle(el, watts) {
             el.classList.toggle('active');
@@ -317,13 +349,11 @@
             else currentW -= watts;
             updateSolar();
         }
-
         function resetSolar() {
             currentW = 0;
             document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
             updateSolar();
         }
-
         function updateSolar() {
             document.getElementById('totalW').innerText = currentW + " W";
             const res = document.getElementById('packResult');
@@ -360,7 +390,7 @@
             res.innerHTML = htmlContent;
         }
 
-        // Arrancar la primera carga
+        // Carga inicial
         renderProducts();
     </script>
 </body>
