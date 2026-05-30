@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <link rel="apple-touch-icon" href="https://img.icons8.com/color/180/air-conditioner.png">
-   <link rel="icon" type="image/png" href="https://img.icons8.com/color/180/air-conditioner.png">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/color/180/air-conditioner.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/180/air-conditioner.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Súper App Confort - Gema</title>
@@ -20,461 +20,432 @@
             --air-blue: #22d3ee;
             --aerotermia-green: #a3e635;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Urbanist', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding: 15px; padding-bottom: 30px; font-size: 16px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Urbanist', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 600px; width: 100%; background: #0f172a; padding: 20px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 20px; }
+        h1 { color: var(--primary); text-align: center; font-size: 1.8rem; margin-bottom: 5px; }
+        h1 span { color: #fff; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
 
-        /* Contenedores de Vistas */
-        .view { display: none; }
-        .view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Vistas y Navegación */
+        .view { display: none; width: 100%; }
+        .view.active { display: block; }
+        .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 12px; }
+        .btn-back { background: #1e293b; border: 1px solid #475569; color: #f8fafc; padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; cursor: pointer; font-weight: bold; }
+        .btn-back:active { background: #334155; }
 
         /* Menú Principal */
-        #menu-view h1 { font-size: 2.5rem; font-weight: 700; text-align: center; margin-top: 30px; margin-bottom: 5px; }
-        #menu-view h1 span { color: var(--primary); }
-        .subtitle { text-align: center; color: #94a3b8; font-size: 1rem; margin-bottom: 40px; }
+        .menu-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .menu-card { background: var(--card); border: 1px solid #334155; border-radius: 20px; padding: 25px 20px; cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden; }
+        .menu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; }
         
-        .menu-grid { display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
-        .menu-card { 
-            background: var(--card); padding: 25px; border-radius: 20px; 
-            position: relative; overflow: hidden; border: 1px solid #334155;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .menu-card:active { transform: scale(0.98); }
-        .menu-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 6px; }
+        .menu-card.solar-card::before { background: var(--primary); }
+        .menu-card.air-card::before { background: var(--air-blue); }
+        .menu-card.aerotermia-card::before { background: var(--aerotermia-green); }
+        .menu-card.catalog-card::before { background: var(--ezviz-blue); }
         
-        .solar-card::before { background: #f59e0b; }
-        .solar-card h2 { color: #f59e0b; }
-        .air-card::before { background: var(--air-blue); }
-        .air-card h2 { color: var(--air-blue); }
-        .catalog-card::before { background: var(--ezviz-blue); }
-        .catalog-card h2 { color: var(--ezviz-blue); }
-        .aerotermia-card::before { background: var(--aerotermia-green); }
-        .aerotermia-card h2 { color: var(--aerotermia-green); }
-
-        .menu-card h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .menu-card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.4; }
-
-        /* Estilos Generales Cabeceras de Vista */
-        .view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #1e293b; }
-        .view-header h2 { font-size: 1.6rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .btn-back { background: #1e293b; border: 1px solid #334155; color: var(--text); padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-
-        /* --- ESTILOS DE CALCULADORA SOLAR --- */
-        .calculator-box { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155; margin-bottom: 25px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #94a3b8; }
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper input { width: 100%; background: #0f172a; border: 1px solid #334155; color: var(--text); padding: 14px; padding-right: 45px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; outline: none; }
-        .input-wrapper .unit { position: absolute; right: 15px; color: #64748b; font-weight: 600; }
+        .menu-card:active { transform: scale(0.98); background: #25334a; }
+        .menu-card h2 { font-size: 1.4rem; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
         
-        /* Botones Rápidos Solar */
-        .solar-grid-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .btn-quick-solar { background: #0f172a; border: 1px solid #f59e0b; color: #f59e0b; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 0 10px rgba(245, 158, 11, 0.15); }
-        .btn-quick-solar:active { background: rgba(245, 158, 11, 0.2); }
-        
-        .btn-calc { width: 100%; background: #f59e0b; color: #000; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-        .btn-calc:active { background: #d97706; }
-        
-        /* Resultados de la Calculadora */
-        .result-card { background: #0f172a; border: 1px solid #f59e0b; border-radius: 16px; padding: 20px; display: none; margin-top: 20px; }
-        .result-card.active { display: block; animation: fadeIn 0.3s ease; }
-        .result-title { font-size: 0.9rem; color: #f59e0b; font-weight: 700; text-transform: uppercase; tracking: 0.05em; margin-bottom: 5px; }
-        .result-pack { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
-        .result-info { background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 12px; border-radius: 4px 12px 12px 4px; font-family: monospace; font-size: 1.05rem; line-height: 1.4; margin-bottom: 15px; color: #fde047; }
-        .result-desc { color: #94a3b8; line-height: 1.5; font-size: 0.95rem; }
+        .menu-card.solar-card h2 { color: var(--primary); }
+        .menu-card.air-card h2 { color: var(--air-blue); }
+        .menu-card.aerotermia-card h2 { color: var(--aerotermia-green); }
+        .menu-card.catalog-card h2 { color: var(--ezviz-blue); }
+        .menu-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; }
 
-        /* --- ESTILOS DE CATÁLOGO / SEGURIDAD / AIRES --- */
-        /* Buscador y Filtros */
-        .search-container { position: relative; margin-bottom: 15px; }
-        .search-container i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 1.1rem; }
-        .search-input { width: 100%; background: var(--card); border: 1px solid #334155; color: var(--text); padding: 14px 14px 14px 45px; border-radius: 12px; font-size: 1rem; outline: none; }
-        
-        .tabs-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-        .tabs-scroll::-webkit-scrollbar { display: none; }
-        .tab-btn { background: var(--card); border: 1px solid #334155; color: #94a3b8; padding: 10px 18px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; white-space: nowrap; cursor: pointer; }
-        .tab-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+        /* Sección Kits Solares */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .item { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid #334155; cursor: pointer; transition: 0.2s; }
+        .item.active { border-color: var(--primary); background: #2d3a4f; transform: scale(0.98); }
+        .item i { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; display: block; }
+        .item h3 { margin: 0; font-size: 1rem; color: #fff; }
+        .item p { font-size: 0.75rem; color: #94a3b8; margin: 3px 0 0 0; }
+        .result-box { margin-top: 25px; padding: 20px; background: #111827; border-radius: 20px; border: 2px solid #334155; text-align: center; }
+        .total-label { font-size: 0.9rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .total-watts { font-size: 2.2rem; font-weight: bold; color: var(--primary); margin: 5px 0; }
+        .pack-card { background: var(--accent); color: #020617; padding: 15px; border-radius: 15px; margin-top: 15px; font-weight: bold; text-align: left; }
+        .pack-name { font-size: 1.2rem; display: block; margin-bottom: 5px; }
+        .pack-info { font-size: 0.85rem; display: block; line-height: 1.4; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 5px; margin-top: 5px; }
+        .pack-desc { font-size: 0.8rem; opacity: 0.9; font-weight: normal; font-style: italic; display: block; margin-top: 5px; }
+        .btn-reset { width: 100%; padding: 15px; margin-top: 15px; background: #334155; color: white; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; }
 
-        /* Lista de Tarjetas de Productos */
-        .products-list { display: flex; flex-direction: column; gap: 15px; }
-        .product-card { background: var(--card); border-radius: 18px; border: 1px solid #334155; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .prod-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        .prod-title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: var(--text); }
-        
-        /* Botón de Copiar con Referencia Gigante */
-        .btn-ref { 
-            background: #0f172a; border: 1px solid #334155; border-radius: 10px; 
-            padding: 8px 12px; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; min-width: 100px; cursor: pointer; position: relative;
-        }
-        .btn-ref .ref-label { font-size: 0.65rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 1px; }
-        .btn-ref .ref-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); letter-spacing: 0.02em; }
-        .btn-ref:active { background: #1e293b; }
+        /* Pestañas de Productos */
+        .tabs-nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 15px; scrollbar-width: none; }
+        .tabs-nav::-webkit-scrollbar { display: none; }
+        .tab-btn { background: var(--card); border: 1px solid #334155; color: #94a3b8; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .tab-btn.active { background: var(--ezviz-blue); color: #020617; border-color: #7dd3fc; }
 
-        /* Tags / Características */
-        .tags-container { display: flex; flex-wrap: wrap; gap: 6px; }
-        .tag { background: #0f172a; color: #94a3b8; font-size: 0.8rem; font-weight: 600; padding: 5px 10px; border-radius: 8px; border: 1px solid #1e293b; }
+        /* Filtros */
+        .filter-section { background: #111827; border-radius: 20px; padding: 15px; margin-bottom: 15px; border: 1px solid #334155; }
+        .filter-title { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold; }
+        .filter-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .filter-row:last-child { margin-bottom: 0; }
+        .filter-btn { flex: 1; background: var(--card); border: 1px solid #475569; color: #cbd5e1; padding: 10px 5px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+        .filter-btn.active { background: var(--ezviz-blue); color: #020617; border-color: #7dd3fc; }
 
-        /* Caja de Argumento Clave */
-        .argument-box { background: rgba(190, 242, 100, 0.05); border-left: 4px solid var(--primary); padding: 12px; border-radius: 4px 12px 12px 4px; font-size: 0.95rem; line-height: 1.5; color: #cbd5e1; }
-        .argument-box.air-box { border-left-color: var(--air-blue); background: rgba(34, 211, 238, 0.03); }
-
-        /* Toast flotante de copiado */
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #bef264; color: #000; padding: 12px 24px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999; display: flex; align-items: center; gap: 8px; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        /* Tarjetas de Producto Dinámicas */
+        .product-card { background: var(--card); border: 1px solid #334155; border-radius: 18px; padding: 16px; margin-bottom: 12px; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+        .prod-title { font-size: 1.05rem; font-weight: bold; color: #fff; }
+        .pyxis-badge { background: #020617; border: 1px solid #f97316; color: #f97316; font-size: 0.75rem; font-weight: bold; padding: 4px 8px; border-radius: 8px; font-family: monospace; white-space: nowrap; }
+        .tags-wrapper { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+        .tag { background: #0f172a; color: #94a3b8; font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; font-weight: 500; border: 1px solid #1e293b; }
+        .argument-box { background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--ezviz-blue); padding: 10px; border-radius: 0 10px 10px 0; font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
+        .argument-box.air-box { background: rgba(34, 211, 238, 0.08); border-left-color: var(--air-blue); }
+        .argument-box.aerotermia-box { background: rgba(163, 230, 53, 0.08); border-left-color: var(--aerotermia-green); }
+        #no-results-msg { display: none; text-align: center; color: #64748b; font-size: 0.9rem; padding: 20px 0; }
     </style>
 </head>
 <body>
 
-    <div id="menu-view" class="view active">
-        <h1>Confort <span>Expert</span></h1>
-        <p class="subtitle">Herramientas de Venta de Gema</p>
-        
-        <div class="menu-grid">
-            <div class="menu-card solar-card" onclick="switchView('solar-view')">
-                <h2><i class="fa-solid fa-solar-panel"></i> Kit Solar Aislada</h2>
-                <p>Calculadora Xunzel de potencia simultánea y selección de "Grifo" / Pack Zero.</p>
-            </div>
+    <div class="container">
 
-            <div class="menu-card air-card" onclick="openAirDirect()">
-                <h2><i class="fa-solid fa-snowflake"></i> Aire Acondicionado</h2>
-                <p>Acceso rápido a las frigorías, características y referencias clave de climatización.</p>
-            </div>
+        <div id="menu-view" class="view active">
+            <h1>Confort <span>Expert</span></h1>
+            <p class="subtitle">Herramientas de Venta de Gema</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card solar-card" onclick="switchView('solar-view')">
+                    <h2><i class="fa-solid fa-solar-panel"></i> Kit Solar Aislada</h2>
+                    <p>Calculadora Xunzel de potencia simultánea y selección de "Grifo" / Pack Zero.</p>
+                </div>
 
-            <div class="menu-card catalog-card" onclick="switchView('catalog-view')">
-                <h2><i class="fa-solid fa-layer-group"></i> Catálogo Técnico Confort</h2>
-                <p>Filtros interactivos de seguridad: cámaras, motores, mirillas y cerraduras.</p>
-            </div>
+                <div class="menu-card air-card" onclick="openAirDirect()">
+                    <h2><i class="fa-solid fa-snowflake"></i> Aire Acondicionado</h2>
+                    <p>Acceso rápido a las frigorías, características y referencias clave de climatización.</p>
+                </div>
 
-            <div class="menu-card aerotermia-card" onclick="openAerotermiaDirect()">
-                <h2><i class="fa-solid fa-seedling"></i> Aerotermia y ACS</h2>
-                <p>Bombas de calor eficientes, termos híbridos y ahorro en agua caliente.</p>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="solar-view" class="view">
-        <div class="view-header">
-            <h2><i class="fa-solid fa-solar-panel" style="color:#f59e0b;"></i> Calculadora Solar</h2>
-            <button class="btn-back" onclick="showMenu()"><i class="fa-solid fa-arrow-left"></i> Volver</button>
-        </div>
-
-        <div class="calculator-box">
-            <div class="form-group">
-                <label for="potencia">Suma de Potencias Simultáneas</label>
-                <div class="input-wrapper">
-                    <input type="number" id="potencia" placeholder="Ej: 1500" pattern="[0-9]*" inputmode="numeric">
-                    <span class="unit">W</span>
+                <div class="menu-card aerotermia-card" onclick="openAerotermiaDirect()">
+                    <h2><i class="fa-solid fa-seedling"></i> Aerotermia y ACS</h2>
+                    <p>Bombas de calor eficientes, termos híbridos y ahorro en agua caliente.</p>
+                </div>
+                
+                <div class="menu-card catalog-card" onclick="switchView('catalog-view')">
+                    <h2><i class="fa-solid fa-layer-group"></i> Catálogo Técnico Confort</h2>
+                    <p>Filtros interactivos de seguridad: cámaras, motores, mirillas y cerraduras.</p>
                 </div>
             </div>
+        </div>
 
-            <label style="display: block; font-weight: 600; margin-bottom: 10px; color: #94a3b8;">Selección Rápida</label>
-            <div class="solar-grid-buttons">
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(500)">500W</button>
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(1500)">1500W</button>
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(3500)">3500W</button>
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(6000)">6000W</button>
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(10000)">10kW</button>
-                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(14000)">14kW</button>
+        <div id="solar-view" class="view">
+            <div class="app-header">
+                <button class="btn-back" onclick="switchView('menu-view')"><i class="fa-solid fa-arrow-left"></i> Menú</button>
+                <h1 style="font-size: 1.4rem; margin: 0;">Xunzel <span>Expert</span></h1>
+                <div style="width: 70px;"></div>
+            </div>
+            
+            <div class="grid">
+                <div class="item" onclick="toggle(this, 50)"><i class="fa-solid fa-lightbulb"></i><h3>Luces LED</h3><p>50W total</p></div>
+                <div class="item" onclick="toggle(this, 100)"><i class="fa-solid fa-tv"></i><h3>Televisión</h3><p>100W</p></div>
+                <div class="item" onclick="toggle(this, 150)"><i class="fa-solid fa-snowflake"></i><h3>Frigorífico</h3><p>150W (Cont.)</p></div>
+                <div class="item" onclick="toggle(this, 1000)"><i class="fa-solid fa-faucet"></i><h3>Bomba Agua</h3><p>1000W</p></div>
+                <div class="item" onclick="toggle(this, 2200)"><i class="fa-solid fa-tshirt"></i><h3>Lavadora</h3><p>2200W</p></div>
+                <div class="item" onclick="toggle(this, 1500)"><i class="fa-solid fa-wind"></i><h3>Aire Cond.</h3><p>1500W</p></div>
+                <div class="item" onclick="toggle(this, 1200)"><i class="fa-solid fa-cookie"></i><h3>Microondas</h3><p>1200W</p></div>
+                <div class="item" onclick="toggle(this, 2500)"><i class="fa-solid fa-fire-burner"></i><h3>Horno/Vitro</h3><p>2500W</p></div>
+                <div class="item" onclick="toggle(this, 800)"><i class="fa-solid fa-person-swimming"></i><h3>Depuradora</h3><p>800W</p></div>
+                <div class="item" onclick="toggle(this, 65)"><i class="fa-solid fa-laptop"></i><h3>Laptop/Móvil</h3><p>65W</p></div>
             </div>
 
-            <button class="btn-calc" onclick="calcularSolar()">Calcular Kit Recomendado</button>
+            <div class="result-box">
+                <div class="total-label">Potencia en Uso</div>
+                <div class="total-watts" id="totalW">0 W</div>
+                <div id="packResult">
+                    <p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>
+                </div>
+            </div>
+            <button class="btn-reset" onclick="resetSolar()">REINICIAR CÁLCULO</button>
         </div>
 
-        <div id="solar-result" class="result-card">
-            <div class="result-title">Kit Recomendado</div>
-            <div id="res-pack" class="result-pack">-</div>
-            <div id="res-info" class="result-info">-</div>
-            <div id="res-desc" class="result-desc">-</div>
+        <div id="catalog-view" class="view">
+            <div class="app-header">
+                <button class="btn-back" onclick="switchView('menu-view')"><i class="fa-solid fa-arrow-left"></i> Menú</button>
+                <h1 id="catalog-title" style="font-size: 1.4rem; margin: 0; color: var(--ezviz-blue);">Catálogo <span>Expert</span></h1>
+                <div style="width: 70px;"></div>
+            </div>
+
+            <div id="tabs-wrapper" class="tabs-nav">
+                <button class="tab-btn active" data-tab="camaras" onclick="switchTab('camaras', this)"><i class="fa-solid fa-camera"></i> Cámaras</button>
+                <button class="tab-btn" data-tab="motores" onclick="switchTab('motores', this)"><i class="fa-solid fa-gear"></i> Motores</button>
+                <button class="tab-btn" data-tab="mirillas" onclick="switchTab('mirillas', this)"><i class="fa-solid fa-eye"></i> Mirillas</button>
+                <button class="tab-btn" data-tab="cerraduras" onclick="switchTab('cerraduras', this)"><i class="fa-solid fa-lock"></i> Cerraduras</button>
+            </div>
+
+            <div id="filter-box" class="filter-section">
+                <div class="filter-title">¿Dónde se colocará?</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="loc" data-val="interior" onclick="toggleFilter(this)">🏠 Interior</button>
+                    <button class="filter-btn" data-filter="loc" data-val="exterior" onclick="toggleFilter(this)">🌳 Exterior</button>
+                </div>
+                <div class="filter-title" style="margin-top: 8px;">¿Alimentación?</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="pwr" data-val="cable" onclick="toggleFilter(this)">🔌 Con Cable</button>
+                    <button class="filter-btn" data-filter="pwr" data-val="bateria" onclick="toggleFilter(this)">🔋 A Batería</button>
+                </div>
+                <div class="filter-title" style="margin-top: 8px;">¿Tipo de lente/Giro?</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="mov" data-val="rotativa" onclick="toggleFilter(this)">🔄 Rotativa 360º</button>
+                    <button class="filter-btn" data-filter="mov" data-val="doble" onclick="toggleFilter(this)">👁️ Doble Lente</button>
+                </div>
+                <button class="btn-reset" style="margin-top: 10px; padding: 8px; font-size: 0.8rem; background: #1e293b;" onclick="resetFilters()">Limpiar Filtros 🚫</button>
+            </div>
+
+            <div id="products-list-container"></div>
+            <div id="no-results-msg">❌ Ningún producto coincide con la selección.</div>
         </div>
+
     </div>
-
-
-    <div id="catalog-view" class="view">
-        <div class="view-header">
-            <h2 id="catalog-title"><i class="fa-solid fa-layer-group"></i> Catálogo Confort</h2>
-            <button class="btn-back" onclick="showMenu()"><i class="fa-solid fa-arrow-left"></i> Volver</button>
-        </div>
-
-        <div class="search-container" id="filter-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-bar" class="search-input" placeholder="Buscar por modelo, marca o característica..." oninput="filterProducts()">
-        </div>
-
-        <div class="tabs-scroll" id="tabs-wrapper">
-            <button class="tab-btn active" id="tab-all" onclick="filterTab('todos')">Todos</button>
-            <button class="tab-btn" id="tab-cam" onclick="filterTab('cámaras')">Cámaras</button>
-            <button class="tab-btn" id="tab-lock" onclick="filterTab('cerraduras')">Cerraduras</button>
-            <button class="tab-btn" id="tab-peep" onclick="filterTab('mirillas')">Mirillas</button>
-            <button class="tab-btn" id="tab-motor" onclick="filterTab('motores')">Motores</button>
-        </div>
-
-        <div id="products-container" class="products-list"></div>
-    </div>
-
-
-    <div id="toast" class="toast"><i class="fa-solid fa-circle-check"></i> ¡Referencia copiada al portapapeles!</div>
-
 
     <script>
-        // --- BASE DE DATOS INTERNA DE PRODUCTOS ---
-        const productos = [
-            // --- SECCIÓN: AEROTERMIA Y ACS ---
+        // ==========================================================================
+        // BASE DE DATOS INTERNA
+        // ==========================================================================
+        const baseDeDatos = [
+            // --- CATEGORÍA: CÁMARAS ---
+            { categoria: 'camaras', titulo: 'Ezviz H6c G1 (5MP)', ref: '98571263', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Seguimiento automático de movimiento e imagen nítida de 5MP. Ideal para salones teniendo un enchufe cerca.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Ezviz H6c G1 (8MP / 4K)', ref: '98229339', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '👑 Calidad 4K'], clave: 'Definición ultra alta en interior. Perfecta para ver detalles pequeños o ampliar digitalmente sin pixelar.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Ezviz H7c Dual', ref: '91639710', tags: ['🏠 Interior', '🔌 Cable', '👁️ Doble Lente', '🔄 Fija + Rotativa'], clave: 'Dos cámaras en una. Una lente vigila permanentemente un punto fijo ciego mientras la otra rota siguiendo la acción.', loc: 'interior', pwr: 'cable', mov: 'rotativa doble' },
+            { categoria: 'camaras', titulo: 'Ezviz H8c (2MP)', ref: '85856663', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'La solución rotativa de exterior más económica. Ideal para fachadas conectadas a corriente sin disparar el presupuesto.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Ezviz H8c Pro (5MP)', ref: '92360605', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '✨ Visión Color'], clave: 'Mayor nitidez (5MP) para identificar caras a más distancia y una visión nocturna en color de alta calidad.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Ezviz H8c SE (2K / 3MP)', ref: '94050025', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '⚖️ Calidad 2K'], clave: 'El equilibrio perfecto de exterior. Definición 2K idónea para ampliar imágenes con solvencia y un precio muy medido.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Ezviz H9c Dual 2K', ref: '91639667', tags: ['🌳 Exterior', '🔌 Cable', '👁️ Doble Lente'], clave: 'Seguridad perimetral absoluta sin puntos ciegos. La cámara superior fija blinda el acceso y la inferior persigue al intruso.', loc: 'exterior', pwr: 'cable', mov: 'doble' },
+            { categoria: 'camaras', titulo: 'Ezviz HB8 Lite 2K', ref: '94705513', tags: ['🌳 Exterior', '🔋 A Batería', '🔄 Rotativa 360º', '☀️ Opción Solar'], clave: 'Instalación 100% sin cables ni taladros. Autonomía brutal, ideal para acoplarle el panel solar de Ezviz.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
+
+            // --- CATEGORÍA: AIRE ACONDICIONADO ---
+            { categoria: 'aire', titulo: 'Haier Perla 1x1 3000 fg', ref: '90402654', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 19 dB (Ultrasilencioso)', '🟢 A+++', '📱 WiFi'], clave: 'Compuesto por split y unidad exterior. Máxima eficiencia A+++ y modo ultrasilencioso (19 dB). Ideal para estancias de hasta 25 m².' },
+            { categoria: 'aire', titulo: 'Haier Perla 1x1 4300 fg', ref: '90402655', tags: ['❄️ 1x1', '🍃 4300 Frigorías', '🔊 28 dB', '🟢 A++', '📱 WiFi'], clave: 'Compuesto por split y unidad exterior. Filtros Silver Nano y 3M antibacterias. Ideal para salones grandes o dormitorios de hasta 35-40 m².' },
+            { categoria: 'aire', titulo: 'Haier Flexis MW 1x1 Blanco (3000 fg)', ref: '94727293', tags: ['❄️ 1x1 Split', '🍃 3000 fg', '🔊 17 dB (Ultra Silencioso)', '🟢 A+++', '☀️ Eco Sensor / UVC'], clave: 'Gama alta de Haier en blanco. Eficiencia máxima A+++, purificación de aire por luz ultravioleta UVC y sensor de presencia inteligente para optimizar el consumo eléctrico.' },
+            { categoria: 'aire', titulo: 'Haier Expert 35 1x1- 3000 fg', ref: '85193031', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 16 dB (Ultra Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Gama premium de Haier. Eficiencia A+++ extrema y purificación activa con lámpara UVC-PRO y Steri-Clean. Ideal para dormitorios o despachos de hasta 25 m².' },
+            { categoria: 'aire', titulo: 'Equation Virtus 1x1 3000 fg', ref: '88574124', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 20 dB (Muy Silencioso)', '🟢 A+++', '📱 WiFi'], clave: 'La mejor opción en marca de la casa. Eficiencia A+++ extrema y conectividad WiFi. El equilibrio perfecto entre prestaciones y precio para salones estándar.' },
+            { categoria: 'aire', titulo: 'Brokton BRST12 1x1- 3000 fg', ref: '93921628', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 19 dB (Súper Silencio)', '🟢 A+++', '📱 WiFi'], clave: 'La mejor opción económica sin renunciar a nada. Eficiencia A+++ extrema, flujo de aire 4D y WiFi. Perfecto para presupuestos ajustados en estancias de hasta 30 m².' },
+            { categoria: 'aire', titulo: 'ELUXE Amber 2 1x1 (2000 fg)', ref: '89876291', tags: ['💰 Precio Más Bajo', '🍃 2000 fg', '🔊 22 dB (Silencioso)', '🟡 A++', '🔥 Bomba de Calor'], clave: 'La opción más económica de Leroy Merlin para estancias pequeñas. Equipo 1x1 básico, eficiente (A++) y muy fiable con bomba de calor incorporada para todo el año.' },
+            { categoria: 'aire', titulo: 'ELUXE Amber 2 1x1 (3000 fg)', ref: '89876292', tags: ['💰 Precio Más Bajo', '🍃 3000 fg', '🔊 22 dB (Silencioso)', '🟡 A++', '🏠 Ideal Salones Medianos'], clave: 'La versión de 3000 frigorías de nuestro equipo más económico. Ideal para salones y estancias medianas que buscan el máximo ahorro en la compra sin renunciar a una buena eficiencia A++.' },
+            { categoria: 'aire', titulo: 'Corberó Mistral 1x1 (2000 fg)', ref: '90113916', tags: ['🟢 A+++ Eficiencia', '🍃 2000 fg', '📱 Wi-Fi Integrado', '🚶 Detector Presencia', '🍃 Carbón Activo (Olores)'], clave: 'La versión de 2000 frigorías ideal para dormitorios y estancias pequeñas. Mantiene la máxima eficiencia A+++, Wi-Fi de serie, detector de presencia y purificación de aire con filtro de carbón activo.' },
+            { categoria: 'aire', titulo: 'Corberó Mistral 1x1 (3000 fg)', ref: '90113917', tags: ['🟢 A+++ Eficiencia', '🍃 3000 fg', '📱 Wi-Fi Integrado', '🚶 Detector Presencia', '🍃 Carbón Activo (Odores)'], clave: 'Máxima eficiencia energética A+++ a un precio competitivo. Equipado con detector de presencia, Wi-Fi, filtro de carbón activo para purificación y un funcionamiento muy silencioso de 22 dB.' },
+            { categoria: 'aire', titulo: 'HTW IX39 Plus 1x1 3000 fg', ref: '98196849', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 22 dB (Silencioso)', '🟡 A++', '📱 WiFi'], clave: 'Gran relación calidad-precio. Conexión WiFi, triple filtro purificador y protección Golden Fin anticorrosión. Excelente para presupuestos ajustados de hasta 25 m².' },
+            { categoria: 'aire', titulo: 'Haier Perla 2x1 (2000+3000 fg)', ref: '90402658', tags: ['❄️ 2x1 Multisplit', '🍃 2000+3000 Frigorías', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'Solución multisplit con una sola unidad exterior. Incluye un split ideal para dormitorio y otro para salón. Conectividad WiFi y filtros purificadores en ambas estancias.' },
+            { categoria: 'aire', titulo: 'Haier Flexis 2x1 (2000+2000 fg)', ref: '99435449', tags: ['❄️ 2x1 Multisplit', '🍃 2000+2000 Frigorías', '🔊 16 dB (Ultra Silencio)', '👑 A+++', '📱 Eco-Sensor'], clave: 'Gama premium de diseño blanco mate. Máxima eficiencia A+++ y Eco-Sensor inteligente para desviar el flujo de aire directo de las personas. Ideal para dos dormitorios.' },
+            { categoria: 'aire', titulo: 'Haier Tide Premium 2x1 (35+35/50)', ref: '99435441', tags: ['❄️ 2x1 Multisplit', '🍃 3000+3000 Frigorías', '🔊 19 dB (Súper Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Novedad. Combo 2x1 con dos splits potentes de 3000 frigorías ideales para climatizar dos estancias medianas/grandes a la vez. Máxima eficiencia A+++ y control WiFi.' },
+            { categoria: 'aire', titulo: 'Haier Tide Premium 3x1 (25+25+35/70)', ref: '99435443', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '👑 A+++', '📱 WiFi'], clave: 'Solución 3x1 de alta eficiencia. Permite climatizar dos dormitorios medianos y un salón grande de manera independiente con un solo motor exterior. WiFi de serie.' },
+            { categoria: 'aire', titulo: 'Haier Perla 3x1 (2x2000+3000 fg)', ref: '90402660', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'La solución triple más equilibrada en calidad-precio. Climatiza dos dormitorios y el salón de forma independiente con un solo motor exterior y filtros de aire avanzados.' },
+            { categoria: 'aire', titulo: 'Haier Flexis 3x1 (2x2236+3000 fg)', ref: '94727300', tags: ['❄️ 3x1 Multisplit', '🍃 2236+2236+3000 fg', '🔊 16 dB (Ultra Silencio)', '🟡 A++', '📱 Eco-Sensor'], clave: 'Gama alta de diseño blanco mate con triple split. Máxima salud con esterilización UVC Plus activa y Eco-Sensor inteligente para evitar corrientes directas. Silencio absoluto para tres estancias.' },
+            { categoria: 'aire', titulo: 'Haier Perla 3x1 (2x2000+3000 fg) + INSTALACIÓN', ref: '95091406', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 18 dB (Ultra Silencio)', '🟡 A++', '🛠️ Inst. Incluida'], clave: 'Combo triple Perla con instalación básica incluida en precio. Compuesto por 2 splits de 2000 fg y 1 de 3000 fg con motor exterior de alta potencia (70). WiFi de serie.' },
+            { categoria: 'aire', titulo: 'Haier Perla 4x1 (3x2000+3000 fg)', ref: '99232702', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'La solución definitiva para climatizar toda la casa. Conecta 3 dormitorios y el salón de forma independiente a una única y potente unidad exterior 4U75 (7.5 kW). Conectividad WiFi integrada.' },
+            { categoria: 'aire', titulo: 'Haier Flexis 4x1 (3x2000+3000 fg)', ref: '73855641', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 16 dB (Ultra Silencio)', '🟡 A++', '📱 Eco-Sensor'], clave: 'Gama alta de diseño blanco mate en formato 4x1. Máxima salud con esterilización UVC activa y Eco-Sensor inteligente para evitar flujos directos. Conecta 3 dormitorios y el salón de forma independiente.' },
+            { categoria: 'aire', titulo: 'Haier Tide Premium 4x1 (3x2000+3000 fg)', ref: '73855676', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 19 dB (Silencioso)', '🟡 A++', '📱 WiFi'], clave: 'La solución 4x1 más económica y equilibrada para climatizar toda la casa. Gran rendimiento con motor exterior 4U75 (7.5 kW), conectividad WiFi integrada y tres splits de 2000 fg más uno de 3000 fg.' },
+
+            // --- CATEGORÍA: AEROTERMIA Y ACS ---
             { categoria: 'aerotermia', titulo: 'Corberó Híbrido CTHM80 (80L)', ref: '96461948', tags: ['🌱 Híbrido', '💧 80 Litros', '🟢 Clase A', '🧱 Instalación Pared', '⚡ Ahorro Eléctrico'], clave: 'Termo híbrido compacto de 80L ideal para colgar en pared en sustitución de un termo tradicional. Clasificación energética A para un consumo optimizado en viviendas de 2 a 3 personas.' },
             { categoria: 'aerotermia', titulo: 'Ariston Lydos Hybrid (100L)', ref: '82049615', tags: ['🌱 Híbrido', '💧 100 Litros', '🟢 Clase A', '📱 Wi-Fi / App', '💰 Inteligencia Eco'], clave: 'Termo híbrido de 100L con Wi-Fi integrado. Combina de forma inteligente la bomba de calor con la resistencia eléctrica para ahorrar un 50% de energía. Ideal para 3 personas.' },
             { categoria: 'aerotermia', titulo: 'ELUXE AT-V100M (100L)', ref: '94341936', tags: ['🌱 Aerotermia Pura', '💧 100 Litros', '🟢 Clase A', '🍃 Gas R290 Ecológico', '💰 El Mejor Precio'], clave: 'Aerotermia pura de 100L de marca propia para instalación en pared. Gran eficiencia con gas ecológico R290, ofreciendo el máximo ahorro de agua caliente a un precio imbatible.' },
             { categoria: 'aerotermia', titulo: 'HTW VAV Mural Wi-Fi (160L)', ref: '91833247', tags: ['🌱 Aerotermia Pura', '💧 160 Litros', '🟢 Clase A++', '📱 Wi-Fi / App', '☀️ Smart Grid (Solar)'], clave: 'Acumulador aerotérmico mural de 160L. Máxima eficiencia A++ con gas ecológico R290, conectividad Wi-Fi y compatible con placas solares fotovoltaicas. Capacidad ideal para familias de 3 a 4 personas en formato de pared.' },
-            { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets and familias grandes.' },
+            { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets y familias grandes.' },
+           
+            // --- CATEGORÍA: MOTORES ---
+            { categoria: 'motores', titulo: 'Motor Corredera Ezviz HG2 (Hasta 400kg)', ref: 'REFERENCIA', tags: ['⚙️ Automatismos', '📱 Conectado Ezviz'], clave: 'Solución conectada idónea para la automatización de portones residenciales estándar.' },
+            { categoria: 'motores', titulo: 'Motor Corredera Ezviz Pro HG2 (Hasta 600kg)', ref: 'REFERENCIA', tags: ['⚙️ Uso Intensivo', '🦾 Estructuras Fuertes'], clave: 'Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).' },
 
-            // --- AIRES ACONDICIONADOS ---
-            { categoria: 'aire', titulo: 'Split Haier Geos+ Green 25 (2150 fg)', ref: '88390776', tags: ['❄️ 2150 fg', '🔥 2408 kcal', '🟢 A++', '📱 Wi-Fi opcional', '🔇 20 dB'], clave: 'Ideal para estancias de hasta 20 m². Destaca por su alta fiabilidad, modo súper silencioso para dormitorios y una excelente relación calidad-precio.' },
-            { categoria: 'aire', titulo: 'Split Haier Geos+ Green 35 (2752 fg)', ref: '88390775', tags: ['❄️ 2752 fg', '🔥 3096 kcal', '🟢 A++', '📱 Wi-Fi opcional', '💨 Control Inteligente'], clave: 'Perfecto para salones de 22 a 30 m². Gran equilibrio de caudal, muy vendido por su resistencia y bajo mantenimiento en climatización doméstica.' },
-            { categoria: 'aire', titulo: 'Split ELUXE EQ 25 (2236 fg)', ref: '90833285', tags: ['❄️ 2236 fg', '🔥 2322 kcal', '🟢 A++', '📱 Wi-Fi Integrado', '💰 Marca de la Casa'], clave: 'Excelente opción económica de marca propia con conectividad Wi-Fi de serie. Ideal para dormitorios o presupuestos ajustados con altas prestaciones.' },
-            { categoria: 'aire', titulo: 'Split ELUXE EQ 35 (2923 fg)', ref: '90833284', tags: ['❄️ 2923 fg', '🔥 2923 kcal', '🟢 A++', '📱 Wi-Fi Integrado', '🔥 Confort Rápido'], clave: 'Modelo de marca propia idóneo para estancias medianas. Wi-Fi de serie muy intuitivo y una velocidad de enfriamiento/calentamiento magnífica.' },
-            { categoria: 'aire', titulo: 'Split Corberó Clima 25 (2150 fg)', ref: '90695022', tags: ['❄️ 2150 fg', '🔥 2236 kcal', '🟢 A++', '📱 Sin Wi-Fi', '🔒 3 Años Garantía'], clave: 'Máxima sencillez y robustez mecánica. La opción idónea para clientes mayores o segundas viviendas que huyen de complicaciones o apps móviles.' },
-            { categoria: 'aire', titulo: 'Split Corberó Clima 35 (2923 fg)', ref: '90695023', tags: ['❄️ 2923 fg', '🔥 2923 kcal', '🟢 A++', '📱 Sin Wi-Fi', '🧱 Sencillo'], clave: 'Modelo clásico de 3000 frigorías sin electrónica compleja. Muy fiable, con mando a distancia tradicional muy directo y fácil de comprender.' },
+            // --- CATEGORÍA: MIRILLAS ---
+            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Oro', ref: 'REFERENCIA', tags: ['👁️ Seguridad Puerta', '✨ Acabado Dorado'], clave: 'Estética clásica a juego con herrajes dorados. Incluye pantalla interior y grabación por movimiento.' },
+            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Plata', ref: 'REFERENCIA', tags: ['👁️ Seguridad Puerta', '🥈 Acabado Cromado'], clave: 'Diseño moderno cromado ideal para puertas contemporáneas de block o acorazadas.' },
+            { categoria: 'mirillas', titulo: 'Mirilla Digital EZVIZ DP2C WiFi 4.3"', ref: '91855703', tags: ['👁️ Mirilla Digital', '📱 Control WiFi (App)', '🚶 Detector de Presencia', '🌙 Visión Nocturna'], clave: 'Pantalla a color de 4.3" y gran angular de 155°. Conexión WiFi con audio bidireccional para responder desde el móvil. Sensor PIR de calor humano para evitar falsas alarmas.' },
             
-            // --- SEGURIDAD Y DOMÓTICA (EZVIZ) ---
-            { categoria: 'seguridad', sub: 'cámaras', titulo: 'Cámara Interior Ezviz H6C (2K)', ref: '88310323', tags: ['🎥 2K HD', '🔄 360° Motorizada', '👁️ Visión Nocturna', '🗣️ Audio Bidireccional'], clave: 'Ideal para vigilar mascotas o bebés. Cobertura total de la sala gracias a su giro completo y seguimiento automático cuando detecta movimiento.' },
-            { categoria: 'seguridad', sub: 'cámaras', titulo: 'Cámara Exterior Batería Ezviz CB1', ref: '89073142', tags: ['🔋 Batería 2000mAh', '🧲 Base Magnética', '📏 Súper Compacta', '🛠️ Sin Cables'], clave: 'Perfecta para colocar en cualquier rincón sin hacer agujeros ni cables. Se recarga por USB y se sujeta firmemente con su imán trasero.' },
-            { categoria: 'seguridad', sub: 'cámaras', titulo: 'Cámara Exterior Solar Ezviz BC1C', ref: '84545936', tags: ['☀️ Panel Solar Incl.', '🔋 Batería 7800mAh', '🚨 Defensa Activa', '🎨 Visión Color Nocturna'], clave: 'Cero mantenimiento eléctrico. Se autoalimenta con su panel solar, graba en color de noche y activa una sirena y luz ante intrusos.' },
-            { categoria: 'seguridad', sub: 'cerraduras', titulo: 'Cerradura Inteligente Ezviz RE5 (Plata)', ref: '91264627', tags: ['🔐 Motorizada', '📱 App Ezviz', '🔑 Llave Mecánica Emerg.', '⚡ Alerta Tamper'], clave: 'Sustituye el cilindro tradicional. Permite abrir al cliente desde el móvil, crear contraseñas temporales para visitas y controlar quién entra.' },
-            { categoria: 'seguridad', sub: 'cerraduras', titulo: 'Teclado numérico Ezviz para RE5', ref: '91264630', tags: ['🔢 Código Pin', '💳 Lector Tarjetas Proximidad', '🧱 Exterior IP56', '🔋 Pilas AA'], clave: 'Accesorio imprescindible para la cerradura RE5. Ideal para que los niños o huéspedes abran tecleando un código o pasando una tarjeta.' },
-            { categoria: 'seguridad', sub: 'mirillas', titulo: 'Mirilla Digital Ezviz CP4 (4.3")', ref: '88310322', tags: ['🚪 Pantalla Touch 4.3"', '🔔 Timbre Integrado', '📱 Alerta al Móvil', '🔋 Batería Recargable'], clave: 'Sustituye la mirilla de la puerta. Cuando llaman al timbre, suena dentro, se enciende la pantalla y manda una videollamada al smartphone.' },
-            { categoria: 'seguridad', sub: 'motores', titulo: 'Motor Puerta Corredera Ezviz (600kg)', ref: '89851603', tags: ['🚗 Hasta 600 kg', '⚙️ Cremallera Incluida', '📱 Apertura Geolocalizada', '🔒 Cierre Automático'], clave: 'Automatiza cancelas grandes. Permite abrir la puerta del garaje desde el móvil o configurar para que se abra sola al acercarse el coche.' }
+            // --- CATEGORÍA: CERRADURAS ---
+            { categoria: 'cerradura', titulo: 'Cerradura Inteligente Ezviz (Cuerpo)', ref: 'REFERENCIA', tags: ['🔒 Control Accesos', '🔑 Cilindro existente'], clave: 'Para montar sobre el cilindro compatible existente de la puerta sin cambiar de llaves.' },
+            { categoria: 'cerraduras', titulo: 'Kit Cerradura Ezviz + Teclado Numérico', ref: 'REFERENCIA', tags: ['🔒 Solución Completa', '🔢 Apertura Código'], clave: 'Solución completa con apertura por código. Excelente para alquileres o comodidad del día a día.' },
+            { categoria: 'cerradura', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi (Gateway)', '⌨️ Teclado + NFC', '🔔 Alerta Puerta Abierta'], clave: 'El kit inteligente más completo de EZVIZ. Incluye cerradura, teclado exterior, puente Gateway para control remoto total y llaves NFC. Instalación interior sin taladrar sobre el bombín existente.' },
+            { categoria: 'cerradura', titulo: 'Cerradura EZVIZ Smartlok DL01 Pro (Solo Unidad)', ref: '94760657', tags: ['🔐 Cerradura Inteligente', '📶 Conexión Bluetooth', '🔔 Alerta Puerta Abierta', '🎨 Diseño Plata/Negro'], clave: 'La unidad de cerradura motorizada DL01 Pro independiente. Instalación interior sin taladrar. Ideal para control local por Bluetooth o para clientes que ya disponen de un Gateway EZVIZ en casa.' }
         ];
 
-        let categoriaActual = 'todos';
-        let subcategoriaActual = 'todos';
+        // Variables de estado
+        let categoriaActual = 'camaras';
+        let activeFilters = { loc: null, pwr: null, mov: null };
 
-        // --- GESTIÓN DE VISTAS ---
+        // Cambiar pantallas principales
         function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById(viewId).classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        function showMenu() {
-            document.getElementById('menu-view').classList.add('active');
-            document.querySelectorAll('.view').forEach(v => { if(v.id !== 'menu-view') v.classList.remove('active'); });
             
-            // Reactivamos filtros estándar
-            document.getElementById('tabs-wrapper').style.display = 'flex';
-            document.getElementById('filter-box').style.display = 'block';
+            if (viewId === 'catalog-view') {
+                document.getElementById('tabs-wrapper').style.display = 'flex';
+                document.getElementById('catalog-title').innerHTML = 'Catálogo <span>Expert</span>';
+                document.getElementById('catalog-title').style.color = 'var(--ezviz-blue)';
+                const firstTab = document.querySelector('.tab-btn[data-tab="camaras"]');
+                switchTab('camaras', firstTab);
+            }
         }
 
-        // --- ENTRADAS DIRECTAS DESDE MENÚ ---
+        // ACCESO DIRECTO DESDE EL MENÚ: AIRE ACONDICIONADO
         function openAirDirect() {
             categoriaActual = 'aire';
-            subcategoriaActual = 'todos';
-            
             document.getElementById('tabs-wrapper').style.display = 'none';
-            document.getElementById('filter-box').style.display = 'block';
+            document.getElementById('filter-box').style.display = 'none';
             
             const titleBox = document.getElementById('catalog-title');
-            titleBox.innerHTML = '<i class="fa-solid fa-snowflake"></i> Aire Acondicionado';
+            titleBox.innerHTML = '<i class="fa-solid fa-snowflake"></i> Climatización';
             titleBox.style.color = 'var(--air-blue)';
 
-            switchView('catalog-view');
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById('catalog-view').classList.add('active');
+            
             resetFilters();
         }
 
+        // ACCESO DIRECTO DESDE EL MENÚ: AEROTERMIA Y ACS
         function openAerotermiaDirect() {
             categoriaActual = 'aerotermia';
-            subcategoriaActual = 'todos';
-            
             document.getElementById('tabs-wrapper').style.display = 'none';
-            document.getElementById('filter-box').style.display = 'none'; // Vista ultra limpia
+            document.getElementById('filter-box').style.display = 'none';
             
             const titleBox = document.getElementById('catalog-title');
             titleBox.innerHTML = '<i class="fa-solid fa-seedling"></i> Aerotermia y ACS';
             titleBox.style.color = 'var(--aerotermia-green)';
 
-            switchView('catalog-view');
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById('catalog-view').classList.add('active');
+            
             resetFilters();
         }
 
-        // Catálogo general de seguridad
-        document.querySelector('.catalog-card').addEventListener('click', () => {
-            categoriaActual = 'seguridad';
-            subcategoriaActual = 'todos';
-            
-            document.getElementById('tabs-wrapper').style.display = 'flex';
-            document.getElementById('filter-box').style.display = 'block';
-            
-            const titleBox = document.getElementById('catalog-title');
-            titleBox.innerHTML = '<i class="fa-solid fa-layer-group"></i> Catálogo Seguridad';
-            titleBox.style.color = 'var(--ezviz-blue)';
-            
-            setActiveTab('tab-all');
+        // Cambiar de pestaña dentro del catálogo de seguridad
+        function switchTab(categoria, btn) {
+            categoriaActual = categoria;
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+
+            const filterBox = document.getElementById('filter-box');
+            if (categoria === 'camaras') {
+                filterBox.style.display = 'block';
+            } else {
+                filterBox.style.display = 'none';
+            }
+
             resetFilters();
-        });
-
-        function resetFilters() {
-            document.getElementById('search-bar').value = '';
-            renderProducts();
         }
 
-        function filterTab(subcat) {
-            subcategoriaActual = subcat;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            if(subcat === 'todos') setActiveTab('tab-all');
-            else if(subcat === 'cámaras') setActiveTab('tab-cam');
-            else if(subcat === 'cerraduras') setActiveTab('tab-lock');
-            else if(subcat === 'mirillas') setActiveTab('tab-peep');
-            else if(subcat === 'motores') setActiveTab('tab-motor');
-            
-            renderProducts();
-        }
-
-        // Auxiliar
-        function setActiveTab(id) {
-            const el = document.getElementById(id);
-            if(el) el.classList.add('active');
-        }
-
-        function filterProducts() {
-            renderProducts();
-        }
-
-        // --- RENDERIZADO DINÁMICO DE PRODUCTOS ---
+        // Renderizador dinámico de tarjetas
         function renderProducts() {
-            const container = document.getElementById('products-container');
+            const container = document.getElementById('products-list-container');
             container.innerHTML = '';
-            
-            const searchText = document.getElementById('search-bar').value.toLowerCase();
+            let visibles = 0;
 
-            const filtrados = productos.filter(p => {
-                if (p.categoria !== categoriaActual) return false;
-                if (categoriaActual === 'seguridad' && subcategoriaActual !== 'todos' && p.sub !== subcategoriaActual) return false;
-                
-                if (searchText) {
-                    const enTitulo = p.titulo.toLowerCase().includes(searchText);
-                    const enRef = p.ref.includes(searchText);
-                    const enTags = p.tags.some(t => t.toLowerCase().includes(searchText));
-                    return enTitulo || enRef || enTags;
+            const productosFiltrados = baseDeDatos.filter(function(prod) {
+                if (prod.categoria !== categoriaActual) return false;
+                if (categoriaActual === 'camaras') {
+                    let matchLoc = !activeFilters.loc || (prod.loc && prod.loc.includes(activeFilters.loc));
+                    let matchPwr = !activeFilters.pwr || (prod.pwr && prod.pwr.includes(activeFilters.pwr));
+                    let matchMov = !activeFilters.mov || (prod.mov && prod.mov.includes(activeFilters.mov));
+                    return matchLoc && matchPwr && matchMov;
                 }
                 return true;
             });
 
-            if(filtrados.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#64748b;padding:30px;font-weight:600;">No se encontraron productos...</div>';
-                return;
-            }
-
-            filtrados.forEach(prod => {
-                const card = document.createElement('div');
+            productosFiltrados.forEach(function(prod) {
+                visibles++;
+                let card = document.createElement('div');
                 card.className = 'product-card';
 
+                let argumentClass = 'argument-box';
                 if (prod.categoria === 'aire') {
-                    card.style.borderLeft = "4px solid var(--air-blue)";
+                    argumentClass += ' air-box';
                 } else if (prod.categoria === 'aerotermia') {
-                    card.style.borderLeft = "4px solid var(--aerotermia-green)";
-                } else {
-                    card.style.borderLeft = "4px solid var(--ezviz-blue)";
+                    argumentClass += ' aerotermia-box';
                 }
 
-                let tagsHTML = prod.tags.map(t => `<span class="tag">${t}</span>`).join('');
-                
-                let argumentClass = 'argument-box';
-                if (prod.categoria === 'aire') argumentClass += ' air-box';
+                let tagsHTML = '';
+                prod.tags.forEach(function(t) {
+                    tagsHTML += '<span class="tag">' + t + '</span>';
+                });
 
-                card.innerHTML = `
-                    <div class="prod-header">
-                        <div class="prod-title">${prod.titulo}</div>
-                        <div class="btn-ref" onclick="copyRef('${prod.ref}')">
-                            <span class="ref-label">Pyxis Ref</span>
-                            <span class="ref-num">${prod.ref}</span>
-                        </div>
-                    </div>
-                    <div class="tags-container">${tagsHTML}</div>
-                    <div class="${argumentClass}">
-                        <strong>Venta clave:</strong> ${prod.clave}
-                    </div>
-                `;
+                card.innerHTML = 
+                    '<div class="card-header">' +
+                        '<div class="prod-title">' + prod.titulo + '</div>' +
+                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
+                    '</div>' +
+                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
+                    '<div class="' + argumentClass + '">' +
+                        '<strong>Clave de venta:</strong> ' + prod.clave +
+                    '</div>';
+                
                 container.appendChild(card);
             });
+
+            document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
         }
 
-        // --- FUNCIÓN COPIAR REFERENCIA ---
-        function copyRef(refNumber) {
-            navigator.clipboard.writeText(refNumber).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => { toast.classList.remove('show'); }, 2000);
-            }).catch(err => {
-                const tempInput = document.createElement('input');
-                tempInput.value = refNumber;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => { toast.classList.remove('show'); }, 2000);
-            });
+        // Control de los botones de filtro
+        function toggleFilter(btn) {
+            const type = btn.getAttribute('data-filter');
+            const value = btn.getAttribute('data-val');
+
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                activeFilters[type] = null;
+            } else {
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                activeFilters[type] = value;
+            }
+            renderProducts();
         }
 
-        // --- FUNCIÓN BOTONES RÁPIDOS CALCULADORA SOLAR ---
-        function setPotenciaRapida(valor) {
-            document.getElementById('potencia').value = valor;
-            calcularSolar();
+        function resetFilters() {
+            activeFilters = { loc: null, pwr: null, mov: null };
+            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            renderProducts();
         }
 
         // --- CALCULADORA SOLAR XUNZEL ---
-        function calcularSolar() {
-            const wattsInput = document.getElementById('potencia').value;
-            const resultCard = document.getElementById('solar-result');
-            
-            if(!wattsInput || wattsInput <= 0) {
-                alert("Por favor, introduce una potencia en vatios válida.");
+        let currentW = 0;
+        function toggle(el, watts) {
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) currentW += watts;
+            else currentW -= watts;
+            updateSolar();
+        }
+        function resetSolar() {
+            currentW = 0;
+            document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
+            updateSolar();
+        }
+        function updateSolar() {
+            document.getElementById('totalW').innerText = currentW + " W";
+            const res = document.getElementById('packResult');
+            let pack = ""; let info = ""; let desc = "";
+
+            if (currentW === 0) {
+                res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
                 return;
             }
-
-            const currentW = parseInt(wattsInput);
-            let pack = "";
-            let info = "";
-            let desc = "";
-
-            if (currentW <= 1000) {
-                pack = "GRIFO SOLAR XUNZEL (300W / 600W)";
-                info = "Consumo directo sin baterías.<br>Ideal para rebajar la factura base diurna de electrodomésticos siempre encendidos.";
-                desc = "Inyección directa para un ahorro constante mientras haya sol.";
-            }
-            else if (currentW <= 3000) {
-                pack = "PACK SOLAR AX70 / AX170";
-                info = "Hogar estándar medio.<br>Soporta perfectamente consumos como una nevera más lavadora en frío sin problemas.";
-                desc = "Kit de media potencia equilibrado (Nevera + Lavadora en frío).";
-            }
+            if (currentW <= 400) { pack = "AX10L / AX19L"; desc = "Ideal para iluminación y ocio básico."; }
+            else if (currentW <= 1000) { pack = "AX30L"; desc = "Perfecto para pequeñas herramientas o batidoras."; }
+            else if (currentW <= 3000) { pack = "AX70 / AX170"; desc = "Hogar estándar (Nevera + Lavadora en frío)."; }
             else if (currentW <= 5000) { 
                 pack = "PACK ZERO AX270L / AX370L"; 
                 info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
-                desc = "Vivienda completa con gran volumen de consumo diurno e inversor robusto.";
+                desc = "Vivienda completa con gran consumo diurno.";
             }
             else if (currentW <= 7200) { 
                 pack = "PACK ZERO AX390L / AX495L"; 
                 info = "AX390L (7.499€) - Ref: 90769261<br>AX495L (10.490€) - Ref: 98777985";
-                desc = "Independencia energética total en viviendas con piscina, aire acondicionado o cocina eléctrica.";
+                desc = "Independencia total (Piscina, Aire y Cocina).";
             }
             else if (currentW <= 14400) {
                 pack = "PACK ZERO AX790L";
                 info = "AX790L (15.990€) - Ref: 98777986";
-                desc = "Máxima potencia técnica del catálogo. Cuenta con inversor premium de 14.4kW y 30kWh de almacenamiento en baterías.";
+                desc = "Máxima potencia. Inversor de 14.4kW y 30kWh batería.";
             }
-            else {
-                pack = "POTENCIA EXCESIVA";
-                info = "Supera los 14.4 kW del Pack Zero máximo.";
-                desc = "Se recomienda fragmentar los consumos simultáneos en el cuadro o realizar un estudio personalizado de ingeniería de Leroy Merlin.";
-            }
+            else { pack = "SISTEMA A MEDIDA"; desc = "Exceso de potencia simultánea para packs estándar."; }
 
-            document.getElementById('res-pack').innerText = pack;
-            document.getElementById('res-info').innerHTML = info;
-            document.getElementById('res-desc').innerText = desc;
-            
-            resultCard.classList.add('active');
+            let htmlContent = '<div class="pack-card">';
+            htmlContent += '<span class="pack-name"><i class="fa-solid fa-box-open"></i> ' + pack + '</span>';
+            if (info) htmlContent += '<span class="pack-info">' + info + '</span>';
+            htmlContent += '<span class="pack-desc">' + desc + '</span></div>';
+            res.innerHTML = htmlContent;
         }
+
+        // Carga inicial
+        renderProducts();
     </script>
 </body>
 </html>
