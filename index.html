@@ -66,6 +66,12 @@
         .input-wrapper { position: relative; display: flex; align-items: center; }
         .input-wrapper input { width: 100%; background: #0f172a; border: 1px solid #334155; color: var(--text); padding: 14px; padding-right: 45px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; outline: none; }
         .input-wrapper .unit { position: absolute; right: 15px; color: #64748b; font-weight: 600; }
+        
+        /* Botones Rápidos Solar */
+        .solar-grid-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .btn-quick-solar { background: #0f172a; border: 1px solid #f59e0b; color: #f59e0b; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 0 10px rgba(245, 158, 11, 0.15); }
+        .btn-quick-solar:active { background: rgba(245, 158, 11, 0.2); }
+        
         .btn-calc { width: 100%; background: #f59e0b; color: #000; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
         .btn-calc:active { background: #d97706; }
         
@@ -162,6 +168,17 @@
                     <span class="unit">W</span>
                 </div>
             </div>
+
+            <label style="display: block; font-weight: 600; margin-bottom: 10px; color: #94a3b8;">Selección Rápida</label>
+            <div class="solar-grid-buttons">
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(500)">500W</button>
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(1500)">1500W</button>
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(3500)">3500W</button>
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(6000)">6000W</button>
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(10000)">10kW</button>
+                <button type="button" class="btn-quick-solar" onclick="setPotenciaRapida(14000)">14kW</button>
+            </div>
+
             <button class="btn-calc" onclick="calcularSolar()">Calcular Kit Recomendado</button>
         </div>
 
@@ -201,14 +218,14 @@
 
 
     <script>
-        // --- BASE DE DATOS INTERNA DE PRODUCTOS (CON AEROTERMIA INTEGRADA) ---
+        // --- BASE DE DATOS INTERNA DE PRODUCTOS ---
         const productos = [
-            // --- SECCIÓN NUEVA: AEROTERMIA Y ACS ---
+            // --- SECCIÓN: AEROTERMIA Y ACS ---
             { categoria: 'aerotermia', titulo: 'Corberó Híbrido CTHM80 (80L)', ref: '96461948', tags: ['🌱 Híbrido', '💧 80 Litros', '🟢 Clase A', '🧱 Instalación Pared', '⚡ Ahorro Eléctrico'], clave: 'Termo híbrido compacto de 80L ideal para colgar en pared en sustitución de un termo tradicional. Clasificación energética A para un consumo optimizado en viviendas de 2 a 3 personas.' },
             { categoria: 'aerotermia', titulo: 'Ariston Lydos Hybrid (100L)', ref: '82049615', tags: ['🌱 Híbrido', '💧 100 Litros', '🟢 Clase A', '📱 Wi-Fi / App', '💰 Inteligencia Eco'], clave: 'Termo híbrido de 100L con Wi-Fi integrado. Combina de forma inteligente la bomba de calor con la resistencia eléctrica para ahorrar un 50% de energía. Ideal para 3 personas.' },
             { categoria: 'aerotermia', titulo: 'ELUXE AT-V100M (100L)', ref: '94341936', tags: ['🌱 Aerotermia Pura', '💧 100 Litros', '🟢 Clase A', '🍃 Gas R290 Ecológico', '💰 El Mejor Precio'], clave: 'Aerotermia pura de 100L de marca propia para instalación en pared. Gran eficiencia con gas ecológico R290, ofreciendo el máximo ahorro de agua caliente a un precio imbatible.' },
             { categoria: 'aerotermia', titulo: 'HTW VAV Mural Wi-Fi (160L)', ref: '91833247', tags: ['🌱 Aerotermia Pura', '💧 160 Litros', '🟢 Clase A++', '📱 Wi-Fi / App', '☀️ Smart Grid (Solar)'], clave: 'Acumulador aerotérmico mural de 160L. Máxima eficiencia A++ con gas ecológico R290, conectividad Wi-Fi y compatible con placas solares fotovoltaicas. Capacidad ideal para familias de 3 a 4 personas en formato de pared.' },
-            { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets y familias grandes.' },
+            { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets and familias grandes.' },
 
             // --- AIRES ACONDICIONADOS ---
             { categoria: 'aire', titulo: 'Split Haier Geos+ Green 25 (2150 fg)', ref: '88390776', tags: ['❄️ 2150 fg', '🔥 2408 kcal', '🟢 A++', '📱 Wi-Fi opcional', '🔇 20 dB'], clave: 'Ideal para estancias de hasta 20 m². Destaca por su alta fiabilidad, modo súper silencioso para dormitorios y una excelente relación calidad-precio.' },
@@ -224,7 +241,7 @@
             { categoria: 'seguridad', sub: 'cámaras', titulo: 'Cámara Exterior Solar Ezviz BC1C', ref: '84545936', tags: ['☀️ Panel Solar Incl.', '🔋 Batería 7800mAh', '🚨 Defensa Activa', '🎨 Visión Color Nocturna'], clave: 'Cero mantenimiento eléctrico. Se autoalimenta con su panel solar, graba en color de noche y activa una sirena y luz ante intrusos.' },
             { categoria: 'seguridad', sub: 'cerraduras', titulo: 'Cerradura Inteligente Ezviz RE5 (Plata)', ref: '91264627', tags: ['🔐 Motorizada', '📱 App Ezviz', '🔑 Llave Mecánica Emerg.', '⚡ Alerta Tamper'], clave: 'Sustituye el cilindro tradicional. Permite abrir al cliente desde el móvil, crear contraseñas temporales para visitas y controlar quién entra.' },
             { categoria: 'seguridad', sub: 'cerraduras', titulo: 'Teclado numérico Ezviz para RE5', ref: '91264630', tags: ['🔢 Código Pin', '💳 Lector Tarjetas Proximidad', '🧱 Exterior IP56', '🔋 Pilas AA'], clave: 'Accesorio imprescindible para la cerradura RE5. Ideal para que los niños o huéspedes abran tecleando un código o pasando una tarjeta.' },
-            { categoria: 'seguridad', sub: 'mirillas', titulo: 'Mirilla Digital Ezviz CP4 (4.3")', ref: '88310322', tags: ['🚪 Pantalla Pantalla Touch 4.3"', '🔔 Timbre Integrado', '📱 Alerta al Móvil', '🔋 Batería Recargable'], clave: 'Sustituye la mirilla de la puerta. Cuando llaman al timbre, suena dentro, se enciende la pantalla y manda una videollamada al smartphone.' },
+            { categoria: 'seguridad', sub: 'mirillas', titulo: 'Mirilla Digital Ezviz CP4 (4.3")', ref: '88310322', tags: ['🚪 Pantalla Touch 4.3"', '🔔 Timbre Integrado', '📱 Alerta al Móvil', '🔋 Batería Recargable'], clave: 'Sustituye la mirilla de la puerta. Cuando llaman al timbre, suena dentro, se enciende la pantalla y manda una videollamada al smartphone.' },
             { categoria: 'seguridad', sub: 'motores', titulo: 'Motor Puerta Corredera Ezviz (600kg)', ref: '89851603', tags: ['🚗 Hasta 600 kg', '⚙️ Cremallera Incluida', '📱 Apertura Geolocalizada', '🔒 Cierre Automático'], clave: 'Automatiza cancelas grandes. Permite abrir la puerta del garaje desde el móvil o configurar para que se abra sola al acercarse el coche.' }
         ];
 
@@ -240,10 +257,9 @@
 
         function showMenu() {
             document.getElementById('menu-view').classList.add('active');
-            document.getElementById('catalog-view').classList.remove('remove'); // Asegurar reseteo limpio
             document.querySelectorAll('.view').forEach(v => { if(v.id !== 'menu-view') v.classList.remove('active'); });
             
-            // Reactivamos filtros estándar por si se entra a seguridad después
+            // Reactivamos filtros estándar
             document.getElementById('tabs-wrapper').style.display = 'flex';
             document.getElementById('filter-box').style.display = 'block';
         }
@@ -269,7 +285,7 @@
             subcategoriaActual = 'todos';
             
             document.getElementById('tabs-wrapper').style.display = 'none';
-            document.getElementById('filter-box').style.display = 'none'; // Sección ultra limpia sin buscador
+            document.getElementById('filter-box').style.display = 'none'; // Vista ultra limpia
             
             const titleBox = document.getElementById('catalog-title');
             titleBox.innerHTML = '<i class="fa-solid fa-seedling"></i> Aerotermia y ACS';
@@ -279,10 +295,9 @@
             resetFilters();
         }
 
-        // --- INTERFAZ CATÁLOGO INTERACTIVO (SEGURIDAD Y OTROS) ---
-        // Al entrar desde el menú de catálogo general
+        // Catálogo general de seguridad
         document.querySelector('.catalog-card').addEventListener('click', () => {
-            categoriaActual = 'seguridad'; // El catálogo general se enfoca en seguridad domótica
+            categoriaActual = 'seguridad';
             subcategoriaActual = 'todos';
             
             document.getElementById('tabs-wrapper').style.display = 'flex';
@@ -303,7 +318,6 @@
 
         function filterTab(subcat) {
             subcategoriaActual = subcat;
-            // Manejar estados visuales de pestañas
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(subcat === 'todos') setActiveTab('tab-all');
             else if(subcat === 'cámaras') setActiveTab('tab-cam');
@@ -314,6 +328,7 @@
             renderProducts();
         }
 
+        // Auxiliar
         function setActiveTab(id) {
             const el = document.getElementById(id);
             if(el) el.classList.add('active');
@@ -330,7 +345,6 @@
             
             const searchText = document.getElementById('search-bar').value.toLowerCase();
 
-            // Filtrado lógico estricto
             const filtrados = productos.filter(p => {
                 if (p.categoria !== categoriaActual) return false;
                 if (categoriaActual === 'seguridad' && subcategoriaActual !== 'todos' && p.sub !== subcategoriaActual) return false;
@@ -345,16 +359,14 @@
             });
 
             if(filtrados.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#64748b;padding:30px;font-weight:600;">No se encontraron productos en esta categoría...</div>';
+                container.innerHTML = '<div style="text-align:center;color:#64748b;padding:30px;font-weight:600;">No se encontraron productos...</div>';
                 return;
             }
 
-            // Inyección de HTML
             filtrados.forEach(prod => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
 
-                // Borde de color según categoría para homogeneidad
                 if (prod.categoria === 'aire') {
                     card.style.borderLeft = "4px solid var(--air-blue)";
                 } else if (prod.categoria === 'aerotermia') {
@@ -392,7 +404,6 @@
                 toast.classList.add('show');
                 setTimeout(() => { toast.classList.remove('show'); }, 2000);
             }).catch(err => {
-                // Fallback clásico por si falla en algún navegador de móvil antiguo
                 const tempInput = document.createElement('input');
                 tempInput.value = refNumber;
                 document.body.appendChild(tempInput);
@@ -404,6 +415,12 @@
                 toast.classList.add('show');
                 setTimeout(() => { toast.classList.remove('show'); }, 2000);
             });
+        }
+
+        // --- FUNCIÓN BOTONES RÁPIDOS CALCULADORA SOLAR ---
+        function setPotenciaRapida(valor) {
+            document.getElementById('potencia').value = valor;
+            calcularSolar();
         }
 
         // --- CALCULADORA SOLAR XUNZEL ---
@@ -429,7 +446,7 @@
             else if (currentW <= 3000) {
                 pack = "PACK SOLAR AX70 / AX170";
                 info = "Hogar estándar medio.<br>Soporta perfectamente consumos como una nevera más lavadora en frío sin problemas.";
-                desc = "Kit de media potencia equilibrado.";
+                desc = "Kit de media potencia equilibrado (Nevera + Lavadora en frío).";
             }
             else if (currentW <= 5000) { 
                 pack = "PACK ZERO AX270L / AX370L"; 
