@@ -335,6 +335,21 @@
             
             resetFilters();
         }
+        // ACCESO DIRECTO DESDE EL MENÚ: RADIADORES DE AGUA
+        function openCalefaccionDirect() {
+            categoriaActual = 'calefaccion';
+            document.getElementById('tabs-wrapper').style.display = 'none';
+            document.getElementById('filter-box').style.display = 'none';
+            
+            const titleBox = document.getElementById('catalog-title');
+            titleBox.innerHTML = '<i class="fa-solid fa-faucet-drip"></i> Radiadores Equation';
+            titleBox.style.color = '#38bdf8';
+
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById('catalog-view').classList.add('active');
+            
+            resetFilters();
+        }
 
         // Cambiar de pestaña dentro del catálogo de seguridad
         function switchTab(categoria, btn) {
