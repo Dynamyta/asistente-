@@ -197,11 +197,12 @@
     </div>
 
     <script>
+        
         // ==========================================================================
-        // BASE DE DATOS INTERNA
+        // BASE DE DATOS INTERNA (ACTUALIZADA)
         // ==========================================================================
         const baseDeDatos = [
-            // --- CATEGORÍA: CÁMARAS ---
+            // --- CATEGORÍA: CÁMARAS (EZVIZ Y ENERGEEKS) ---
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (5MP)', ref: '98571263', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Seguimiento automático de movimiento e imagen nítida de 5MP. Ideal para salones teniendo un enchufe cerca.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (8MP / 4K)', ref: '98229339', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '👑 Calidad 4K'], clave: 'Definición ultra alta en interior. Perfecta para ver detalles pequeños o ampliar digitalmente sin pixelar.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H7c Dual', ref: '91639710', tags: ['🏠 Interior', '🔌 Cable', '👁️ Doble Lente', '🔄 Fija + Rotativa'], clave: 'Dos cámaras en una. Una lente vigila permanentemente un punto fijo ciego mientras la otra rota siguiendo la acción.', loc: 'interior', pwr: 'cable', mov: 'rotativa doble' },
@@ -210,6 +211,24 @@
             { categoria: 'camaras', titulo: 'Ezviz H8c SE (2K / 3MP)', ref: '94050025', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '⚖️ Calidad 2K'], clave: 'El equilibrio perfecto de exterior. Definición 2K idónea para ampliar imágenes con solvencia y un precio muy medido.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H9c Dual 2K', ref: '91639667', tags: ['🌳 Exterior', '🔌 Cable', '👁️ Doble Lente'], clave: 'Seguridad perimetral absoluta sin puntos ciegos. La cámara superior fija blinda el acceso y la inferior persigue al intruso.', loc: 'exterior', pwr: 'cable', mov: 'doble' },
             { categoria: 'camaras', titulo: 'Ezviz HB8 Lite 2K', ref: '94705513', tags: ['🌳 Exterior', '🔋 A Batería', '🔄 Rotativa 360º', '☀️ Opción Solar'], clave: 'Instalación 100% sin cables ni taladros. Autonomía brutal, ideal para acoplarle el panel solar de Ezviz.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
+            
+            // NUEVAS ALTAS: ENERGEEKS (Integradas en filtros)
+            { categoria: 'camaras', titulo: 'Energeeks Exterior 4G Panel Solar', ref: '96507760', tags: ['🌳 Exterior', '🔋 A Batería', '📶 Conexión 4G', '🔄 Rotativa 360º', '☀️ Panel Solar'], clave: 'Autonomía total sin WiFi ni luz. Incluye tarjeta SIM con datos ilimitados, motorización y resolución 2K de 4MP.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Energeeks Scout Interior 1080P', ref: '91008199', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Cámara motorizada interior básica y fiable. Resolución Full HD 1080p, ideal para controlar mascotas o estancias comunes.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Energeeks Defender III Exterior', ref: '90532099', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '✨ Alta Def.'], clave: 'Cámara motorizada de exterior con excelente resolución de 4MP (2K). Ideal para vigilar parcelas o accesos por WiFi.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Energeeks Defender Duo Exterior', ref: '99432964', tags: ['🌳 Exterior', '🔌 Cable', '👁️ Doble Lente', '🔄 360º Cobertura'], clave: 'Sistema de doble lente (fija + rotativa) de 4MP. Evita cualquier punto ciego vigilando dos zonas críticas a la vez.', loc: 'exterior', pwr: 'cable', mov: 'doble' },
+            { categoria: 'camaras', titulo: 'Energeeks Scout II Interior 3MP', ref: '99432960', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '⚖️ Calidad 2K'], clave: 'Evolución de la Scout tradicional. Sube la resolución a 3MP para aportar un extra de nitidez en interiores.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Energeeks Defender IV Exterior', ref: '99432963', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '🚀 Última Gen.'], clave: 'Última generación de la gama Defender. Óptica mejorada de 4MP y rotación inteligente para un rastreo perimetral nítido.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
+            { categoria: 'camaras', titulo: 'Energeeks Sentinel Duo Interior', ref: '99432961', tags: ['🏠 Interior', '🔌 Cable', '👁️ Doble Lente', '🔄 360º Cobertura'], clave: 'Doble lente para el interior del hogar (fija + motorizada). Perfecta para estancias muy grandes o salones abiertos.', loc: 'interior', pwr: 'cable', mov: 'doble' },
+
+            // --- CATEGORÍA: CALEFACCIÓN POR AGUA (NUEVA SECCIÓN) ---
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 50 (4 elem.)', ref: '82313239', tags: ['🔥 Altura 50', '🧱 4 Elementos', '💧 Aluminio'], clave: 'Gama de altura reducida (eje 50 cm). Ideal para colocar bajo ventanas bajas aprovechando al máximo el espacio.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (4 elem.)', ref: '82313243', tags: ['🔥 Altura 60', '🧱 4 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). Modelo compacto de 4 elementos para estancias muy pequeñas o aseos.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (5 elem.)', ref: '82313244', tags: ['🔥 Altura 60', '🧱 5 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). 5 elementos para un ajuste térmico intermedio en habitaciones individuales.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (6 elem.)', ref: '82313245', tags: ['🔥 Altura 60', '🧱 6 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). Tamaño equilibrado para dormitorios medianos con una emisión de calor óptima.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (8 elem.)', ref: '82313246', tags: ['🔥 Altura 60', '🧱 8 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). El más polivalente para salones estándar o pasillos largos.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (10 elem.)', ref: '82313247', tags: ['🔥 Altura 60', '🧱 10 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). Gran potencia térmica, perfecto para comedores principales o habitaciones frías.' },
+            { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (12 elem.)', ref: '82313248', tags: ['🔥 Altura 60', '🧱 12 Elementos', '💧 Aluminio'], clave: 'El hermano mayor de la gama (altura 60 cm). Máxima potencia y número de elementos para calentar salones muy grandes.' },
 
             // --- CATEGORÍA: AIRE ACONDICIONADO ---
             { categoria: 'aire', titulo: 'Haier Perla 1x1 3000 fg', ref: '90402654', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 19 dB (Ultrasilencioso)', '🟢 A+++', '📱 WiFi'], clave: 'Compuesto por split y unidad exterior. Máxima eficiencia A+++ y modo ultrasilencioso (19 dB). Ideal para estancias de hasta 25 m².' },
@@ -225,7 +244,7 @@
             { categoria: 'aire', titulo: 'HTW IX39 Plus 1x1 3000 fg', ref: '98196849', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 22 dB (Silencioso)', '🟡 A++', '📱 WiFi'], clave: 'Gran relación calidad-precio. Conexión WiFi, triple filtro purificador y protección Golden Fin anticorrosión. Excelente para presupuestos ajustados de hasta 25 m².' },
             { categoria: 'aire', titulo: 'Haier Perla 2x1 (2000+3000 fg)', ref: '90402658', tags: ['❄️ 2x1 Multisplit', '🍃 2000+3000 Frigorías', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'Solución multisplit con una sola unidad exterior. Incluye un split ideal para dormitorio y otro para salón. Conectividad WiFi y filtros purificadores en ambas estancias.' },
             { categoria: 'aire', titulo: 'Haier Flexis 2x1 (2000+2000 fg)', ref: '99435449', tags: ['❄️ 2x1 Multisplit', '🍃 2000+2000 Frigorías', '🔊 16 dB (Ultra Silencio)', '👑 A+++', '📱 Eco-Sensor'], clave: 'Gama premium de diseño blanco mate. Máxima eficiencia A+++ y Eco-Sensor inteligente para desviar el flujo de aire directo de las personas. Ideal para dos dormitorios.' },
-            { categoria: 'aire', titulo: 'Haier Tide Premium 2x1 (35+35/50)', ref: '99435441', tags: ['❄️ 2x1 Multisplit', '🍃 3000+3000 Frigorías', '🔊 19 dB (Súper Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Novedad. Combo 2x1 con dos splits potentes de 3000 frigorías ideales para climatizar dos estancias medianas/grandes a la vez. Máxima eficiencia A+++ y control WiFi.' },
+            { categoria: 'aire', titulo: 'Haier Tide Premium 2x1 (35+35/50)', ref: '99435441', tags: ['❄️ 2x1 Multisplit', '🍃 3000+3000 Frigorías', '🔊 19 dB (Súper Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Combo 2x1 con dos splits potentes de 3000 frigorías ideales para climatizar dos estancias medianas/grandes a la vez. Máxima eficiencia A+++ y control WiFi.' },
             { categoria: 'aire', titulo: 'Haier Tide Premium 3x1 (25+25+35/70)', ref: '99435443', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '👑 A+++', '📱 WiFi'], clave: 'Solución 3x1 de alta eficiencia. Permite climatizar dos dormitorios medianos y un salón grande de manera independiente con un solo motor exterior. WiFi de serie.' },
             { categoria: 'aire', titulo: 'Haier Perla 3x1 (2x2000+3000 fg)', ref: '90402660', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'La solución triple más equilibrada en calidad-precio. Climatiza dos dormitorios y el salón de forma independiente con un solo motor exterior y filtros de aire avanzados.' },
             { categoria: 'aire', titulo: 'Haier Flexis 3x1 (2x2236+3000 fg)', ref: '94727300', tags: ['❄️ 3x1 Multisplit', '🍃 2236+2236+3000 fg', '🔊 16 dB (Ultra Silencio)', '🟡 A++', '📱 Eco-Sensor'], clave: 'Gama alta de diseño blanco mate con triple split. Máxima salud con esterilización UVC Plus activa y Eco-Sensor inteligente para evitar corrientes directas. Silencio absoluto para tres estancias.' },
@@ -256,7 +275,7 @@
             { categoria: 'cerradura', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi (Gateway)', '⌨️ Teclado + NFC', '🔔 Alerta Puerta Abierta'], clave: 'El kit inteligente más completo de EZVIZ. Incluye cerradura, teclado exterior, puente Gateway para control remoto total y llaves NFC. Instalación interior sin taladrar sobre el bombín existente.' },
             { categoria: 'cerradura', titulo: 'Cerradura EZVIZ Smartlok DL01 Pro (Solo Unidad)', ref: '94760657', tags: ['🔐 Cerradura Inteligente', '📶 Conexión Bluetooth', '🔔 Alerta Puerta Abierta', '🎨 Diseño Plata/Negro'], clave: 'La unidad de cerradura motorizada DL01 Pro independiente. Instalación interior sin taladrar. Ideal para control local por Bluetooth o para clientes que ya disponen de un Gateway EZVIZ en casa.' }
         ];
-
+        
         // Variables de estado
         let categoriaActual = 'camaras';
         let activeFilters = { loc: null, pwr: null, mov: null };
