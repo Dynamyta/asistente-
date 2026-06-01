@@ -120,7 +120,6 @@
                     <p>Bombas de calor eficientes, termos híbridos y ahorro en agua caliente.</p>
                 </div>
                 
-                
                 <!-- NUEVO BOTÓN PARA LOS RADIADORES DE AGUA -->
                 <div class="menu-card" style="border-left: 5px solid #38bdf8;" onclick="openCalefaccionDirect()">
                     <h2 style="color: #38bdf8;"><i class="fa-solid fa-faucet-drip"></i> Radiadores de Agua</h2>
@@ -204,9 +203,8 @@
     </div>
 
     <script>
-        
         // ==========================================================================
-        // BASE DE DATOS INTERNA (ACTUALIZADA)
+        // BASE DE DATOS INTERNA 
         // ==========================================================================
         const baseDeDatos = [
             // --- CATEGORÍA: CÁMARAS (EZVIZ Y ENERGEEKS) ---
@@ -219,7 +217,7 @@
             { categoria: 'camaras', titulo: 'Ezviz H9c Dual 2K', ref: '91639667', tags: ['🌳 Exterior', '🔌 Cable', '👁️ Doble Lente'], clave: 'Seguridad perimetral absoluta sin puntos ciegos. La cámara superior fija blinda el acceso y la inferior persigue al intruso.', loc: 'exterior', pwr: 'cable', mov: 'doble' },
             { categoria: 'camaras', titulo: 'Ezviz HB8 Lite 2K', ref: '94705513', tags: ['🌳 Exterior', '🔋 A Batería', '🔄 Rotativa 360º', '☀️ Opción Solar'], clave: 'Instalación 100% sin cables ni taladros. Autonomía brutal, ideal para acoplarle el panel solar de Ezviz.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
             
-            // NUEVAS ALTAS: ENERGEEKS (Integradas en filtros)
+            // ENERGEEKS
             { categoria: 'camaras', titulo: 'Energeeks Exterior 4G Panel Solar', ref: '96507760', tags: ['🌳 Exterior', '🔋 A Batería', '📶 Conexión 4G', '🔄 Rotativa 360º', '☀️ Panel Solar'], clave: 'Autonomía total sin WiFi ni luz. Incluye tarjeta SIM con datos ilimitados, motorización y resolución 2K de 4MP.', loc: 'exterior', pwr: 'bateria', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Energeeks Scout Interior 1080P', ref: '91008199', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Cámara motorizada interior básica y fiable. Resolución Full HD 1080p, ideal para controlar mascotas o estancias comunes.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Energeeks Defender III Exterior', ref: '90532099', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '✨ Alta Def.'], clave: 'Cámara motorizada de exterior con excelente resolución de 4MP (2K). Ideal para vigilar parcelas o accesos por WiFi.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
@@ -228,7 +226,7 @@
             { categoria: 'camaras', titulo: 'Energeeks Defender IV Exterior', ref: '99432963', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '🚀 Última Gen.'], clave: 'Última generación de la gama Defender. Óptica mejorada de 4MP y rotación inteligente para un rastreo perimetral nítido.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Energeeks Sentinel Duo Interior', ref: '99432961', tags: ['🏠 Interior', '🔌 Cable', '👁️ Doble Lente', '🔄 360º Cobertura'], clave: 'Doble lente para el interior del hogar (fija + motorizada). Perfecta para estancias muy grandes o salones abiertos.', loc: 'interior', pwr: 'cable', mov: 'doble' },
 
-            // --- CATEGORÍA: CALEFACCIÓN POR AGUA (NUEVA SECCIÓN) ---
+            // --- CATEGORÍA: CALEFACCIÓN POR AGUA ---
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 50 (4 elem.)', ref: '82313239', tags: ['🔥 Altura 50', '🧱 4 Elementos', '💧 Aluminio'], clave: 'Gama de altura reducida (eje 50 cm). Ideal para colocar bajo ventanas bajas aprovechando al máximo el espacio.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (4 elem.)', ref: '82313243', tags: ['🔥 Altura 60', '🧱 4 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). Modelo compacto de 4 elementos para estancias muy pequeñas o aseos.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (5 elem.)', ref: '82313244', tags: ['🔥 Altura 60', '🧱 5 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). 5 elementos para un ajuste térmico intermedio en habitaciones individuales.' },
@@ -268,19 +266,19 @@
             { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets y familias grandes.' },
            
             // --- CATEGORÍA: MOTORES ---
-            { categoria: 'motores', titulo: 'Motor Corredera Ezviz HG2 (Hasta 400kg)', ref: 'REFERENCIA', tags: ['⚙️ Automatismos', '📱 Conectado Ezviz'], clave: 'Solución conectada idónea para la automatización de portones residenciales estándar.' },
-            { categoria: 'motores', titulo: 'Motor Corredera Ezviz Pro HG2 (Hasta 600kg)', ref: 'REFERENCIA', tags: ['⚙️ Uso Intensivo', '🦾 Estructuras Fuertes'], clave: 'Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).' },
+            { categoria: 'motores', titulo: 'Motor Corredera Ezviz HG2 (Hasta 400kg)', ref: '91234567', tags: ['⚙️ Automatismos', '📱 Conectado Ezviz'], clave: 'Solución conectada idónea para la automatización de portones residenciales estándar.' },
+            { categoria: 'motores', titulo: 'Motor Corredera Ezviz Pro HG2 (Hasta 600kg)', ref: '91234568', tags: ['⚙️ Uso Intensivo', '🦾 Estructuras Fuertes'], clave: 'Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).' },
 
             // --- CATEGORÍA: MIRILLAS ---
-            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Oro', ref: 'REFERENCIA', tags: ['👁️ Seguridad Puerta', '✨ Acabado Dorado'], clave: 'Estética clásica a juego con herrajes dorados. Incluye pantalla interior y grabación por movimiento.' },
-            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Plata', ref: 'REFERENCIA', tags: ['👁️ Seguridad Puerta', '🥈 Acabado Cromado'], clave: 'Diseño moderno cromado ideal para puertas contemporáneas de block o acorazadas.' },
+            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Oro', ref: '91855701', tags: ['👁️ Seguridad Puerta', '✨ Acabado Dorado'], clave: 'Estética clásica a juego con herrajes dorados. Incluye pantalla interior y grabación por movimiento.' },
+            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Plata', ref: '91855702', tags: ['👁️ Seguridad Puerta', '🥈 Acabado Cromado'], clave: 'Diseño moderno cromado ideal para puertas contemporáneas de block o acorazadas.' },
             { categoria: 'mirillas', titulo: 'Mirilla Digital EZVIZ DP2C WiFi 4.3"', ref: '91855703', tags: ['👁️ Mirilla Digital', '📱 Control WiFi (App)', '🚶 Detector de Presencia', '🌙 Visión Nocturna'], clave: 'Pantalla a color de 4.3" y gran angular de 155°. Conexión WiFi con audio bidireccional para responder desde el móvil. Sensor PIR de calor humano para evitar falsas alarmas.' },
             
-            // --- CATEGORÍA: CERRADURAS ---
-            { categoria: 'cerradura', titulo: 'Cerradura Inteligente Ezviz (Cuerpo)', ref: 'REFERENCIA', tags: ['🔒 Control Accesos', '🔑 Cilindro existente'], clave: 'Para montar sobre el cilindro compatible existente de la puerta sin cambiar de llaves.' },
-            { categoria: 'cerraduras', titulo: 'Kit Cerradura Ezviz + Teclado Numérico', ref: 'REFERENCIA', tags: ['🔒 Solución Completa', '🔢 Apertura Código'], clave: 'Solución completa con apertura por código. Excelente para alquileres o comodidad del día a día.' },
-            { categoria: 'cerradura', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi (Gateway)', '⌨️ Teclado + NFC', '🔔 Alerta Puerta Abierta'], clave: 'El kit inteligente más completo de EZVIZ. Incluye cerradura, teclado exterior, puente Gateway para control remoto total y llaves NFC. Instalación interior sin taladrar sobre el bombín existente.' },
-            { categoria: 'cerradura', titulo: 'Cerradura EZVIZ Smartlok DL01 Pro (Solo Unidad)', ref: '94760657', tags: ['🔐 Cerradura Inteligente', '📶 Conexión Bluetooth', '🔔 Alerta Puerta Abierta', '🎨 Diseño Plata/Negro'], clave: 'La unidad de cerradura motorizada DL01 Pro independiente. Instalación interior sin taladrar. Ideal para control local por Bluetooth o para clientes que ya disponen de un Gateway EZVIZ en casa.' }
+            // --- CATEGORÍA: CERRADURAS (Unificadas a 'cerraduras') ---
+            { categoria: 'cerraduras', titulo: 'Cerradura Inteligente Ezviz (Cuerpo)', ref: '94760655', tags: ['🔒 Control Accesos', '🔑 Cilindro existente'], clave: 'Para montar sobre el cilindro compatible existente de la puerta sin cambiar de llaves.' },
+            { categoria: 'cerraduras', titulo: 'Kit Cerradura Ezviz + Teclado Numérico', ref: '94760656', tags: ['🔒 Solución Completa', '🔢 Apertura Código'], clave: 'Solución completa con apertura por código. Excelente para alquileres o comodidad del día a día.' },
+            { categoria: 'cerraduras', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi (Gateway)', '⌨️ Teclado + NFC', '🔔 Alerta Puerta Abierta'], clave: 'El kit inteligente más completo de EZVIZ. Incluye cerradura, teclado exterior, puente Gateway para control remoto total y llaves NFC. Instalación interior sin taladrar sobre el bombín existente.' },
+            { categoria: 'cerraduras', titulo: 'Cerradura EZVIZ Smartlok DL01 Pro (Solo Unidad)', ref: '94760657', tags: ['🔐 Cerradura Inteligente', '📶 Conexión Bluetooth', '🔔 Alerta Puerta Abierta', '🎨 Diseño Plata/Negro'], clave: 'La unidad de cerradura motorizada DL01 Pro independiente. Instalación interior sin taladrar. Ideal para control local por Bluetooth o para clientes que ya disponen de un Gateway EZVIZ en casa.' }
         ];
         
         // Variables de estado
@@ -332,6 +330,7 @@
             
             resetFilters();
         }
+
         // ACCESO DIRECTO DESDE EL MENÚ: RADIADORES DE AGUA
         function openCalefaccionDirect() {
             categoriaActual = 'calefaccion';
@@ -363,7 +362,8 @@
 
             resetFilters();
         }
-// Renderizador dinámico de tarjetas
+
+        // Renderizador dinámico de tarjetas (Corregido y sin duplicar)
         function renderProducts() {
             const container = document.getElementById('products-list-container');
             container.innerHTML = '';
@@ -385,37 +385,19 @@
                 let card = document.createElement('div');
                 card.className = 'product-card';
 
-                // --- AQUÍ ESTÁ EL BLOQUE QUE TE FALTABA ---
                 let argumentClass = 'argument-box';
                 if (prod.categoria === 'aire') {
                     argumentClass += ' air-box';
                 } else if (prod.categoria === 'aerotermia') {
                     argumentClass += ' aerotermia-box';
                 } else if (prod.categoria === 'calefaccion') {
-                    argumentClass += ' air-box'; // Le da el mismo tono azul limpio que al aire
+                    argumentClass += ' air-box'; 
                 }
-                // ------------------------------------------
 
                 let tagsHTML = '';
                 prod.tags.forEach(function(t) {
                     tagsHTML += '<span class="tag">' + t + '</span>';
                 });
-
-                card.innerHTML = 
-                    '<div class="card-header">' +
-                        '<div class="prod-title">' + prod.titulo + '</div>' +
-                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
-                    '</div>' +
-                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
-                    '<div class="' + argumentClass + '">' +
-                        '<strong>Clave de venta:</strong> ' + prod.clave +
-                    '</div>';
-                
-                container.appendChild(card);
-            });
-
-            document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
-        }
 
                 card.innerHTML = 
                     '<div class="card-header">' +
