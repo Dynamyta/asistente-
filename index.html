@@ -363,8 +363,7 @@
 
             resetFilters();
         }
-
-        // Renderizador dinámico de tarjetas
+// Renderizador dinámico de tarjetas
         function renderProducts() {
             const container = document.getElementById('products-list-container');
             container.innerHTML = '';
@@ -386,17 +385,37 @@
                 let card = document.createElement('div');
                 card.className = 'product-card';
 
+                // --- AQUÍ ESTÁ EL BLOQUE QUE TE FALTABA ---
                 let argumentClass = 'argument-box';
                 if (prod.categoria === 'aire') {
                     argumentClass += ' air-box';
                 } else if (prod.categoria === 'aerotermia') {
                     argumentClass += ' aerotermia-box';
+                } else if (prod.categoria === 'calefaccion') {
+                    argumentClass += ' air-box'; // Le da el mismo tono azul limpio que al aire
                 }
+                // ------------------------------------------
 
                 let tagsHTML = '';
                 prod.tags.forEach(function(t) {
                     tagsHTML += '<span class="tag">' + t + '</span>';
                 });
+
+                card.innerHTML = 
+                    '<div class="card-header">' +
+                        '<div class="prod-title">' + prod.titulo + '</div>' +
+                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
+                    '</div>' +
+                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
+                    '<div class="' + argumentClass + '">' +
+                        '<strong>Clave de venta:</strong> ' + prod.clave +
+                    '</div>';
+                
+                container.appendChild(card);
+            });
+
+            document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+        }
 
                 card.innerHTML = 
                     '<div class="card-header">' +
