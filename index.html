@@ -273,10 +273,10 @@
             { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets y familias grandes.' },
 
             // --- CATEGORÍA: AEROTERMIA Y ACS (¡NUEVA SECCIÓN DE SOLUCIONES DE PASILLO INTEGRALES!) ---
-            { categoria: 'aerotermia', titulo: 'Kit Aerotermia Equation Monobloc 6 kW', ref: '99435001', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 6 kW', '🏢 Pisos / Casas <70m²', '🟢 A+++ Eco'], clave: 'La solución rápida de inicio de gama. Unidad monobloc exterior ideal para viviendas pequeñas o segundas residencias. Precio muy competitivo para captar al cliente.' },
-            { categoria: 'aerotermia', titulo: 'Kit Aerotermia Equation Monobloc 9 kW', ref: '99435002', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 9 kW', '🏠 Vivienda Estándar', '👑 El más vendido'], clave: 'La opción reina del pasillo. Potencia perfecta para el 80% de las viviendas unifamiliares medianas (hasta 120m²). Presupuesto estándar ideal de salida.' },
-            { categoria: 'aerotermia', titulo: 'Kit Aerotermia Isplit Multi 11 kW', ref: '99435103', tags: ['🔥 Calef/Refrig/ACS', '⚡ Clima Extremo', '🏡 Casas Grandes', '🟢 Alta Eficiencia'], clave: 'Para viviendas unifamiliares con necesidades medias-altas o zonas con inviernos duros. Aporta un rendimiento térmico excelente sin sobredimensionar.' },
-            { categoria: 'aerotermia', titulo: 'Kit Aerotermia Isplit Multi 16 kW', ref: '99435105', tags: ['🔥 Calef/Refrig/ACS', '⚡ Máxima Potencia', '🏰 Chalets >160m²', '🦾 Gran Caudal'], clave: 'La bestia para viviendas muy grandes, chalets aislados o instalaciones exigentes con muchos elementos de radiación o suelo.' },
+            { categoria: 'aerotermia', titulo: 'Kit PRUEBA Aerotermia Equation Monobloc 6 kW', ref: '99435001', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 6 kW', '🏢 Pisos / Casas <70m²', '🟢 A+++ Eco'], clave: 'La solución rápida de inicio de gama. Unidad monobloc exterior ideal para viviendas pequeñas o segundas residencias. Precio muy competitivo para captar al cliente.' },
+            { categoria: 'aerotermia', titulo: 'Kit PRUEBA Aerotermia Equation Monobloc 9 kW', ref: '99435002', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 9 kW', '🏠 Vivienda Estándar', '👑 El más vendido'], clave: 'La opción reina del pasillo. Potencia perfecta para el 80% de las viviendas unifamiliares medianas (hasta 120m²). Presupuesto estándar ideal de salida.' },
+            { categoria: 'aerotermia', titulo: 'Kit  PRUEBAAerotermia Isplit Multi 11 kW', ref: '99435103', tags: ['🔥 Calef/Refrig/ACS', '⚡ Clima Extremo', '🏡 Casas Grandes', '🟢 Alta Eficiencia'], clave: 'Para viviendas unifamiliares con necesidades medias-altas o zonas con inviernos duros. Aporta un rendimiento térmico excelente sin sobredimensionar.' },
+            { categoria: 'aerotermia', titulo: 'Kit  PRUEBAAerotermia Isplit Multi 16 kW', ref: '99435105', tags: ['🔥 Calef/Refrig/ACS', '⚡ Máxima Potencia', '🏰 Chalets >160m²', '🦾 Gran Caudal'], clave: 'La bestia para viviendas muy grandes, chalets aislados o instalaciones exigentes con muchos elementos de radiación o suelo.' },
             // --- CATEGORÍA: MOTORES ---
             { categoria: 'motores', titulo: 'Motor Corredera Ezviz HG2 (Hasta 400kg)', ref: '91234567', tags: ['⚙️ Automatismos', '📱 Conectado Ezviz'], clave: 'Solución conectada idónea para la automatización de portones residenciales estándar.' },
             { categoria: 'motores', titulo: 'Motor Corredera Ezviz Pro HG2 (Hasta 600kg)', ref: '91234568', tags: ['⚙️ Uso Intensivo', '🦾 Estructuras Fuertes'], clave: 'Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).' },
@@ -601,104 +601,6 @@
             }
 
        
-            // Renderizador dinámico de tarjetas (Modificado para Aerotermia de Pasillo)
-        function renderProducts() {
-            const container = document.getElementById('products-list-container');
-            container.innerHTML = '';
-            let visibles = 0;
-
-            // SI ESTAMOS EN LA SECCIÓN DE AEROTERMIA, INYECTAMOS PRIMERO EL BLOQUE DE GUÍA RÁPIDA
-            if (categoriaActual === 'aerotermia') {
-                let guiaRapidaHTML = `
-                    <!-- BLOQUE DE AEROTERMIA DE PASILLO (VENTA RÁPIDA) -->
-                    <div class="filter-section" style="border-color: var(--aerotermia-green); background: rgba(163, 230, 53, 0.03); margin-top: 10px; margin-bottom: 20px;">
-                        <div class="filter-title" style="color: var(--aerotermia-green); font-size: 0.9rem; margin-bottom: 12px; text-transform: none;">
-                            <i class="fa-solid fa-lightning-bolt"></i> Guía Rápida Aerotermia (Orientativo Pasillo)
-                        </div>
-
-                        <!-- ARISTON -->
-                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ariston Nimbus Compact H 35S</div>
-                                <div class="pyxis-badge">Ref. 95210326</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 3 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Pisos / Pequeña (hasta 50 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Ideal para apartamentos, pisos pequeños o zonas con baja necesidad térmica. Solución compacta todo en uno (Calefacción + Refrigeración + ACS).
-                            </div>
-                        </div>
-
-                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ariston Nimbus Compact H 80S</div>
-                                <div class="pyxis-badge">Ref. 95210328</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 8 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Vivienda Mediana (hasta 110 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> El todoterreno de Ariston. Potencia equilibrada para casas o pisos estándar de 3 habitaciones con uso diario de agua caliente y climatización.
-                            </div>
-                        </div>
-
-                        <!-- FERROLI -->
-                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ferroli Omnia ST 3.2 6kW</div>
-                                <div class="pyxis-badge">Ref. 88034682</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 6 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Casa / Piso Estándar (hasta 85 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 190L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Excelente equilibrio. Un extra de capacidad en agua caliente (190L) con una potencia de 6kW ideal para adosados o pisos medianos bien aislados.
-                            </div>
-                        </div>
-
-                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ferroli Omnia M 3.2 10kW</div>
-                                <div class="pyxis-badge">Ref. 85814016</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 10 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏡 Vivienda Grande (hasta 130 m²)</span>
-                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Sistema Monobloc (todo fuera). Ideal para viviendas grandes que ya tienen acumulador o donde no se quiere instalar gas refrigerante en el interior.
-                            </div>
-                        </div>
-
-                        <!-- HTW -->
-                        <div class="product-card" style="border-left: 3px solid #00bfff; margin-bottom: 0;">
-                            <div class="card-header">
-                                <div class="prod-title">HTW Eco Thermal 16kW</div>
-                                <div class="pyxis-badge">Ref. 87234985</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #0c4a6e; color: #38bdf8; border-color: #00bfff;">⚡ 16 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏰 Chalet / Clima Frío (más de 160 m²)</span>
-                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Máxima potencia para grandes retos. Diseñada para chalets grandes, segundas plantas extensas o viviendas en zonas muy frías con alta demanda.
-                            </div>
-                        </div>
-                    </div>
-                    <!-- TÍTULO SEPARADOR PARA LOS PRODUCTOS DETALLADOS -->
-                    <div class="filter-title" style="margin-top: 25px; margin-bottom: 10px; color: #64748b;">
-                        <i class="fa-solid fa-boxes-stacked"></i> Aerotermos y Acumuladores de Agua Existentes
-                    </div>
-                `;
                 container.innerHTML = guiaRapidaHTML;
             }
 
