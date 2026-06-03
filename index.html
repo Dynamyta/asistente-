@@ -499,7 +499,260 @@
         }
 
         // Carga inicial
+        // Renderizador dinámico de tarjetas (Modificado para Aerotermia de Pasillo)
+        function renderProducts() {
+            const container = document.getElementById('products-list-container');
+            container.innerHTML = '';
+            let visibles = 0;
+
+            // SI ESTAMOS EN LA SECCIÓN DE AEROTERMIA, INYECTAMOS PRIMERO EL BLOQUE DE GUÍA RÁPIDA
+            if (categoriaActual === 'aerotermia') {
+                let guiaRapidaHTML = `
+                    <!-- BLOQUE DE AEROTERMIA DE PASILLO (VENTA RÁPIDA) -->
+                    <div class="filter-section" style="border-color: var(--aerotermia-green); background: rgba(163, 230, 53, 0.03); margin-top: 10px; margin-bottom: 20px;">
+                        <div class="filter-title" style="color: var(--aerotermia-green); font-size: 0.9rem; margin-bottom: 12px; text-transform: none;">
+                            <i class="fa-solid fa-lightning-bolt"></i> Guía Rápida Aerotermia (Orientativo Pasillo)
+                        </div>
+
+                        <!-- ARISTON -->
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ariston Nimbus Compact H 35S</div>
+                                <div class="pyxis-badge">Ref. 95210326</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 3 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Pisos / Pequeña (hasta 50 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Ideal para apartamentos, pisos pequeños o zonas con baja necesidad térmica. Solución compacta todo en uno (Calefacción + Refrigeración + ACS).
+                            </div>
+                        </div>
+
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ariston Nimbus Compact H 80S</div>
+                                <div class="pyxis-badge">Ref. 95210328</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 8 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Vivienda Mediana (hasta 110 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> El todoterreno de Ariston. Potencia equilibrada para casas o pisos estándar de 3 habitaciones con uso diario de agua caliente y climatización.
+                            </div>
+                        </div>
+
+                        <!-- FERROLI -->
+                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ferroli Omnia ST 3.2 6kW</div>
+                                <div class="pyxis-badge">Ref. 88034682</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 6 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Casa / Piso Estándar (hasta 85 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 190L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Excelente equilibrio. Un extra de capacidad en agua caliente (190L) con una potencia de 6kW ideal para adosados o pisos medianos bien aislados.
+                            </div>
+                        </div>
+
+                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ferroli Omnia M 3.2 10kW</div>
+                                <div class="pyxis-badge">Ref. 85814016</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 10 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏡 Vivienda Grande (hasta 130 m²)</span>
+                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Sistema Monobloc (todo fuera). Ideal para viviendas grandes que ya tienen acumulador o donde no se quiere instalar gas refrigerante en el interior.
+                            </div>
+                        </div>
+
+                        <!-- HTW -->
+                        <div class="product-card" style="border-left: 3px solid #00bfff; margin-bottom: 0;">
+                            <div class="card-header">
+                                <div class="prod-title">HTW Eco Thermal 16kW</div>
+                                <div class="pyxis-badge">Ref. 87234985</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #0c4a6e; color: #38bdf8; border-color: #00bfff;">⚡ 16 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏰 Chalet / Clima Frío (más de 160 m²)</span>
+                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Máxima potencia para grandes retos. Diseñada para chalets grandes, segundas plantas extensas o viviendas en zonas muy frías con alta demanda.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TÍTULO SEPARADOR PARA LOS PRODUCTOS DETALLADOS -->
+                    <div class="filter-title" style="margin-top: 25px; margin-bottom: 10px; color: #64748b;">
+                        <i class="fa-solid fa-boxes-stacked"></i> Aerotermos y Acumuladores de Agua Existentes
+                    </div>
+                `;
+                container.innerHTML = guiaRapidaHTML;
+            }
+
         renderProducts();
+            // Renderizador dinámico de tarjetas (Modificado para Aerotermia de Pasillo)
+        function renderProducts() {
+            const container = document.getElementById('products-list-container');
+            container.innerHTML = '';
+            let visibles = 0;
+
+            // SI ESTAMOS EN LA SECCIÓN DE AEROTERMIA, INYECTAMOS PRIMERO EL BLOQUE DE GUÍA RÁPIDA
+            if (categoriaActual === 'aerotermia') {
+                let guiaRapidaHTML = `
+                    <!-- BLOQUE DE AEROTERMIA DE PASILLO (VENTA RÁPIDA) -->
+                    <div class="filter-section" style="border-color: var(--aerotermia-green); background: rgba(163, 230, 53, 0.03); margin-top: 10px; margin-bottom: 20px;">
+                        <div class="filter-title" style="color: var(--aerotermia-green); font-size: 0.9rem; margin-bottom: 12px; text-transform: none;">
+                            <i class="fa-solid fa-lightning-bolt"></i> Guía Rápida Aerotermia (Orientativo Pasillo)
+                        </div>
+
+                        <!-- ARISTON -->
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ariston Nimbus Compact H 35S</div>
+                                <div class="pyxis-badge">Ref. 95210326</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 3 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Pisos / Pequeña (hasta 50 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Ideal para apartamentos, pisos pequeños o zonas con baja necesidad térmica. Solución compacta todo en uno (Calefacción + Refrigeración + ACS).
+                            </div>
+                        </div>
+
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ariston Nimbus Compact H 80S</div>
+                                <div class="pyxis-badge">Ref. 95210328</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 8 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Vivienda Mediana (hasta 110 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> El todoterreno de Ariston. Potencia equilibrada para casas o pisos estándar de 3 habitaciones con uso diario de agua caliente y climatización.
+                            </div>
+                        </div>
+
+                        <!-- FERROLI -->
+                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ferroli Omnia ST 3.2 6kW</div>
+                                <div class="pyxis-badge">Ref. 88034682</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 6 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Casa / Piso Estándar (hasta 85 m²)</span>
+                                <span class="tag">📦 Bibloc (Acum. 190L)</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Excelente equilibrio. Un extra de capacidad en agua caliente (190L) con una potencia de 6kW ideal para adosados o pisos medianos bien aislados.
+                            </div>
+                        </div>
+
+                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
+                            <div class="card-header">
+                                <div class="prod-title">Ferroli Omnia M 3.2 10kW</div>
+                                <div class="pyxis-badge">Ref. 85814016</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 10 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏡 Vivienda Grande (hasta 130 m²)</span>
+                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Sistema Monobloc (todo fuera). Ideal para viviendas grandes que ya tienen acumulador o donde no se quiere instalar gas refrigerante en el interior.
+                            </div>
+                        </div>
+
+                        <!-- HTW -->
+                        <div class="product-card" style="border-left: 3px solid #00bfff; margin-bottom: 0;">
+                            <div class="card-header">
+                                <div class="prod-title">HTW Eco Thermal 16kW</div>
+                                <div class="pyxis-badge">Ref. 87234985</div>
+                            </div>
+                            <div class="tags-wrapper">
+                                <span class="tag" style="background: #0c4a6e; color: #38bdf8; border-color: #00bfff;">⚡ 16 kW</span>
+                                <span class="tag" style="background: #0f172a; color: #fff;">🏰 Chalet / Clima Frío (más de 160 m²)</span>
+                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
+                            </div>
+                            <div class="argument-box aerotermia-box">
+                                <strong>Gancho:</strong> Máxima potencia para grandes retos. Diseñada para chalets grandes, segundas plantas extensas o viviendas en zonas muy frías con alta demanda.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TÍTULO SEPARADOR PARA LOS PRODUCTOS DETALLADOS -->
+                    <div class="filter-title" style="margin-top: 25px; margin-bottom: 10px; color: #64748b;">
+                        <i class="fa-solid fa-boxes-stacked"></i> Aerotermos y Acumuladores de Agua Existentes
+                    </div>
+                `;
+                container.innerHTML = guiaRapidaHTML;
+            }
+
+            // A PARTIR DE AQUÍ SIGUE PINTANDO LOS PRODUCTOS DE LA BASE DE DATOS COMO SIEMPRE
+            const productosFiltrados = baseDeDatos.filter(function(prod) {
+                if (prod.categoria !== categoriaActual) return false;
+                if (categoriaActual === 'camaras') {
+                    let matchLoc = !activeFilters.loc || (prod.loc && prod.loc.includes(activeFilters.loc));
+                    let matchPwr = !activeFilters.pwr || (prod.pwr && prod.pwr.includes(activeFilters.pwr));
+                    let matchMov = !activeFilters.mov || (prod.mov && prod.mov.includes(activeFilters.mov));
+                    return matchLoc && matchPwr && matchMov;
+                }
+                return true;
+            });
+
+            productosFiltrados.forEach(function(prod) {
+                visibles++;
+                let card = document.createElement('div');
+                card.className = 'product-card';
+
+                let argumentClass = 'argument-box';
+                if (prod.categoria === 'aire') {
+                    argumentClass += ' air-box';
+                } else if (prod.categoria === 'aerotermia') {
+                    argumentClass += ' aerotermia-box';
+                } else if (prod.categoria === 'calefaccion') {
+                    argumentClass += ' air-box'; 
+                }
+
+                let tagsHTML = '';
+                prod.tags.forEach(function(t) {
+                    tagsHTML += '<span class="tag">' + t + '</span>';
+                });
+
+                card.innerHTML = 
+                    '<div class="card-header">' +
+                        '<div class="prod-title">' + prod.titulo + '</div>' +
+                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
+                    '</div>' +
+                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
+                    '<div class="' + argumentClass + '">' +
+                        '<strong>Clave de venta:</strong> ' + prod.clave +
+                    '</div>';
+                
+                container.appendChild(card);
+            });
+
+            // Si es aerotermia, nunca mostrará "sin resultados" porque ya tiene fija la guía rápida de arriba
+            if (categoriaActual === 'aerotermia') {
+                document.getElementById('no-results-msg').style.display = 'none';
+            } else {
+                document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+            }
+        }
     </script>
 </body>
 </html>
