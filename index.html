@@ -450,54 +450,73 @@
         }
 
         // --- CALCULADORA SOLAR XUNZEL ---
-        let currentW = 0;
-        function toggle(el, watts) {
-            el.classList.toggle('active');
-            if (el.classList.contains('active')) currentW += watts;
-            else currentW -= watts;
-            updateSolar();
-        }
-        function resetSolar() {
-            currentW = 0;
-            document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
-            updateSolar();
-        }
-        function updateSolar() {
-            document.getElementById('totalW').innerText = currentW + " W";
-            const res = document.getElementById('packResult');
-            let pack = ""; let info = ""; let desc = "";
+let currentW = 0;
 
-            if (currentW === 0) {
-                res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
-                return;
-            }
-            if (currentW <= 400) { pack = "AX10L / AX19L"; desc = "Ideal para iluminación y ocio básico."; }
-            else if (currentW <= 1000) { pack = "AX30L"; desc = "Perfecto para pequeñas herramientas o batidoras."; }
-            else if (currentW <= 3000) { pack = "AX70 / AX170"; desc = "Hogar estándar (Nevera + Lavadora en frío)."; }
-            else if (currentW <= 5000) { 
-                pack = "PACK ZERO AX270L / AX370L"; 
-                info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
-                desc = "Vivienda completa con gran consumo diurno.";
-            }
-            else if (currentW <= 7200) { 
-                pack = "PACK ZERO AX390L / AX495L"; 
-                info = "AX390L (7.499€) - Ref: 90769261<br>AX495L (10.490€) - Ref: 98777985";
-                desc = "Independencia total (Piscina, Aire y Cocina).";
-            }
-            else if (currentW <= 14400) {
-                pack = "PACK ZERO AX790L";
-                info = "AX790L (15.990€) - Ref: 98777986";
-                desc = "Máxima potencia. Inversor de 14.4kW y 30kWh batería.";
-            }
-            else { pack = "SISTEMA A MEDIDA"; desc = "Exceso de potencia simultánea para packs estándar."; }
+function toggle(el, watts) {
+    el.classList.toggle('active');
+    if (el.classList.contains('active')) currentW += watts;
+    else currentW -= watts;
+    updateSolar();
+}
 
-            let htmlContent = '<div class="pack-card">';
-            htmlContent += '<span class="pack-name"><i class="fa-solid fa-box-open"></i> ' + pack + '</span>';
-            if (info) htmlContent += '<span class="pack-info">' + info + '</span>';
-            htmlContent += '<span class="pack-desc">' + desc + '</span></div>';
-            res.innerHTML = htmlContent;
-        }
+function resetSolar() {
+    currentW = 0;
+    document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
+    updateSolar();
+}
 
+function updateSolar() {
+    document.getElementById('totalW').innerText = currentW + " W";
+    const res = document.getElementById('packResult');
+    let pack = ""; let info = ""; let desc = "";
+
+    if (currentW === 0) {
+        res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
+        return;
+    }
+    if (currentW <= 400) { 
+        pack = "PACK ZERO+ AX10 / AX10L / AX19L"; 
+        info = "AX10 Plomo (815€) - Ref: 90780373<br>AX10L Litio (1.115€) - Ref: 90780374<br>AX19L Litio (1.635€) - Ref: 90769254";
+        desc = "Ideal para iluminación LED, televisión pequeña y cargas de electrónica básica."; 
+    }
+    else if (currentW <= 1000) { 
+        pack = "PACK ZERO+ AX30L (Litio)"; 
+        info = "AX30L (2.595€) - Ref: 90769256";
+        desc = "Perfecto para iluminación LED y pequeña herramienta / batidora."; 
+    }
+    else if (currentW <= 2000) { 
+        pack = "PACK ZERO 1750XJ"; 
+        info = "1750XJ (1.849€) - Ref: 82649930";
+        desc = "Equilibrio ideal para fincas de fin de semana o herramientas medianas (Inversor 2kW)."; 
+    }
+    else if (currentW <= 3000) { 
+        pack = "PACK ZERO+ AX70 / AX170"; 
+        info = "AX70 (1.895€) - Ref: 90769257<br>AX170 (2.695€) - Ref: 90769258";
+        desc = "Hogar estándar / Electrificación media (Nevera + Lavadora en frío)."; 
+    }
+    else if (currentW <= 5000) { 
+        pack = "PACK ZERO AX270L / AX370L"; 
+        info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
+        desc = "Vivienda completa con gran consumo diurno.";
+    }
+    else if (currentW <= 7200) { 
+        pack = "PACK ZERO AX390L / AX495L"; 
+        info = "AX390L (7.499€) - Ref: 90769261<br>AX495L (10.490€) - Ref: 98777985";
+        desc = "Independencia total (Piscina, Aire y Cocina).";
+    }
+    else if (currentW <= 14400) {
+        pack = "PACK ZERO AX790L";
+        info = "AX790L (15.990€) - Ref: 98777986";
+        desc = "Máxima potencia. Inversor de 14.4kW y 30kWh batería.";
+    }
+    else { pack = "SISTEMA A MEDIDA"; desc = "Exceso de potencia simultánea para packs estándar."; }
+
+    let htmlContent = '<div class="pack-card">';
+    htmlContent += '<span class="pack-name"><i class="fa-solid fa-box-open"></i> ' + pack + '</span>';
+    if (info) htmlContent += '<span class="pack-info">' + info + '</span>';
+    htmlContent += '<span class="pack-desc">' + desc + '</span></div>';
+    res.innerHTML = htmlContent;
+}
         // Carga inicial
         // Renderizador dinámico de tarjetas (Modificado para Aerotermia de Pasillo)
         function renderProducts() {
