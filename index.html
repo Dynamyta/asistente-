@@ -99,6 +99,11 @@
         .argument-box.aerotermia-box { background: rgba(163, 230, 53, 0.08); border-left-color: var(--aerotermia-green); }
         .argument-box.biomasa-box { background: rgba(249, 115, 22, 0.08); border-left-color: var(--biomasa-orange); }
         #no-results-msg { display: none; text-align: center; color: #64748b; font-size: 0.9rem; padding: 20px 0; }
+        
+        /* Botón Web Estilizado */
+        .card-footer { padding-top: 12px; margin-top: 12px; border-top: 1px solid #334155; text-align: center; }
+        .btn-web { display: inline-block; width: 100%; padding: 10px 0; background-color: var(--accent); color: #020617; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 0.85rem; transition: background 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-web:active { background-color: #4d7c0f; }
     </style>
 </head>
 <body>
@@ -125,7 +130,7 @@
                     <p>Bombas de calor eficientes, termos híbridos y ahorro en agua caliente.</p>
                 </div>
 
-                <!-- NUEVO BOTÓN PARA BIOMASA (PELLETS, LEÑA E INSERTS) -->
+                <!-- BOTÓN PARA BIOMASA (PELLETS, LEÑA E INSERTS) -->
                 <div class="menu-card biomasa-card" onclick="openBiomasaDirect()">
                     <h2><i class="fa-solid fa-fire"></i> Estufas y Biomasa</h2>
                     <p>Pellets, Leña e Insertables. Filtro rápido de potencias, medidas y salidas de humo.</p>
@@ -207,25 +212,21 @@
                 <button class="btn-reset" style="margin-top: 10px; padding: 8px; font-size: 0.8rem; background: #1e293b;" onclick="resetFilters()">Limpiar Filtros 🚫</button>
             </div>
 
-            <!-- NUEVO CONTENEDOR DE FILTROS ESPECÍFICOS PARA BIOMASA -->
+            <!-- FILTROS ESPECÍFICOS PARA BIOMASA -->
             <div id="biomasa-filter-box" class="filter-section" style="display: none; border-color: var(--biomasa-orange);">
                 <div class="filter-title">1. Tipo de combustible</div>
                 <div class="filter-row">
                     <button class="filter-btn" data-filter="fuel" data-val="pellets" onclick="toggleBiomasaFilter(this)">🪵 Pellets</button>
                     <button class="filter-btn" data-filter="fuel" data-val="lena" onclick="toggleBiomasaFilter(this)">🔥 Leña</button>
-                    <button class="filter-btn" data-filter="fuel" data-val="insert" onclick="toggleBiomasaFilter(this)">🔲 Insertables</button>
                 </div>
                 
                 <div class="filter-title" style="margin-top: 8px;">2. Diámetro Salida Humos</div>
                 <div class="filter-row">
                     <button class="filter-btn" data-filter="diame" data-val="80" onclick="toggleBiomasaFilter(this)">⭕ Ø 80 mm</button>
-                    <button class="filter-btn" data-filter="diame" data-val="100" onclick="toggleBiomasaFilter(this)">⭕ Ø 100 mm</button>
-                    <button class="filter-btn" data-filter="diame" data-val="150" onclick="toggleBiomasaFilter(this)">⭕ Ø 150 mm+</button>
                 </div>
 
                 <div class="filter-title" style="margin-top: 8px;">3. Posición de Salida</div>
                 <div class="filter-row">
-                    <button class="filter-btn" data-filter="posicion" data-val="superior" onclick="toggleBiomasaFilter(this)">⬆️ Superior</button>
                     <button class="filter-btn" data-filter="posicion" data-val="trasera" onclick="toggleBiomasaFilter(this)">⬅️ Trasera</button>
                 </div>
 
@@ -245,146 +246,20 @@
 
     <script>
         // ==========================================================================
-        // BASE DE DATOS INTERNA MANTENIDA Y AMPLIADA CON BIOMASA
+        // BASE DE DATOS INTERNA INTEGRADA (CON NUEVOS DATOS REALES DE BIOMASA)
         // ==========================================================================
-  // ====== BLOQUE DE DATOS REALES DE BIOMASA ======
-const productos = [
-    {
-        id: "91783561",
-        nombre: "Estufa de pellet KRONE 7 kW negra",
-        potencia: 7,
-        superficie: "60-80",
-        formato: "estandar",
-        canalizable: false,
-        precio: 599.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-krone-7-kw-negra-91783561.html"
-    },
-    {
-        id: "83670254",
-        nombre: "Estufa de pellet EQUATION Hella 7kW",
-        potencia: 7,
-        superficie: "60-80",
-        formato: "estandar",
-        canalizable: false,
-        precio: 649.00, // Nota: Verifica el precio exacto en tu tarifa de tienda
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-equation-hella-7kw-83670254.html"
-    },
-    {
-        id: "91783864",
-        nombre: "Estufa de pellet WATT 9 kW blanca",
-        potencia: 9,
-        superficie: "80-100",
-        formato: "estandar",
-        canalizable: false,
-        precio: 749.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-watt-9-kw-blanco-91783864.html"
-    },
-    {
-        id: "82673379",
-        nombre: "Estufa de pellet REDPOD First Advance 8 kW negra",
-        potencia: 8,
-        superficie: "70-90",
-        formato: "estandar",
-        canalizable: false,
-        precio: 699.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-redpod-first-advance-8-kw-negra-82673379.html"
-    },
-    {
-        id: "91783861",
-        nombre: "Estufa de pellet AURUM 10 kW blanca Wi-Fi",
-        potencia: 10,
-        superficie: "90-120",
-        formato: "estandar",
-        canalizable: false,
-        precio: 899.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-aurum-10-kw-blanco-wifi-91783861.html"
-    },
-    {
-        id: "83670255",
-        nombre: "Estufa de pellet EQUATION Mannu 9kW",
-        potencia: 9,
-        superficie: "80-100",
-        formato: "estandar",
-        canalizable: false,
-        precio: 799.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-equation-mannu-de-9kw-83670255.html"
-    },
-    {
-        id: "16522933",
-        nombre: "Estufa de pellets NEW BIO 9.5 kW",
-        potencia: 9.5,
-        superficie: "85-110",
-        formato: "estandar",
-        canalizable: false,
-        precio: 849.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellets-new-bio-9-5-kw-16522933.html"
-    },
-    {
-        id: "91783562",
-        nombre: "Estufa de pellet pasillo KRONE 4.9 kW blanca",
-        potencia: 4.9,
-        superficie: "40-55",
-        formato: "pasillo",
-        canalizable: false,
-        precio: 529.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-pasillo-krone-4-9-kw-blanco-91783562.html"
-    },
-    {
-        id: "95935242",
-        nombre: "Estufa de pellet canalizable reducida ECLIPSE 8 kW",
-        potencia: 8,
-        superficie: "70-95",
-        formato: "pasillo",
-        canalizable: true,
-        precio: 999.00,
-        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-canal-reducida-8-eclipse-8-kw-95935242.html"
-    }
-];
+        const baseDeDatos = [
+            // --- NUEVA CATEGORÍA REAL DE BIOMASA (PELLETS DE GEMA) ---
+            { categoria: 'biomasa', titulo: 'Estufa de pellet KRONE 7 kW negra', ref: '91783561', tags: ['🪵 Pellets', '⚡ 7 kW', '🏠 Hasta 80m²', '⭕ Ø 80mm', '💰 599.00 €'], clave: 'Modelo estándar superventas de 7 kW con salida trasera de 80mm. Gran rendimiento para estancias medianas.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'baja', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-krone-7-kw-negra-91783561.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet EQUATION Hella 7kW', ref: '83670254', tags: ['🪵 Pellets', '⚡ 7 kW', '🏠 Hasta 80m²', '⭕ Ø 80mm', '💰 649.00 €'], clave: 'Gama de marca propia Equation. Excelente servicio postventa y fiabilidad electrónica.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'baja', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-equation-hella-7kw-83670254.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet WATT 9 kW blanca', ref: '91783864', tags: ['🪵 Pellets', '⚡ 9 kW', '🏠 Hasta 100m²', '⭕ Ø 80mm', '⚪ Blanco', '💰 749.00 €'], clave: 'Diseño moderno en color blanco. 9 kW limpios ideales para calentar de forma diáfana salones amplios.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-watt-9-kw-blanco-91783864.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet REDPOD First Advance 8 kW negra', ref: '82673379', tags: ['🪵 Pellets', '⚡ 8 kW', '🏠 Hasta 90m²', '⭕ Ø 80mm', '💰 699.00 €'], clave: 'Estructura robusta y gran capacidad de tolva. Gran equilibrio térmico en 8 kW.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'baja', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-redpod-first-advance-8-kw-negra-82673379.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet AURUM 10 kW blanca Wi-Fi', ref: '91783861', tags: ['🪵 Pellets', '⚡ 10 kW', '📱 Wi-Fi Integrado', '⚪ Blanco', '💰 899.00 €'], clave: 'La más tecnológica. 10 kW de potencia bruta controlables íntegramente desde el smartphone del cliente.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-aurum-10-kw-blanco-wifi-91783861.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet EQUATION Mannu 9kW', ref: '83670255', tags: ['🪵 Pellets', '⚡ 9 kW', '🏠 Hasta 100m²', '⭕ Ø 80mm', '💰 799.00 €'], clave: 'Gama premium de Equation. Quemador optimizado de alta eficiencia calórica.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-equation-mannu-de-9kw-83670255.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellets NEW BIO 9.5 kW', ref: '16522933', tags: ['🪵 Pellets', '⚡ 9.5 kW', '🏠 Hasta 110m²', '⭕ Ø 80mm', '💰 849.00 €'], clave: 'Potencia intermedia excelente. Ideal para estancias muy expuestas al frío o viviendas de corte rústico.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta', url: 'https://www.leroymerlin.es/productos/estufa-de-pellets-new-bio-9-5-kw-16522933.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet pasillo KRONE 4.9 kW blanca', ref: '91783562', tags: ['🪵 Pellets', '⚡ 4.9 kW', '🚪 Formato Pasillo', '⚪ Blanco', '💰 529.00 €'], clave: 'Fondo reducido especial para pasillos o zonas estrechas. Evita obstaculizar el paso ofreciendo un calor confortable.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'baja', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-pasillo-krone-4-9-kw-blanco-91783562.html' },
+            { categoria: 'biomasa', titulo: 'Estufa de pellet canalizable reducida ECLIPSE 8 kW', ref: '95935242', tags: ['🪵 Pellets', '⚡ 8 kW', '🚪 Pasillo', '🌀 Canalizable ✔', '💰 999.00 €'], clave: 'La reina del pasillo. Formato slim (reducido) y además CANALIZABLE para llevar aire caliente a habitaciones anexas.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'baja', url: 'https://www.leroymerlin.es/productos/estufa-de-pellet-canal-reducida-8-eclipse-8-kw-95935242.html' },
 
-// ====== FUNCIÓN PARA RENDERIZAR TARJETAS CON EL BOTÓN WEB ======
-function renderizarProductos(productosFiltrados) {
-    const contenedor = document.getElementById('contenedor-productos');
-    contenedor.innerHTML = '';
-
-    if (productosFiltrados.length === 0) {
-        contenedor.innerHTML = '<p class="no-results">No se encontraron modelos con estos filtros técnicos.</p>';
-        return;
-    }
-
-    productosFiltrados.forEach(prod => {
-        const tarjeta = document.createElement('div');
-        tarjeta.className = 'producto-card';
-        
-        tarjeta.innerHTML = `
-            <div class="card-header">
-                <span class="ref-tag">Ref: ${prod.id}</span>
-                <h3>${prod.nombre}</h3>
-            </div>
-            <div class="card-body">
-                <div class="dato-tecnico"><strong>Potencia:</strong> ${prod.potencia} kW</div>
-                <div class="dato-tecnico"><strong>Superficie:</strong> Hasta ${prod.superficie} m²</div>
-                <div class="dato-tecnico"><strong>Formato:</strong> ${prod.formato === 'pasillo' ? 'Espacio Reducido / Pasillo' : 'Estándar'}</div>
-                <div class="dato-tecnico"><strong>Canalizable:</strong> ${prod.canalizable ? 'Sí ✔' : 'No ❌'}</div>
-                <div class="precio-tag">${prod.precio.toFixed(2)} €</div>
-            </div>
-            <div class="card-footer" style="padding: 10px; border-top: 1px solid #eee; text-align: center;">
-                <a href="${prod.url}" target="_blank" class="btn-web" style="
-                    display: inline-block;
-                    width: 100%;
-                    padding: 8px 0;
-                    background-color: #4CAF50;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: bold;
-                    font-size: 14px;
-                    transition: background 0.2s;
-                ">Ver en la Web / Stock</a>
-            </div>
-        `;
-        contenedor.appendChild(tarjeta);
-    });
-}
             // --- CATEGORÍA: CÁMARAS (EZVIZ Y ENERGEEKS) ---
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (5MP)', ref: '98571263', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Seguimiento automático de movimiento e imagen nítida de 5MP. Ideal para salones teniendo un enchufe cerca.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (8MP / 4K)', ref: '98229339', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '👑 Calidad 4K'], clave: 'Definición ultra alta en interior. Perfecta para ver detalles pequeños o ampliar digitalmente sin pixelar.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
@@ -617,6 +492,13 @@ function renderizarProductos(productosFiltrados) {
                 let tagsHTML = '';
                 prod.tags.forEach(function(t) { tagsHTML += '<span class="tag">' + t + '</span>'; });
 
+                // Renderizado condicional: si el producto tiene URL, añade el botón web abajo
+                let botonWebHTML = prod.url ? `
+                    <div class="card-footer">
+                        <a href="${prod.url}" target="_blank" class="btn-web"><i class="fa-solid fa-store"></i> Ver en la Web / Stock</a>
+                    </div>
+                ` : '';
+
                 card.innerHTML = `
                     <div class="card-header">
                         <div class="prod-title">${prod.titulo}</div>
@@ -626,6 +508,7 @@ function renderizarProductos(productosFiltrados) {
                     <div class="${argumentClass}">
                         <strong>Clave de venta:</strong> ${prod.clave}
                     </div>
+                    ${botonWebHTML}
                 `;
                 container.appendChild(card);
             });
