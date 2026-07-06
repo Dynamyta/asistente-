@@ -247,17 +247,144 @@
         // ==========================================================================
         // BASE DE DATOS INTERNA MANTENIDA Y AMPLIADA CON BIOMASA
         // ==========================================================================
-        const baseDeDatos = [
-            // --- NUEVA CATEGORÍA: BIOMASA (PELLETS, LEÑA, INSERTS) ---
-            { categoria: 'biomasa', titulo: 'Estufa de Pellets Equation Kalia 8kW', ref: '84931221', tags: ['🪵 Pellets', '⭕ Ø 80 mm', '⬆️ Superior', '⚡ 8kW (Hasta 75m²)', '📏 45x85x48 cm'], clave: 'Salida de humos superior integrada que ahorra espacio trasero en la instalación. Estética limpia y compacta.', fuel: 'pellets', diame: '80', posicion: 'superior', power: 'baja' },
-            { categoria: 'biomasa', titulo: 'Estufa de Pellets BioPlus Eco 10kW', ref: '90214562', tags: ['🪵 Pellets', '⭕ Ø 80 mm', '⬅️ Trasera', '⚡ 10kW (Hasta 95m²)', '📏 50x102x52 cm'], clave: 'Gran rendimiento térmico de 10kW con salida de humos trasera estándar de 80mm. Perfecta para salones amplios o pasillos.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta' },
-            { categoria: 'biomasa', titulo: 'Estufa de Pellets Canalizable Magna 12kW', ref: '90348712', tags: ['🪵 Pellets', '⭕ Ø 100 mm', '⬅️ Trasera', '⚡ 12kW (Hasta 120m²)', '📏 55x115x58 cm'], clave: 'Equipo de alta gama canalizable. Necesita salida reforzada de 100mm trasera debido a su enorme caudal y poder de impulsión.', fuel: 'pellets', diame: '100', posicion: 'trasera', power: 'alta' },
-            
-            { categoria: 'biomasa', titulo: 'Estufa de Leña Equation Classic 7kW', ref: '82194310', tags: ['🔥 Leña', '⭕ Ø 150 mm+', '⬆️ Superior', '⚡ 7kW (Hasta 65m²)', '📏 52x78x40 cm'], clave: 'Gama tradicional de hierro fundido con leñero inferior. Salida limpia por arriba de 150mm para tiro natural directo.', fuel: 'lena', diame: '150', posicion: 'superior', power: 'baja' },
-            { categoria: 'biomasa', titulo: 'Estufa de Leña Panorámica Eider 11kW', ref: '89341102', tags: ['🔥 Leña', '⭕ Ø 150 mm+', '⬅️ Trasera', '⚡ 11kW (Hasta 110m²)', '📏 75x85x45 cm'], clave: 'Diseño moderno con cristal panorámico de triple vista. Salida trasera potente para empotrar o lucir contra pared maestra.', fuel: 'lena', diame: '150', posicion: 'trasera', power: 'alta' },
-            
-            { categoria: 'biomasa', titulo: 'Hogar Insertable de Leña Equation 80', ref: '85412963', tags: ['🔲 Insertables', '⭕ Ø 150 mm+', '⬆️ Superior', '⚡ 14kW (Hasta 140m²)', '📏 79x62x47 cm'], clave: 'Insertable con turbinas integradas para forzar el aire caliente. Ideal para reformar chimeneas abiertas y multiplicar el ahorro.', fuel: 'insert', diame: '150', posicion: 'superior', power: 'alta' },
+        // ====== BLOQUE DE DATOS REALES DE BIOMASA ======
+const productos = [
+    {
+        id: "91783561",
+        nombre: "Estufa de pellet KRONE 7 kW negra",
+        potencia: 7,
+        superficie: "60-80",
+        formato: "estandar",
+        canalizable: false,
+        precio: 599.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-krone-7-kw-negra-91783561.html"
+    },
+    {
+        id: "83670254",
+        nombre: "Estufa de pellet EQUATION Hella 7kW",
+        potencia: 7,
+        superficie: "60-80",
+        formato: "estandar",
+        canalizable: false,
+        precio: 649.00, // Nota: Verifica el precio exacto en tu tarifa de tienda
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-equation-hella-7kw-83670254.html"
+    },
+    {
+        id: "91783864",
+        nombre: "Estufa de pellet WATT 9 kW blanca",
+        potencia: 9,
+        superficie: "80-100",
+        formato: "estandar",
+        canalizable: false,
+        precio: 749.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-watt-9-kw-blanco-91783864.html"
+    },
+    {
+        id: "82673379",
+        nombre: "Estufa de pellet REDPOD First Advance 8 kW negra",
+        potencia: 8,
+        superficie: "70-90",
+        formato: "estandar",
+        canalizable: false,
+        precio: 699.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-redpod-first-advance-8-kw-negra-82673379.html"
+    },
+    {
+        id: "91783861",
+        nombre: "Estufa de pellet AURUM 10 kW blanca Wi-Fi",
+        potencia: 10,
+        superficie: "90-120",
+        formato: "estandar",
+        canalizable: false,
+        precio: 899.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-aurum-10-kw-blanco-wifi-91783861.html"
+    },
+    {
+        id: "83670255",
+        nombre: "Estufa de pellet EQUATION Mannu 9kW",
+        potencia: 9,
+        superficie: "80-100",
+        formato: "estandar",
+        canalizable: false,
+        precio: 799.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-equation-mannu-de-9kw-83670255.html"
+    },
+    {
+        id: "16522933",
+        nombre: "Estufa de pellets NEW BIO 9.5 kW",
+        potencia: 9.5,
+        superficie: "85-110",
+        formato: "estandar",
+        canalizable: false,
+        precio: 849.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellets-new-bio-9-5-kw-16522933.html"
+    },
+    {
+        id: "91783562",
+        nombre: "Estufa de pellet pasillo KRONE 4.9 kW blanca",
+        potencia: 4.9,
+        superficie: "40-55",
+        formato: "pasillo",
+        canalizable: false,
+        precio: 529.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-pasillo-krone-4-9-kw-blanco-91783562.html"
+    },
+    {
+        id: "95935242",
+        nombre: "Estufa de pellet canalizable reducida ECLIPSE 8 kW",
+        potencia: 8,
+        superficie: "70-95",
+        formato: "pasillo",
+        canalizable: true,
+        precio: 999.00,
+        url: "https://www.leroymerlin.es/productos/estufa-de-pellet-canal-reducida-8-eclipse-8-kw-95935242.html"
+    }
+];
 
+// ====== FUNCIÓN PARA RENDERIZAR TARJETAS CON EL BOTÓN WEB ======
+function renderizarProductos(productosFiltrados) {
+    const contenedor = document.getElementById('contenedor-productos');
+    contenedor.innerHTML = '';
+
+    if (productosFiltrados.length === 0) {
+        contenedor.innerHTML = '<p class="no-results">No se encontraron modelos con estos filtros técnicos.</p>';
+        return;
+    }
+
+    productosFiltrados.forEach(prod => {
+        const tarjeta = document.createElement('div');
+        tarjeta.className = 'producto-card';
+        
+        tarjeta.innerHTML = `
+            <div class="card-header">
+                <span class="ref-tag">Ref: ${prod.id}</span>
+                <h3>${prod.nombre}</h3>
+            </div>
+            <div class="card-body">
+                <div class="dato-tecnico"><strong>Potencia:</strong> ${prod.potencia} kW</div>
+                <div class="dato-tecnico"><strong>Superficie:</strong> Hasta ${prod.superficie} m²</div>
+                <div class="dato-tecnico"><strong>Formato:</strong> ${prod.formato === 'pasillo' ? 'Espacio Reducido / Pasillo' : 'Estándar'}</div>
+                <div class="dato-tecnico"><strong>Canalizable:</strong> ${prod.canalizable ? 'Sí ✔' : 'No ❌'}</div>
+                <div class="precio-tag">${prod.precio.toFixed(2)} €</div>
+            </div>
+            <div class="card-footer" style="padding: 10px; border-top: 1px solid #eee; text-align: center;">
+                <a href="${prod.url}" target="_blank" class="btn-web" style="
+                    display: inline-block;
+                    width: 100%;
+                    padding: 8px 0;
+                    background-color: #4CAF50;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    font-size: 14px;
+                    transition: background 0.2s;
+                ">Ver en la Web / Stock</a>
+            </div>
+        `;
+        contenedor.appendChild(tarjeta);
+    });
+}
             // --- CATEGORÍA: CÁMARAS (EZVIZ Y ENERGEEKS) ---
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (5MP)', ref: '98571263', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Seguimiento automático de movimiento e imagen nítida de 5MP. Ideal para salones teniendo un enchufe cerca.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (8MP / 4K)', ref: '98229339', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '👑 Calidad 4K'], clave: 'Definición ultra alta en interior. Perfecta para ver detalles pequeños o ampliar digitalmente sin pixelar.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
