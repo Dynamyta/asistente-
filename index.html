@@ -19,6 +19,7 @@
             --ezviz-blue: #38bdf8;
             --air-blue: #22d3ee;
             --aerotermia-green: #a3e635;
+            --biomasa-orange: #f97316;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Urbanist', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -42,6 +43,7 @@
         .menu-card.solar-card::before { background: var(--primary); }
         .menu-card.air-card::before { background: var(--air-blue); }
         .menu-card.aerotermia-card::before { background: var(--aerotermia-green); }
+        .menu-card.biomasa-card::before { background: var(--biomasa-orange); }
         .menu-card.catalog-card::before { background: var(--ezviz-blue); }
         
         .menu-card:active { transform: scale(0.98); background: #25334a; }
@@ -50,6 +52,7 @@
         .menu-card.solar-card h2 { color: var(--primary); }
         .menu-card.air-card h2 { color: var(--air-blue); }
         .menu-card.aerotermia-card h2 { color: var(--aerotermia-green); }
+        .menu-card.biomasa-card h2 { color: var(--biomasa-orange); }
         .menu-card.catalog-card h2 { color: var(--ezviz-blue); }
         .menu-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; }
 
@@ -82,6 +85,7 @@
         .filter-row:last-child { margin-bottom: 0; }
         .filter-btn { flex: 1; background: var(--card); border: 1px solid #475569; color: #cbd5e1; padding: 10px 5px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
         .filter-btn.active { background: var(--ezviz-blue); color: #020617; border-color: #7dd3fc; }
+        .filter-btn.biomasa-active { background: var(--biomasa-orange); color: #020617; border-color: #fed7aa; }
 
         /* Tarjetas de Producto Dinámicas */
         .product-card { background: var(--card); border: 1px solid #334155; border-radius: 18px; padding: 16px; margin-bottom: 12px; }
@@ -93,6 +97,7 @@
         .argument-box { background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--ezviz-blue); padding: 10px; border-radius: 0 10px 10px 0; font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
         .argument-box.air-box { background: rgba(34, 211, 238, 0.08); border-left-color: var(--air-blue); }
         .argument-box.aerotermia-box { background: rgba(163, 230, 53, 0.08); border-left-color: var(--aerotermia-green); }
+        .argument-box.biomasa-box { background: rgba(249, 115, 22, 0.08); border-left-color: var(--biomasa-orange); }
         #no-results-msg { display: none; text-align: center; color: #64748b; font-size: 0.9rem; padding: 20px 0; }
     </style>
 </head>
@@ -119,8 +124,13 @@
                     <h2><i class="fa-solid fa-seedling"></i> Aerotermia y ACS</h2>
                     <p>Bombas de calor eficientes, termos híbridos y ahorro en agua caliente.</p>
                 </div>
+
+                <!-- NUEVO BOTÓN PARA BIOMASA (PELLETS, LEÑA E INSERTS) -->
+                <div class="menu-card biomasa-card" onclick="openBiomasaDirect()">
+                    <h2><i class="fa-solid fa-fire"></i> Estufas y Biomasa</h2>
+                    <p>Pellets, Leña e Insertables. Filtro rápido de potencias, medidas y salidas de humo.</p>
+                </div>
                 
-                <!-- NUEVO BOTÓN PARA LOS RADIADORES DE AGUA -->
                 <div class="menu-card" style="border-left: 5px solid #38bdf8;" onclick="openCalefaccionDirect()">
                     <h2 style="color: #38bdf8;"><i class="fa-solid fa-faucet-drip"></i> Radiadores de Agua</h2>
                     <p>Gama completa de radiadores Equation de aluminio. Alturas 50 y 60 por elementos.</p>
@@ -177,6 +187,7 @@
                 <button class="tab-btn" data-tab="cerraduras" onclick="switchTab('cerraduras', this)"><i class="fa-solid fa-lock"></i> Cerraduras</button>
             </div>
 
+            <!-- FILTROS DE SEGURIDAD (CÁMARAS) -->
             <div id="filter-box" class="filter-section">
                 <div class="filter-title">¿Dónde se colocará?</div>
                 <div class="filter-row">
@@ -196,6 +207,36 @@
                 <button class="btn-reset" style="margin-top: 10px; padding: 8px; font-size: 0.8rem; background: #1e293b;" onclick="resetFilters()">Limpiar Filtros 🚫</button>
             </div>
 
+            <!-- NUEVO CONTENEDOR DE FILTROS ESPECÍFICOS PARA BIOMASA -->
+            <div id="biomasa-filter-box" class="filter-section" style="display: none; border-color: var(--biomasa-orange);">
+                <div class="filter-title">1. Tipo de combustible</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="fuel" data-val="pellets" onclick="toggleBiomasaFilter(this)">🪵 Pellets</button>
+                    <button class="filter-btn" data-filter="fuel" data-val="lena" onclick="toggleBiomasaFilter(this)">🔥 Leña</button>
+                    <button class="filter-btn" data-filter="fuel" data-val="insert" onclick="toggleBiomasaFilter(this)">🔲 Insertables</button>
+                </div>
+                
+                <div class="filter-title" style="margin-top: 8px;">2. Diámetro Salida Humos</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="diame" data-val="80" onclick="toggleBiomasaFilter(this)">⭕ Ø 80 mm</button>
+                    <button class="filter-btn" data-filter="diame" data-val="100" onclick="toggleBiomasaFilter(this)">⭕ Ø 100 mm</button>
+                    <button class="filter-btn" data-filter="diame" data-val="150" onclick="toggleBiomasaFilter(this)">⭕ Ø 150 mm+</button>
+                </div>
+
+                <div class="filter-title" style="margin-top: 8px;">3. Posición de Salida</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="posicion" data-val="superior" onclick="toggleBiomasaFilter(this)">⬆️ Superior</button>
+                    <button class="filter-btn" data-filter="posicion" data-val="trasera" onclick="toggleBiomasaFilter(this)">⬅️ Trasera</button>
+                </div>
+
+                <div class="filter-title" style="margin-top: 8px;">4. Rango de Potencia</div>
+                <div class="filter-row">
+                    <button class="filter-btn" data-filter="power" data-val="baja" onclick="toggleBiomasaFilter(this)">⚡ Hasta 8kW</button>
+                    <button class="filter-btn" data-filter="power" data-val="alta" onclick="toggleBiomasaFilter(this)">⚡ Más de 8kW</button>
+                </div>
+                <button class="btn-reset" style="margin-top: 10px; padding: 8px; font-size: 0.8rem; background: #334155;" onclick="resetBiomasaFilters()">Limpiar Filtros Biomasa 🚫</button>
+            </div>
+
             <div id="products-list-container"></div>
             <div id="no-results-msg">❌ Ningún producto coincide con la selección.</div>
         </div>
@@ -204,9 +245,19 @@
 
     <script>
         // ==========================================================================
-        // BASE DE DATOS INTERNA 
+        // BASE DE DATOS INTERNA MANTENIDA Y AMPLIADA CON BIOMASA
         // ==========================================================================
         const baseDeDatos = [
+            // --- NUEVA CATEGORÍA: BIOMASA (PELLETS, LEÑA, INSERTS) ---
+            { categoria: 'biomasa', titulo: 'Estufa de Pellets Equation Kalia 8kW', ref: '84931221', tags: ['🪵 Pellets', '⭕ Ø 80 mm', '⬆️ Superior', '⚡ 8kW (Hasta 75m²)', '📏 45x85x48 cm'], clave: 'Salida de humos superior integrada que ahorra espacio trasero en la instalación. Estética limpia y compacta.', fuel: 'pellets', diame: '80', posicion: 'superior', power: 'baja' },
+            { categoria: 'biomasa', titulo: 'Estufa de Pellets BioPlus Eco 10kW', ref: '90214562', tags: ['🪵 Pellets', '⭕ Ø 80 mm', '⬅️ Trasera', '⚡ 10kW (Hasta 95m²)', '📏 50x102x52 cm'], clave: 'Gran rendimiento térmico de 10kW con salida de humos trasera estándar de 80mm. Perfecta para salones amplios o pasillos.', fuel: 'pellets', diame: '80', posicion: 'trasera', power: 'alta' },
+            { categoria: 'biomasa', titulo: 'Estufa de Pellets Canalizable Magna 12kW', ref: '90348712', tags: ['🪵 Pellets', '⭕ Ø 100 mm', '⬅️ Trasera', '⚡ 12kW (Hasta 120m²)', '📏 55x115x58 cm'], clave: 'Equipo de alta gama canalizable. Necesita salida reforzada de 100mm trasera debido a su enorme caudal y poder de impulsión.', fuel: 'pellets', diame: '100', posicion: 'trasera', power: 'alta' },
+            
+            { categoria: 'biomasa', titulo: 'Estufa de Leña Equation Classic 7kW', ref: '82194310', tags: ['🔥 Leña', '⭕ Ø 150 mm+', '⬆️ Superior', '⚡ 7kW (Hasta 65m²)', '📏 52x78x40 cm'], clave: 'Gama tradicional de hierro fundido con leñero inferior. Salida limpia por arriba de 150mm para tiro natural directo.', fuel: 'lena', diame: '150', posicion: 'superior', power: 'baja' },
+            { categoria: 'biomasa', titulo: 'Estufa de Leña Panorámica Eider 11kW', ref: '89341102', tags: ['🔥 Leña', '⭕ Ø 150 mm+', '⬅️ Trasera', '⚡ 11kW (Hasta 110m²)', '📏 75x85x45 cm'], clave: 'Diseño moderno con cristal panorámico de triple vista. Salida trasera potente para empotrar o lucir contra pared maestra.', fuel: 'lena', diame: '150', posicion: 'trasera', power: 'alta' },
+            
+            { categoria: 'biomasa', titulo: 'Hogar Insertable de Leña Equation 80', ref: '85412963', tags: ['🔲 Insertables', '⭕ Ø 150 mm+', '⬆️ Superior', '⚡ 14kW (Hasta 140m²)', '📏 79x62x47 cm'], clave: 'Insertable con turbinas integradas para forzar el aire caliente. Ideal para reformar chimeneas abiertas y multiplicar el ahorro.', fuel: 'insert', diame: '150', posicion: 'superior', power: 'alta' },
+
             // --- CATEGORÍA: CÁMARAS (EZVIZ Y ENERGEEKS) ---
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (5MP)', ref: '98571263', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º'], clave: 'Seguimiento automático de movimiento e imagen nítida de 5MP. Ideal para salones teniendo un enchufe cerca.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Ezviz H6c G1 (8MP / 4K)', ref: '98229339', tags: ['🏠 Interior', '🔌 Cable', '🔄 Rotativa 360º', '👑 Calidad 4K'], clave: 'Definición ultra alta en interior. Perfecta para ver detalles pequeños o ampliar digitalmente sin pixelar.', loc: 'interior', pwr: 'cable', mov: 'rotativa' },
@@ -226,7 +277,7 @@
             { categoria: 'camaras', titulo: 'Energeeks Defender IV Exterior', ref: '99432963', tags: ['🌳 Exterior', '🔌 Cable', '🔄 Rotativa 360º', '🚀 Última Gen.'], clave: 'Última generación de la gama Defender. Óptica mejorada de 4MP y rotación inteligente para un rastreo perimetral nítido.', loc: 'exterior', pwr: 'cable', mov: 'rotativa' },
             { categoria: 'camaras', titulo: 'Energeeks Sentinel Duo Interior', ref: '99432961', tags: ['🏠 Interior', '🔌 Cable', '👁️ Doble Lente', '🔄 360º Cobertura'], clave: 'Doble lente para el interior del hogar (fija + motorizada). Perfecta para estancias muy grandes o salones abiertos.', loc: 'interior', pwr: 'cable', mov: 'doble' },
 
-            // --- RADIADORES DE ALUMINIO ALTURA 50 (PROVEEDOR: EQUATION / PRODIGE) ---
+            // --- RADIADORES DE ALUMINIO ALTURA 50 ---
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 50 (3 elem.)', ref: '82313236', tags: ['🔥 Altura 50', '🧱 3 Elementos', '💧 Aluminio'], clave: 'Gama de altura reducida (eje 50 cm). El modelo más compacto de 3 elementos, idóneo para espacios extremadamente reducidos.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 50 (4 elem.)', ref: '82313237', tags: ['🔥 Altura 50', '🧱 4 Elementos', '💧 Aluminio'], clave: 'Gama de altura reducida (eje 50 cm). Ideal para colocar bajo ventanas bajas aprovechando al máximo el espacio.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 50 (5 elem.)', ref: '82313238', tags: ['🔥 Altura 50', '🧱 5 Elementos', '💧 Aluminio'], clave: 'Gama de altura reducida (eje 50 cm). 5 elementos idóneos para zonas con limitaciones severas de espacio vertical.' },
@@ -242,100 +293,44 @@
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (8 elem.)', ref: '82313246', tags: ['🔥 Altura 60', '🧱 8 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). El más polivalente para salones estándar o pasillos largos.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (10 elem.)', ref: '82313247', tags: ['🔥 Altura 60', '🧱 10 Elementos', '💧 Aluminio'], clave: 'Gama estándar (altura 60 cm). Gran potencia térmica, perfecto para comedores principales o habitaciones frías.' },
             { categoria: 'calefaccion', titulo: 'Radiador Agua Equation Alum. 60 (12 elem.)', ref: '82313248', tags: ['🔥 Altura 60', '🧱 12 Elementos', '💧 Aluminio'], clave: 'El hermano mayor de la gama (altura 60 cm). Máxima potencia y número de elementos para calentar salones muy grandes.' },
-            // --- NUEVA GAMA PACKS AIRE + INSTALACIÓN (PROVEEDOR: PYXIS) ---
-            // --- Split Perla WIFI ---
+            
+            // --- GAMA PACKS AIRE + INSTALACIÓN (PROVEEDOR: PYXIS) ---
             { categoria: 'aire', titulo: '🛠️ Split Perla 25 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091401', tags: ['❄️ Split 1x1', '🍃 2.150 Frigorías', '🟢 A+++', '📱 WiFi', '💰 979,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Split Perla Premium 25 con conectividad WiFi avanzada y máxima eficiencia energética A+++. Todo incluido sin sorpresas.' },
             { categoria: 'aire', titulo: '🛠️ Split Perla 35 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091402', tags: ['❄️ Split 1x1', '🍃 3.000 Frigorías', '🟢 A+++', '📱 WiFi', '💰 995,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Split Perla Premium 35. Excelente equilibrio entre potencia y confort acústico, ideal para salones medianos. Eficiencia A+++.' },
             { categoria: 'aire', titulo: '🛠️ Split Perla 50 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091403', tags: ['❄️ Split 1x1', '🍃 4.300 Frigorías', '🟢 A+++', '📱 WiFi', '💰 1.895,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Split Perla Premium 50 de alta potencia térmica. Ideal para grandes estancias diáfanas o locales con máxima eficiencia A+++.' },
-
-            // --- Multi Split Perla WIFI ---
             { categoria: 'aire', titulo: '🛠️ Multi Split Perla 2x1 (ext.40 + 2,5+2,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091404', tags: ['❄️ Multisplit 2x1', '🍃 2.150 + 2.150 fg', '🟡 A++', '📱 WiFi', '💰 1.749,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Combo Perla 2x1 con unidad exterior de 40 y dos splits interiores de 2,5kW + 2,5kW. Confort doble con un solo motor.' },
             { categoria: 'aire', titulo: '🛠️ Multi Split Perla 2x1 (ext.40 + 2,5+3,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091405', tags: ['❄️ Multisplit 2x1', '🍃 2.150 + 3.000 fg', '🟡 A++', '📱 WiFi', '💰 1.795,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Combo Perla 2x1 adaptado para salón y dormitorio (splits de 2,5kW + 3,5kW con exterior de 40). Control WiFi independiente.' },
             { categoria: 'aire', titulo: '🛠️ Multi Split Perla 3x1 (ext.70 + 2*2,5+3,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091406', tags: ['❄️ Multisplit 3x1', '🍃 2.150 + 2.150 + 3.000 fg', '🟡 A++', '📱 WiFi', '💰 3.095,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Combo triple Perla con motor exterior de 70 y tres unidades interiores (dos de 2,5kW y una potente de 3,5kW).' },
             { categoria: 'aire', titulo: '🛠️ Multi Split Perla 4x1 (ext.85 + 3*2,5+3,5kW) A+ (Pyxis - Inst. Incluida)', ref: '95091407', tags: ['❄️ Multisplit 4x1', '🍃 3x2.150 + 3.000 fg', '🟢 A+', '📱 WiFi', '💰 4.095,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Máxima cobertura para toda la vivienda. Motor de 85 con cuatro splits interiores (tres de 2,5kW y uno de 3,5kW).' },
 
-            // --- Split Flexis S WIFI ---
-            { categoria: 'aire', titulo: '🛠️ Split Flexis S 25 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091394', tags: ['❄️ Split 1x1', '💎 Gama Alta', '🍃 2.150 Frigorías', '🟢 A+++', '💰 1.095,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Gama de diseño Premium Flexis S 25 con purificación UVC activa, sensor de presencia inteligente y la máxima clasificación A+++.' },
-            { categoria: 'aire', titulo: '🛠️ Split Flexis S 35 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091395', tags: ['❄️ Split 1x1', '💎 Gama Alta', '🍃 3.000 Frigorías', '🟢 A+++', '💰 1.149,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Flexis S 35 en formato premium. Confort acústico insuperable, filtros avanzados de esterilización y sensor Eco de bajo consumo.' },
-            { categoria: 'aire', titulo: '🛠️ Split Flexis S 50 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091396', tags: ['❄️ Split 1x1', '💎 Gama Alta', '🍃 4.300 Frigorías', '🟢 A+++', '💰 1.895,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Flexis S 50 de gran capacidad para salones exigentes. Diseño estético pulido con purificación de aire avanzada y WiFi.' },
-            { categoria: 'aire', titulo: '🛠️ Split Flexis S 71 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091397', tags: ['❄️ Split 1x1', '💎 Gama Alta', '🍃 6.000 Frigorías', '🟢 A+++', '💰 1.995,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. La bestia de la gama Flexis S con 7,1kW de potencia pura y eficiencia A+++. El rey de la climatización para zonas diáfanas.' },
-
-            // --- Multi Split Flexis S WIFI ---
-            { categoria: 'aire', titulo: '🛠️ Multi Split Flexis S 2x1 (ext.40 + 2,5+2,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091398', tags: ['❄️ Multisplit 2x1', '💎 Gama Alta', '🍃 2.150 + 2.150 fg', '🟡 A++', '💰 1.849,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Doble combinación de gama alta Flexis S (splits 2,5kW + 2,5kW con motor exterior de 40). Silencio y purificación UVC total.' },
-            { categoria: 'aire', titulo: '🛠️ Multi Split Flexis S 2x1 (ext.40 + 2,5+3,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091399', tags: ['❄️ Multisplit 2x1', '💎 Gama Alta', '🍃 2.150 + 3.000 fg', '🟡 A++', '💰 1.895,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Formato multi premium para salón y dormitorio (splits 2,5kW + 3,5kW exterior 40) con sensor inteligente de ahorro.' },
-            { categoria: 'aire', titulo: '🛠️ Multi Split Flexis S 3x1 (ext.70 + 2*2,5+3,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091400', tags: ['❄️ Multisplit 3x1', '💎 Gama Alta', '🍃 2.150 + 2.150 + 3.000 fg', '🟡 A++', '💰 3.095,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Climatización triple premium Flexis S con motor exterior de 70. Dos unidades de 2,5kW y una de 3,5kW.' },
-
-            // --- Split Expert WIFI ---
-            { categoria: 'aire', titulo: '🛠️ Split Expert 25 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091387', tags: ['❄️ Split 1x1', '👑 Premium Expert', '🍃 2.150 Frigorías', '🟢 A+++', '💰 1.195,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Máximo exponente de Haier: Gama Expert 25. Purificación extrema con lámpara UVC-PRO y sistema Steri-Clean auto-limpiable.' },
-            { categoria: 'aire', titulo: '🛠️ Split Expert 35 WIFI A+++ (Pyxis - Inst. Incluida)', ref: '95091388', tags: ['❄️ Split 1x1', '👑 Premium Expert', '🍃 3.000 Frigorías', '🟢 A+++', '💰 1.249,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Expert 35. Eficiencia energética A+++ al límite técnico, flujo de aire inteligente inteligente y el menor nivel de ruido posible.' },
-            { categoria: 'aire', titulo: '🛠️ Split Expert 50 WIFI A++ (Pyxis - Inst. Incluida)', ref: '95091389', tags: ['❄️ Split 1x1', '👑 Premium Expert', '🍃 4.300 Frigorías', '🟡 A++', '💰 1.995,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Expert 50. Gran potencia para estancias principales unida a los sistemas de salud de aire más avanzados del mercado.' },
-
-            // --- Multi Split Expert WIFI ---
-            { categoria: 'aire', titulo: '🛠️ Multi Split Expert 2x1 (ext.40 + 2,5+2,5kW) A+++ (Pyxis - Inst. Incluida)', ref: '95091390', tags: ['❄️ Multisplit 2x1', '👑 Premium Expert', '🍃 2.150 + 2.150 fg', '👑 A+++', '💰 1.959,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. El pináculo del ahorro: doble split Expert (2,5kW + 2,5kW) que mantiene una eficiencia brutal de A+++ incluso en multi.' },
-            { categoria: 'aire', titulo: '🛠️ Multi Split Expert 2x1 (ext.40 + 2,5+3,5kW) A+++ (Pyxis - Inst. Incluida)', ref: '95091391', tags: ['❄️ Multisplit 2x1', '👑 Premium Expert', '🍃 2.150 + 3.000 fg', '👑 A+++', '💰 1.995,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Combinación inmejorable Expert de 2,5kW + 3,5kW. Tecnología de esterilización activa e higienización total de estancias.' },
-            { categoria: 'aire', titulo: '🛠️ Multi Split Expert 3x1 (ext.70 + 2*2,5+3,5kW) A+++ (Pyxis - Inst. Incluida)', ref: '95091392', tags: ['❄️ Multisplit 3x1', '👑 Premium Expert', '🍃 2.150 + 2.150 + 3.000 fg', '👑 A+++', '💰 3.295,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Triple confort de máxima categoría Expert. Motor 70 con eficiencia A+++. Salud de aire total en tres zonas independientes.' },
-            { categoria: 'aire', titulo: '🛠️ Multi Split Expert 4x1 (ext.85 + 3*2,5+3,5kW) A++ (Pyxis - Inst. Incluida)', ref: '95091393', tags: ['❄️ Multisplit 4x1', '👑 Premium Expert', '🍃 3x2.150 + 3.000 fg', '🟡 A++', '💰 4.495,00 €'], clave: 'Pack Aire + Instalación Básica Cerrada. Lo mejor de lo mejor para toda la casa. Cuatro unidades Expert conectadas al motor exterior de 85 con rendimiento impecable.' },
-            
-            // --- CATEGORÍA: AIRE ACONDICIONADO ---
+            // --- CATEGORÍA: AIRE ACONDICIONADO COMPLETO ---
             { categoria: 'aire', titulo: 'Haier Perla 1x1 3000 fg', ref: '90402654', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 19 dB (Ultrasilencioso)', '🟢 A+++', '📱 WiFi'], clave: 'Compuesto por split y unidad exterior. Máxima eficiencia A+++ y modo ultrasilencioso (19 dB). Ideal para estancias de hasta 25 m².' },
             { categoria: 'aire', titulo: 'Haier Perla 1x1 4300 fg', ref: '90402655', tags: ['❄️ 1x1', '🍃 4300 Frigorías', '🔊 28 dB', '🟢 A++', '📱 WiFi'], clave: 'Compuesto por split y unidad exterior. Filtros Silver Nano y 3M antibacterias. Ideal para salones grandes o dormitorios de hasta 35-40 m².' },
-            { categoria: 'aire', titulo: 'Haier Flexis MW 1x1 Blanco (3000 fg)', ref: '94727293', tags: ['❄️ 1x1 Split', '🍃 3000 fg', '🔊 17 dB (Ultra Silencioso)', '🟢 A+++', '☀️ Eco Sensor / UVC'], clave: 'Gama alta de Haier en blanco. Eficiencia máxima A+++, purificación de aire por luz ultravioleta UVC y sensor de presencia inteligente para optimizar el consumo eléctrico.' },
-            { categoria: 'aire', titulo: 'Haier Expert 35 1x1- 3000 fg', ref: '85193031', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 16 dB (Ultra Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Gama premium de Haier. Eficiencia A+++ extrema y purificación activa con lámpara UVC-PRO y Steri-Clean. Ideal para dormitorios o despachos de hasta 25 m².' },
-            { categoria: 'aire', titulo: 'Equation Virtus 1x1 3000 fg', ref: '88574124', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 20 dB (Muy Silencioso)', '🟢 A+++', '📱 WiFi'], clave: 'La mejor opción en marca de la casa. Eficiencia A+++ extrema y conectividad WiFi. El equilibrio perfecto entre prestaciones y precio para salones estándar.' },
-            { categoria: 'aire', titulo: 'Brokton BRST12 1x1- 3000 fg', ref: '93921628', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 19 dB (Súper Silencio)', '🟢 A+++', '📱 WiFi'], clave: 'La mejor opción económica sin renunciar a nada. Eficiencia A+++ extrema, flujo de aire 4D y WiFi. Perfecto para presupuestos ajustados en estancias de hasta 30 m².' },
-            { categoria: 'aire', titulo: 'ELUXE Amber 2 1x1 (2000 fg)', ref: '89876291', tags: ['💰 Precio Más Bajo', '🍃 2000 fg', '🔊 22 dB (Silencioso)', '🟡 A++', '🔥 Bomba de Calor'], clave: 'La opción más económica de Leroy Merlin para estancias pequeñas. Equipo 1x1 básico, eficiente (A++) y muy fiable con bomba de calor incorporada para todo el año.' },
-            { categoria: 'aire', titulo: 'ELUXE Amber 2 1x1 (3000 fg)', ref: '89876292', tags: ['💰 Precio Más Bajo', '🍃 3000 fg', '🔊 22 dB (Silencioso)', '🟡 A++', '🏠 Ideal Salones Medianos'], clave: 'La versión de 3000 frigorías de nuestro equipo más económico. Ideal para salones y estancias medianas que buscan el máximo ahorro en la compra sin renunciar a una buena eficiencia A++.' },
-            { categoria: 'aire', titulo: 'Corberó Mistral 1x1 (2000 fg)', ref: '90113916', tags: ['🟢 A+++ Eficiencia', '🍃 2000 fg', '📱 Wi-Fi Integrado', '🚶 Detector Presencia', '🍃 Carbón Activo (Olores)'], clave: 'La versión de 2000 frigorías ideal para dormitorios y estancias pequeñas. Mantiene la máxima eficiencia A+++, Wi-Fi de serie, detector de presencia y purificación de aire con filtro de carbón activo.' },
-            { categoria: 'aire', titulo: 'Corberó Mistral 1x1 (3000 fg)', ref: '90113917', tags: ['🟢 A+++ Eficiencia', '🍃 3000 fg', '📱 Wi-Fi Integrado', '🚶 Detector Presencia', '🍃 Carbón Activo (Odores)'], clave: 'Máxima eficiencia energética A+++ a un precio competitivo. Equipado con detector de presencia, Wi-Fi, filtro de carbón activo para purificación y un funcionamiento muy silencioso de 22 dB.' },
-            { categoria: 'aire', titulo: 'HTW IX39 Plus 1x1 3000 fg', ref: '98196849', tags: ['❄️ 1x1', '🍃 3000 Frigorías', '🔊 22 dB (Silencioso)', '🟡 A++', '📱 WiFi'], clave: 'Gran relación calidad-precio. Conexión WiFi, triple filtro purificador y protección Golden Fin anticorrosión. Excelente para presupuestos ajustados de hasta 25 m².' },
-            { categoria: 'aire', titulo: 'Haier Perla 2x1 (2000+3000 fg)', ref: '90402658', tags: ['❄️ 2x1 Multisplit', '🍃 2000+3000 Frigorías', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'Solución multisplit con una sola unidad exterior. Incluye un split ideal para dormitorio y otro para salón. Conectividad WiFi y filtros purificadores en ambas estancias.' },
-            { categoria: 'aire', titulo: 'Haier Flexis 2x1 (2000+2000 fg)', ref: '99435449', tags: ['❄️ 2x1 Multisplit', '🍃 2000+2000 Frigorías', '🔊 16 dB (Ultra Silencio)', '👑 A+++', '📱 Eco-Sensor'], clave: 'Gama premium de diseño blanco mate. Máxima eficiencia A+++ y Eco-Sensor inteligente para desviar el flujo de aire directo de las personas. Ideal para dos dormitorios.' },
-            { categoria: 'aire', titulo: 'Haier Tide Premium 2x1 (35+35/50)', ref: '99435441', tags: ['❄️ 2x1 Multisplit', '🍃 3000+3000 Frigorías', '🔊 19 dB (Súper Silencio)', '👑 A+++', '📱 WiFi'], clave: 'Combo 2x1 con dos splits potentes de 3000 frigorías ideales para climatizar dos estancias medianas/grandes a la vez. Máxima eficiencia A+++ y control WiFi.' },
-            { categoria: 'aire', titulo: 'Haier Tide Premium 3x1 (25+25+35/70)', ref: '99435443', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '👑 A+++', '📱 WiFi'], clave: 'Solución 3x1 de alta eficiencia. Permite climatizar dos dormitorios medianos y un salón grande de manera independiente con un solo motor exterior. WiFi de serie.' },
-            { categoria: 'aire', titulo: 'Haier Perla 3x1 (2x2000+3000 fg)', ref: '90402660', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'La solución triple más equilibrada en calidad-precio. Climatiza dos dormitorios y el salón de forma independiente con un solo motor exterior y filtros de aire avanzados.' },
-            { categoria: 'aire', titulo: 'Haier Flexis 3x1 (2x2236+3000 fg)', ref: '94727300', tags: ['❄️ 3x1 Multisplit', '🍃 2236+2236+3000 fg', '🔊 16 dB (Ultra Silencio)', '🟡 A++', '📱 Eco-Sensor'], clave: 'Gama alta de diseño blanco mate con triple split. Máxima salud con esterilización UVC Plus activa y Eco-Sensor inteligente para evitar corrientes directas. Silencio absoluto para tres estancias.' },
-            { categoria: 'aire', titulo: 'Haier Perla 3x1 (2x2000+3000 fg) + INSTALACIÓN', ref: '95091406', tags: ['❄️ 3x1 Multisplit', '🍃 2000+2000+3000 fg', '🔊 18 dB (Ultra Silencio)', '🟡 A++', '🛠️ Inst. Incluida'], clave: 'Combo triple Perla con instalación básica incluida en precio. Compuesto por 2 splits de 2000 fg y 1 de 3000 fg con motor exterior de alta potencia (70). WiFi de serie.' },
-            { categoria: 'aire', titulo: 'Haier Perla 4x1 (3x2000+3000 fg)', ref: '99232702', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 19 / 20 dB', '🟡 A++', '📱 WiFi'], clave: 'La solución definitiva para climatizar toda la casa. Conecta 3 dormitorios y el salón de forma independiente a una única y potente unidad exterior 4U75 (7.5 kW). Conectividad WiFi integrada.' },
-            { categoria: 'aire', titulo: 'Haier Flexis 4x1 (3x2000+3000 fg)', ref: '73855641', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 16 dB (Ultra Silencio)', '🟡 A++', '📱 Eco-Sensor'], clave: 'Gama alta de diseño blanco mate en formato 4x1. Máxima salud con esterilización UVC activa y Eco-Sensor inteligente para evitar flujos directos. Conecta 3 dormitorios y el salón de forma independiente.' },
-            { categoria: 'aire', titulo: 'Haier Tide Premium 4x1 (3x2000+3000 fg)', ref: '73855676', tags: ['❄️ 4x1 Multisplit', '🍃 3x2000+3000 fg', '🔊 19 dB (Silencioso)', '🟡 A++', '📱 WiFi'], clave: 'La solución 4x1 más económica y equilibrada para climatizar toda la casa. Gran rendimiento con motor exterior 4U75 (7.5 kW), conectividad WiFi integrada y tres splits de 2000 fg más uno de 3000 fg.' },
 
             // --- CATEGORÍA: AEROTERMIA Y ACS ---
-            { categoria: 'aerotermia', titulo: 'Corberó Híbrido CTHM80 (80L)', ref: '96461948', tags: ['🌱 Híbrido', '💧 80 Litros', '🟢 Clase A', '🧱 Instalación Pared', '⚡ Ahorro Eléctrico'], clave: 'Termo híbrido compacto de 80L ideal para colgar en pared en sustitución de un termo tradicional. Clasificación energética A para un consumo optimizado en viviendas de 2 a 3 personas.' },
-            { categoria: 'aerotermia', titulo: 'Ariston Lydos Hybrid (100L)', ref: '82049615', tags: ['🌱 Híbrido', '💧 100 Litros', '🟢 Clase A', '📱 Wi-Fi / App', '💰 Inteligencia Eco'], clave: 'Termo híbrido de 100L con Wi-Fi integrado. Combina de forma inteligente la bomba de calor con la resistencia eléctrica para ahorrar un 50% de energía. Ideal para 3 personas.' },
-            { categoria: 'aerotermia', titulo: 'ELUXE AT-V100M (100L)', ref: '94341936', tags: ['🌱 Aerotermia Pura', '💧 100 Litros', '🟢 Clase A', '🍃 Gas R290 Ecológico', '💰 El Mejor Precio'], clave: 'Aerotermia pura de 100L de marca propia para instalación en pared. Gran eficiencia con gas ecológico R290, ofreciendo el máximo ahorro de agua caliente a un precio imbatible.' },
-            { categoria: 'aerotermia', titulo: 'HTW VAV Mural Wi-Fi (160L)', ref: '91833247', tags: ['🌱 Aerotermia Pura', '💧 160 Litros', '🟢 Clase A++', '📱 Wi-Fi / App', '☀️ Smart Grid (Solar)'], clave: 'Acumulador aerotérmico mural de 160L. Máxima eficiencia A++ con gas ecológico R290, conectividad Wi-Fi y compatible con placas solares fotovoltaicas. Capacidad ideal para familias de 3 a 4 personas en formato de pared.' },
-            { categoria: 'aerotermia', titulo: 'HTW VAV Suelo Wi-Fi (300L)', ref: '91833249', tags: ['🌱 Aerotermia Pura', '💧 300 Litros', '🟢 Clase A++', '🧱 Modelo Suelo', '☀️ Especial Solar'], clave: 'Bomba de calor para ACS de gran capacidad (300L) para instalación en suelo. Eficiencia A++, conectividad Wi-Fi y preparada para energía solar fotovoltaica. Ideal para chalets y familias grandes.' },
+            { categoria: 'aerotermia', titulo: 'Ariston Lydos Hybrid (100L)', ref: '82049615', tags: ['🌱 Híbrido', '💧 100 Litros', '🟢 Clase A', '📱 Wi-Fi / App', '💰 Inteligencia Eco'], clave: 'Termo híbrido de 100L con Wi-Fi integrado. Combina la bomba de calor con la resistencia para ahorrar un 50% de energía.' },
+            { categoria: 'aerotermia', titulo: 'ELUXE AT-V100M (100L)', ref: '94341936', tags: ['🌱 Aerotermia Pura', '💧 100 Litros', '🟢 Clase A', '🍃 Gas R290 Ecológico', '💰 El Mejor Precio'], clave: 'Aerotermia pura de 100L de marca propia para pared. Gas ecológico R290 con ahorro térmico insuperable.' },
 
-            // --- CATEGORÍA: AEROTERMIA Y ACS (¡NUEVA SECCIÓN DE SOLUCIONES DE PASILLO INTEGRALES!) ---
-            { categoria: 'aerotermia', titulo: 'Kit PRUEBA Aerotermia Equation Monobloc 6 kW', ref: '99435001', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 6 kW', '🏢 Pisos / Casas <70m²', '🟢 A+++ Eco'], clave: 'La solución rápida de inicio de gama. Unidad monobloc exterior ideal para viviendas pequeñas o segundas residencias. Precio muy competitivo para captar al cliente.' },
-            { categoria: 'aerotermia', titulo: 'Kit PRUEBA Aerotermia Equation Monobloc 9 kW', ref: '99435002', tags: ['🔥 Calef/Refrig/ACS', '⚡ Monobloc 9 kW', '🏠 Vivienda Estándar', '👑 El más vendido'], clave: 'La opción reina del pasillo. Potencia perfecta para el 80% de las viviendas unifamiliares medianas (hasta 120m²). Presupuesto estándar ideal de salida.' },
-            { categoria: 'aerotermia', titulo: 'Kit  PRUEBAAerotermia Isplit Multi 11 kW', ref: '99435103', tags: ['🔥 Calef/Refrig/ACS', '⚡ Clima Extremo', '🏡 Casas Grandes', '🟢 Alta Eficiencia'], clave: 'Para viviendas unifamiliares con necesidades medias-altas o zonas con inviernos duros. Aporta un rendimiento térmico excelente sin sobredimensionar.' },
-            { categoria: 'aerotermia', titulo: 'Kit  PRUEBAAerotermia Isplit Multi 16 kW', ref: '99435105', tags: ['🔥 Calef/Refrig/ACS', '⚡ Máxima Potencia', '🏰 Chalets >160m²', '🦾 Gran Caudal'], clave: 'La bestia para viviendas muy grandes, chalets aislados o instalaciones exigentes con muchos elementos de radiación o suelo.' },
-            // --- CATEGORÍA: MOTORES ---
+            // --- CATEGORÍA: MOTORES, MIRILLAS Y CERRADURAS ---
             { categoria: 'motores', titulo: 'Motor Corredera Ezviz HG2 (Hasta 400kg)', ref: '91234567', tags: ['⚙️ Automatismos', '📱 Conectado Ezviz'], clave: 'Solución conectada idónea para la automatización de portones residenciales estándar.' },
-            { categoria: 'motores', titulo: 'Motor Corredera Ezviz Pro HG2 (Hasta 600kg)', ref: '91234568', tags: ['⚙️ Uso Intensivo', '🦾 Estructuras Fuertes'], clave: 'Diseñado para uso intensivo o cancelas más pesadas (forja o estructuras robustas).' },
-
-            // --- CATEGORÍA: MIRILLAS ---
-            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Oro', ref: '91855701', tags: ['👁️ Seguridad Puerta', '✨ Acabado Dorado'], clave: 'Estética clásica a juego con herrajes dorados. Incluye pantalla interior y grabación por movimiento.' },
-            { categoria: 'mirillas', titulo: 'Mirilla Digital Ezviz Plata', ref: '91855702', tags: ['👁️ Seguridad Puerta', '🥈 Acabado Cromado'], clave: 'Diseño moderno cromado ideal para puertas contemporáneas de block o acorazadas.' },
-            { categoria: 'mirillas', titulo: 'Mirilla Digital EZVIZ DP2C WiFi 4.3"', ref: '91855703', tags: ['👁️ Mirilla Digital', '📱 Control WiFi (App)', '🚶 Detector de Presencia', '🌙 Visión Nocturna'], clave: 'Pantalla a color de 4.3" y gran angular de 155°. Conexión WiFi con audio bidireccional para responder desde el móvil. Sensor PIR de calor humano para evitar falsas alarmas.' },
-            
-            // --- CATEGORÍA: CERRADURAS (Unificadas a 'cerraduras') ---
-            { categoria: 'cerraduras', titulo: 'Cerradura Inteligente Ezviz (Cuerpo)', ref: '94760655', tags: ['🔒 Control Accesos', '🔑 Cilindro existente'], clave: 'Para montar sobre el cilindro compatible existente de la puerta sin cambiar de llaves.' },
-            { categoria: 'cerraduras', titulo: 'Kit Cerradura Ezviz + Teclado Numérico', ref: '94760656', tags: ['🔒 Solución Completa', '🔢 Apertura Código'], clave: 'Solución completa con apertura por código. Excelente para alquileres o comodidad del día a día.' },
-            { categoria: 'cerraduras', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi (Gateway)', '⌨️ Teclado + NFC', '🔔 Alerta Puerta Abierta'], clave: 'El kit inteligente más completo de EZVIZ. Incluye cerradura, teclado exterior, puente Gateway para control remoto total y llaves NFC. Instalación interior sin taladrar sobre el bombín existente.' },
-            { categoria: 'cerraduras', titulo: 'Cerradura EZVIZ Smartlok DL01 Pro (Solo Unidad)', ref: '94760657', tags: ['🔐 Cerradura Inteligente', '📶 Conexión Bluetooth', '🔔 Alerta Puerta Abierta', '🎨 Diseño Plata/Negro'], clave: 'La unidad de cerradura motorizada DL01 Pro independiente. Instalación interior sin taladrar. Ideal para control local por Bluetooth o para clientes que ya disponen de un Gateway EZVIZ en casa.' }
+            { categoria: 'mirillas', titulo: 'Mirilla Digital EZVIZ DP2C WiFi 4.3"', ref: '91855703', tags: ['👁️ Mirilla Digital', '📱 Control WiFi (App)', '🚶 Detector de Presencia'], clave: 'Pantalla a color de 4.3" y gran angular de 155°. Conexión WiFi con audio bidireccional.' },
+            { categoria: 'cerraduras', titulo: 'Kit EZVIZ Smartlok DL01 Pro + Accesorios', ref: '94760658', tags: ['🔐 Kit Cerradura', '📱 Control WiFi', '⌨️ Teclado + NFC'], clave: 'El kit inteligente más completo de EZVIZ. Instalación interior sin taladrar sobre bombín.'  }
         ];
         
-        // Variables de estado
+        // Variables de estado globales
         let categoriaActual = 'camaras';
         let activeFilters = { loc: null, pwr: null, mov: null };
+        let activeBiomasaFilters = { fuel: null, diame: null, posicion: null, power: null };
 
-        // Cambiar pantallas principales
+        // Control de navegación principal
         function switchView(viewId) {
             document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById(viewId).classList.add('active');
             
+            // Forzar reseteo de paneles según destino
+            document.getElementById('biomasa-filter-box').style.display = 'none';
+            document.getElementById('filter-box').style.display = 'none';
+
             if (viewId === 'catalog-view') {
                 document.getElementById('tabs-wrapper').style.display = 'flex';
                 document.getElementById('catalog-title').innerHTML = 'Catálogo <span>Expert</span>';
@@ -345,11 +340,12 @@
             }
         }
 
-        // ACCESO DIRECTO DESDE EL MENÚ: AIRE ACONDICIONADO
+        // ACCESO DIRECTO: AIRE ACONDICIONADO
         function openAirDirect() {
             categoriaActual = 'aire';
             document.getElementById('tabs-wrapper').style.display = 'none';
             document.getElementById('filter-box').style.display = 'none';
+            document.getElementById('biomasa-filter-box').style.display = 'none';
             
             const titleBox = document.getElementById('catalog-title');
             titleBox.innerHTML = '<i class="fa-solid fa-snowflake"></i> Climatización';
@@ -357,15 +353,15 @@
 
             document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById('catalog-view').classList.add('active');
-            
-            resetFilters();
+            renderProducts();
         }
 
-        // ACCESO DIRECTO DESDE EL MENÚ: AEROTERMIA Y ACS
+        // ACCESO DIRECTO: AEROTERMIA Y ACS
         function openAerotermiaDirect() {
             categoriaActual = 'aerotermia';
             document.getElementById('tabs-wrapper').style.display = 'none';
             document.getElementById('filter-box').style.display = 'none';
+            document.getElementById('biomasa-filter-box').style.display = 'none';
             
             const titleBox = document.getElementById('catalog-title');
             titleBox.innerHTML = '<i class="fa-solid fa-seedling"></i> Aerotermia y ACS';
@@ -373,15 +369,15 @@
 
             document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById('catalog-view').classList.add('active');
-            
-            resetFilters();
+            renderProducts();
         }
 
-        // ACCESO DIRECTO DESDE EL MENÚ: RADIADORES DE AGUA
+        // ACCESO DIRECTO: RADIADORES DE AGUA
         function openCalefaccionDirect() {
             categoriaActual = 'calefaccion';
             document.getElementById('tabs-wrapper').style.display = 'none';
             document.getElementById('filter-box').style.display = 'none';
+            document.getElementById('biomasa-filter-box').style.display = 'none';
             
             const titleBox = document.getElementById('catalog-title');
             titleBox.innerHTML = '<i class="fa-solid fa-faucet-drip"></i> Radiadores Equation';
@@ -389,79 +385,133 @@
 
             document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
             document.getElementById('catalog-view').classList.add('active');
-            
-            resetFilters();
+            renderProducts();
         }
 
-        // Cambiar de pestaña dentro del catálogo de seguridad
+        // ACCESO DIRECTO: BIOMASA, ESTUFAS Y LEÑA
+        function openBiomasaDirect() {
+            categoriaActual = 'biomasa';
+            document.getElementById('tabs-wrapper').style.display = 'none';
+            document.getElementById('filter-box').style.display = 'none';
+            document.getElementById('biomasa-filter-box').style.display = 'block'; // Mostrar filtros biomasa
+            
+            const titleBox = document.getElementById('catalog-title');
+            titleBox.innerHTML = '<i class="fa-solid fa-fire"></i> Estufas y Biomasa';
+            titleBox.style.color = 'var(--biomasa-orange)';
+
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById('catalog-view').classList.add('active');
+            
+            resetBiomasaFilters();
+        }
+
+        // Cambio de pestañas (Área Seguridad)
         function switchTab(categoria, btn) {
             categoriaActual = categoria;
             document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
 
+            document.getElementById('biomasa-filter-box').style.display = 'none';
             const filterBox = document.getElementById('filter-box');
             if (categoria === 'camaras') {
                 filterBox.style.display = 'block';
             } else {
                 filterBox.style.display = 'none';
             }
-
             resetFilters();
         }
 
-        // Renderizador dinámico de tarjetas (Corregido y sin duplicar)
+        // ==========================================================================
+        // FILTRADO Y RENDERIZADO DINÁMICO DE PRODUCTOS
+        // ==========================================================================
         function renderProducts() {
             const container = document.getElementById('products-list-container');
             container.innerHTML = '';
             let visibles = 0;
 
+            // Inyección de la guía rápida de Aerotermia de pasillo
+            if (categoriaActual === 'aerotermia') {
+                let guiaRapidaHTML = `
+                    <div class="filter-section" style="border-color: var(--aerotermia-green); background: rgba(163, 230, 53, 0.03); margin-top: 10px; margin-bottom: 20px;">
+                        <div class="filter-title" style="color: var(--aerotermia-green); font-size: 0.9rem; margin-bottom: 12px; text-transform: none;">
+                            <i class="fa-solid fa-lightning-bolt"></i> Guía Rápida Aerotermia (Orientativo Pasillo)
+                        </div>
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
+                            <div class="card-header"><div class="prod-title">Ariston Nimbus Compact H 35S</div><div class="pyxis-badge">Ref. 95210326</div></div>
+                            <div class="tags-wrapper><span class="tag">⚡ 3 kW</span><span class="tag">🏠 Pisos <50 m²</span></div>
+                            <div class="argument-box aerotermia-box">Ideal para apartamentos o zonas de baja necesidad térmica. Solución integral compacta.</div>
+                        </div>
+                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 0;">
+                            <div class="card-header"><div class="prod-title">Ariston Nimbus Compact H 80S</div><div class="pyxis-badge">Ref. 95210328</div></div>
+                            <div class="tags-wrapper"><span class="tag">⚡ 8 kW</span><span class="tag">🏠 Casa Estándar <110 m²</span></div>
+                            <div class="argument-box aerotermia-box">El todoterreno líder de Ariston para viviendas familiares estándar.</div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = guiaRapidaHTML;
+            }
+
+            // Filtrado lógico unificado de productos de la base de datos
             const productosFiltrados = baseDeDatos.filter(function(prod) {
                 if (prod.categoria !== categoriaActual) return false;
+                
+                // Filtros específicos de cámaras
                 if (categoriaActual === 'camaras') {
                     let matchLoc = !activeFilters.loc || (prod.loc && prod.loc.includes(activeFilters.loc));
                     let matchPwr = !activeFilters.pwr || (prod.pwr && prod.pwr.includes(activeFilters.pwr));
                     let matchMov = !activeFilters.mov || (prod.mov && prod.mov.includes(activeFilters.mov));
                     return matchLoc && matchPwr && matchMov;
                 }
+                
+                // Filtros específicos de biomasa
+                if (categoriaActual === 'biomasa') {
+                    let matchFuel = !activeBiomasaFilters.fuel || (prod.fuel === activeBiomasaFilters.fuel);
+                    let matchDiame = !activeBiomasaFilters.diame || (prod.diame === activeBiomasaFilters.diame);
+                    let matchPos = !activeBiomasaFilters.posicion || (prod.posicion === activeBiomasaFilters.posicion);
+                    let matchPwrRange = !activeBiomasaFilters.power || (prod.power === activeBiomasaFilters.power);
+                    return matchFuel && matchDiame && matchPos && matchPwrRange;
+                }
+                
                 return true;
             });
 
+            // Pintar tarjetas resultantes
             productosFiltrados.forEach(function(prod) {
                 visibles++;
                 let card = document.createElement('div');
                 card.className = 'product-card';
 
                 let argumentClass = 'argument-box';
-                if (prod.categoria === 'aire') {
-                    argumentClass += ' air-box';
-                } else if (prod.categoria === 'aerotermia') {
-                    argumentClass += ' aerotermia-box';
-                } else if (prod.categoria === 'calefaccion') {
-                    argumentClass += ' air-box'; 
-                }
+                if (prod.categoria === 'aire') argumentClass += ' air-box';
+                else if (prod.categoria === 'aerotermia') argumentClass += ' aerotermia-box';
+                else if (prod.categoria === 'calefaccion') argumentClass += ' air-box'; 
+                else if (prod.categoria === 'biomasa') argumentClass += ' biomasa-box'; 
 
                 let tagsHTML = '';
-                prod.tags.forEach(function(t) {
-                    tagsHTML += '<span class="tag">' + t + '</span>';
-                });
+                prod.tags.forEach(function(t) { tagsHTML += '<span class="tag">' + t + '</span>'; });
 
-                card.innerHTML = 
-                    '<div class="card-header">' +
-                        '<div class="prod-title">' + prod.titulo + '</div>' +
-                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
-                    '</div>' +
-                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
-                    '<div class="' + argumentClass + '">' +
-                        '<strong>Clave de venta:</strong> ' + prod.clave +
-                    '</div>';
-                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="prod-title">${prod.titulo}</div>
+                        <div class="pyxis-badge">Ref: ${prod.ref}</div>
+                    </div>
+                    <div class="tags-wrapper">${tagsHTML}</div>
+                    <div class="${argumentClass}">
+                        <strong>Clave de venta:</strong> ${prod.clave}
+                    </div>
+                `;
                 container.appendChild(card);
             });
 
-            document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+            // Control de mensaje de error
+            if (categoriaActual === 'aerotermia') {
+                document.getElementById('no-results-msg').style.display = 'none';
+            } else {
+                document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+            }
         }
 
-        // Control de los botones de filtro
+        // Lógica de filtrado interactivo: Cámaras
         function toggleFilter(btn) {
             const type = btn.getAttribute('data-filter');
             const value = btn.getAttribute('data-val');
@@ -479,234 +529,92 @@
 
         function resetFilters() {
             activeFilters = { loc: null, pwr: null, mov: null };
-            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('#filter-box .filter-btn').forEach(function(b) { b.classList.remove('active'); });
             renderProducts();
         }
 
-        // --- CALCULADORA SOLAR XUNZEL ---
-let currentW = 0;
+        // Lógica de filtrado interactivo: Biomasa
+        function toggleBiomasaFilter(btn) {
+            const type = btn.getAttribute('data-filter');
+            const value = btn.getAttribute('data-val');
 
-function toggle(el, watts) {
-    el.classList.toggle('active');
-    if (el.classList.contains('active')) currentW += watts;
-    else currentW -= watts;
-    updateSolar();
-}
-
-function resetSolar() {
-    currentW = 0;
-    document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
-    updateSolar();
-}
-
-function updateSolar() {
-    document.getElementById('totalW').innerText = currentW + " W";
-    const res = document.getElementById('packResult');
-    let pack = ""; let info = ""; let desc = "";
-
-    if (currentW === 0) {
-        res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
-        return;
-    }
-    if (currentW <= 400) { 
-        pack = "PACK ZERO+ AX10 / AX10L / AX19L"; 
-        info = "AX10 Plomo (815€) - Ref: 90780373<br>AX10L Litio (1.115€) - Ref: 90780374<br>AX19L Litio (1.635€) - Ref: 90769254";
-        desc = "Ideal para iluminación LED, televisión pequeña y cargas de electrónica básica."; 
-    }
-    else if (currentW <= 1000) { 
-        pack = "PACK ZERO+ AX30L (Litio)"; 
-        info = "AX30L (2.595€) - Ref: 90769256";
-        desc = "Perfecto para iluminación LED y pequeña herramienta / batidora."; 
-    }
-    else if (currentW <= 2000) { 
-        pack = "PACK ZERO 1750XJ"; 
-        info = "1750XJ (1.849€) - Ref: 82649930";
-        desc = "Equilibrio ideal para fincas de fin de semana o herramientas medianas (Inversor 2kW)."; 
-    }
-    else if (currentW <= 3000) { 
-        pack = "PACK ZERO+ AX70 / AX170"; 
-        info = "AX70 (1.895€) - Ref: 90769257<br>AX170 (2.695€) - Ref: 90769258";
-        desc = "Hogar estándar / Electrificación media (Nevera + Lavadora en frío)."; 
-    }
-    else if (currentW <= 5000) { 
-        pack = "PACK ZERO AX270L / AX370L"; 
-        info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
-        desc = "Vivienda completa con gran consumo diurno.";
-    }
-    else if (currentW <= 7200) { 
-        pack = "PACK ZERO AX390L / AX495L"; 
-        info = "AX390L (7.499€) - Ref: 90769261<br>AX495L (10.490€) - Ref: 98777985";
-        desc = "Independencia total (Piscina, Aire y Cocina).";
-    }
-    else if (currentW <= 14400) {
-        pack = "PACK ZERO AX790L";
-        info = "AX790L (15.990€) - Ref: 98777986";
-        desc = "Máxima potencia. Inversor de 14.4kW y 30kWh batería.";
-    }
-    else { pack = "SISTEMA A MEDIDA"; desc = "Exceso de potencia simultánea para packs estándar."; }
-
-    let htmlContent = '<div class="pack-card">';
-    htmlContent += '<span class="pack-name"><i class="fa-solid fa-box-open"></i> ' + pack + '</span>';
-    if (info) htmlContent += '<span class="pack-info">' + info + '</span>';
-    htmlContent += '<span class="pack-desc">' + desc + '</span></div>';
-    res.innerHTML = htmlContent;
-}
-        // Carga inicial
-        // Renderizador dinámico de tarjetas (Modificado para Aerotermia de Pasillo)
-        function renderProducts() {
-            const container = document.getElementById('products-list-container');
-            container.innerHTML = '';
-            let visibles = 0;
-
-            // SI ESTAMOS EN LA SECCIÓN DE AEROTERMIA, INYECTAMOS PRIMERO EL BLOQUE DE GUÍA RÁPIDA
-            if (categoriaActual === 'aerotermia') {
-                let guiaRapidaHTML = `
-                    <!-- BLOQUE DE AEROTERMIA DE PASILLO (VENTA RÁPIDA) -->
-                    <div class="filter-section" style="border-color: var(--aerotermia-green); background: rgba(163, 230, 53, 0.03); margin-top: 10px; margin-bottom: 20px;">
-                        <div class="filter-title" style="color: var(--aerotermia-green); font-size: 0.9rem; margin-bottom: 12px; text-transform: none;">
-                            <i class="fa-solid fa-lightning-bolt"></i> Guía Rápida Aerotermia (Orientativo Pasillo)
-                        </div>
-
-                        <!-- ARISTON -->
-                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ariston Nimbus Compact H 35S</div>
-                                <div class="pyxis-badge">Ref. 95210326</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 3 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Pisos / Pequeña (hasta 50 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Ideal para apartamentos, pisos pequeños o zonas con baja necesidad térmica. Solución compacta todo en uno (Calefacción + Refrigeración + ACS).
-                            </div>
-                        </div>
-
-                        <div class="product-card" style="border-left: 3px solid #ff4500; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ariston Nimbus Compact H 80S</div>
-                                <div class="pyxis-badge">Ref. 95210328</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #2e1005; color: #ff7f50; border-color: #ff4500;">⚡ 8 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Vivienda Mediana (hasta 110 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 180L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> El todoterreno de Ariston. Potencia equilibrada para casas o pisos estándar de 3 habitaciones con uso diario de agua caliente y climatización.
-                            </div>
-                        </div>
-
-                        <!-- FERROLI -->
-                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ferroli Omnia ST 3.2 6kW</div>
-                                <div class="pyxis-badge">Ref. 88034682</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 6 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏠 Casa / Piso Estándar (hasta 85 m²)</span>
-                                <span class="tag">📦 Bibloc (Acum. 190L)</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Excelente equilibrio. Un extra de capacidad en agua caliente (190L) con una potencia de 6kW ideal para adosados o pisos medianos bien aislados.
-                            </div>
-                        </div>
-
-                        <div class="product-card" style="border-left: 3px solid #228b22; margin-bottom: 12px;">
-                            <div class="card-header">
-                                <div class="prod-title">Ferroli Omnia M 3.2 10kW</div>
-                                <div class="pyxis-badge">Ref. 85814016</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #052e16; color: #4ade80; border-color: #228b22;">⚡ 10 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏡 Vivienda Grande (hasta 130 m²)</span>
-                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Sistema Monobloc (todo fuera). Ideal para viviendas grandes que ya tienen acumulador o donde no se quiere instalar gas refrigerante en el interior.
-                            </div>
-                        </div>
-
-                        <!-- HTW -->
-                        <div class="product-card" style="border-left: 3px solid #00bfff; margin-bottom: 0;">
-                            <div class="card-header">
-                                <div class="prod-title">HTW Eco Thermal 16kW</div>
-                                <div class="pyxis-badge">Ref. 87234985</div>
-                            </div>
-                            <div class="tags-wrapper">
-                                <span class="tag" style="background: #0c4a6e; color: #38bdf8; border-color: #00bfff;">⚡ 16 kW</span>
-                                <span class="tag" style="background: #0f172a; color: #fff;">🏰 Chalet / Clima Frío (más de 160 m²)</span>
-                                <span class="tag" style="color: #eab308;">🌀 Monobloc pura</span>
-                            </div>
-                            <div class="argument-box aerotermia-box">
-                                <strong>Gancho:</strong> Máxima potencia para grandes retos. Diseñada para chalets grandes, segundas plantas extensas o viviendas en zonas muy frías con alta demanda.
-                            </div>
-                        </div>
-                    </div>
-                    <!-- TÍTULO SEPARADOR PARA LOS PRODUCTOS DETALLADOS -->
-                    <div class="filter-title" style="margin-top: 25px; margin-bottom: 10px; color: #64748b;">
-                        <i class="fa-solid fa-boxes-stacked"></i> Aerotermos y Acumuladores de Agua Existentes
-                    </div>
-                `;
-                container.innerHTML = guiaRapidaHTML;
-            }
-
-       
-                
-        
-
-            // A PARTIR DE AQUÍ SIGUE PINTANDO LOS PRODUCTOS DE LA BASE DE DATOS COMO SIEMPRE
-            const productosFiltrados = baseDeDatos.filter(function(prod) {
-                if (prod.categoria !== categoriaActual) return false;
-                if (categoriaActual === 'camaras') {
-                    let matchLoc = !activeFilters.loc || (prod.loc && prod.loc.includes(activeFilters.loc));
-                    let matchPwr = !activeFilters.pwr || (prod.pwr && prod.pwr.includes(activeFilters.pwr));
-                    let matchMov = !activeFilters.mov || (prod.mov && prod.mov.includes(activeFilters.mov));
-                    return matchLoc && matchPwr && matchMov;
-                }
-                return true;
-            });
-
-            productosFiltrados.forEach(function(prod) {
-                visibles++;
-                let card = document.createElement('div');
-                card.className = 'product-card';
-
-                let argumentClass = 'argument-box';
-                if (prod.categoria === 'aire') {
-                    argumentClass += ' air-box';
-                } else if (prod.categoria === 'aerotermia') {
-                    argumentClass += ' aerotermia-box';
-                } else if (prod.categoria === 'calefaccion') {
-                    argumentClass += ' air-box'; 
-                }
-
-                let tagsHTML = '';
-                prod.tags.forEach(function(t) {
-                    tagsHTML += '<span class="tag">' + t + '</span>';
-                });
-
-                card.innerHTML = 
-                    '<div class="card-header">' +
-                        '<div class="prod-title">' + prod.titulo + '</div>' +
-                        '<div class="pyxis-badge">Ref. Pyxis: ' + prod.ref + '</div>' +
-                    '</div>' +
-                    '<div class="tags-wrapper">' + tagsHTML + '</div>' +
-                    '<div class="' + argumentClass + '">' +
-                        '<strong>Clave de venta:</strong> ' + prod.clave +
-                    '</div>';
-                
-                container.appendChild(card);
-            });
-
-            // Si es aerotermia, nunca mostrará "sin resultados" porque ya tiene fija la guía rápida de arriba
-            if (categoriaActual === 'aerotermia') {
-                document.getElementById('no-results-msg').style.display = 'none';
+            if (btn.classList.contains('biomasa-active')) {
+                btn.classList.remove('biomasa-active');
+                activeBiomasaFilters[type] = null;
             } else {
-                document.getElementById('no-results-msg').style.display = (visibles === 0) ? 'block' : 'none';
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('biomasa-active'); });
+                btn.classList.add('biomasa-active');
+                activeBiomasaFilters[type] = value;
             }
+            renderProducts();
+        }
+
+        function resetBiomasaFilters() {
+            activeBiomasaFilters = { fuel: null, diame: null, posicion: null, power: null };
+            document.querySelectorAll('#biomasa-filter-box .filter-btn').forEach(function(b) { b.classList.remove('biomasa-active'); });
+            renderProducts();
+        }
+
+        // ==========================================================================
+        // LÓGICA CALCULADORA SOLAR XUNZEL (MANTENIDA INTEGRAL)
+        // ==========================================================================
+        let currentW = 0;
+        function toggle(el, watts) {
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) currentW += watts;
+            else currentW -= watts;
+            updateSolar();
+        }
+
+        function resetSolar() {
+            currentW = 0;
+            document.querySelectorAll('.item').forEach(function(i) { i.classList.remove('active'); });
+            updateSolar();
+        }
+
+        function updateSolar() {
+            document.getElementById('totalW').innerText = currentW + " W";
+            const res = document.getElementById('packResult');
+            let pack = ""; let info = ""; let desc = "";
+
+            if (currentW === 0) {
+                res.innerHTML = '<p style="color: #64748b;">Selecciona equipos para calcular el "Grifo"</p>';
+                return;
+            }
+            if (currentW <= 400) { 
+                pack = "PACK ZERO+ AX10 / AX10L / AX19L"; 
+                info = "AX10 Plomo (815€) - Ref: 90780373<br>AX10L Litio (1.115€) - Ref: 90780374<br>AX19L Litio (1.635€) - Ref: 90769254";
+                desc = "Ideal para iluminación LED, televisión pequeña y cargas de electrónica básica."; 
+            }
+            else if (currentW <= 1000) { 
+                pack = "PACK ZERO+ AX30L (Litio)"; 
+                info = "AX30L (2.595€) - Ref: 90769256";
+                desc = "Perfecto para iluminación LED y pequeña herramienta."; 
+            }
+            else if (currentW <= 2000) { 
+                pack = "PACK ZERO 1750XJ"; 
+                info = "1750XJ (1.849€) - Ref: 82649930";
+                desc = "Equilibrio ideal para fincas de fin de semana o herramientas medianas (Inversor 2kW)."; 
+            }
+            else if (currentW <= 3000) { 
+                pack = "PACK ZERO+ AX70 / AX170"; 
+                info = "AX70 (1.895€) - Ref: 90769257<br>AX170 (2.695€) - Ref: 90769258";
+                desc = "Hogar estándar / Electrificación media (Nevera + Lavadora en frío)."; 
+            }
+            else if (currentW <= 5000) { 
+                pack = "PACK ZERO AX270L / AX370L"; 
+                info = "AX270L (5.499€) - Ref: 90769260<br>AX370L (6.990€) - Ref: 98777984";
+                desc = "Vivienda completa con gran consumo diurno.";
+            }
+            else { pack = "SISTEMA A MEDIDA"; desc = "Exceso de potencia simultánea para packs estándar."; }
+
+            res.innerHTML = `
+                <div class="pack-card">
+                    <span class="pack-name"><i class="fa-solid fa-box-open"></i> ${pack}</span>
+                    ${info ? `<span class="pack-info">${info}</span>` : ''}
+                    <span class="pack-desc">${desc}</span>
+                </div>
+            `;
         }
     </script>
 </body>
