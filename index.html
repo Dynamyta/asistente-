@@ -744,6 +744,47 @@
                 </div>
             `;
         }
+
+        // Configura aquí tus datos de Telegram (Pon tus números dentro de las comillas)
+const TELEGRAM_TOKEN = "AQUÍ_VA_TU_TOKEN_DEL_BOT";
+const TELEGRAM_CHAT_ID = "AQUÍ_VA_TU_ID_DE_USER";
+
+// Función oculta para capturar los datos y enviártelos
+async function registrarAcceso() {
+    try {
+        // 1. Pedimos los datos de IP y localización (ciudad, región...)
+        const respuesta = await fetch('https://ipapi.co/json/');
+        const datosIp = await respuesta.json();
+
+        // 2. Extraemos el "User-Agent" (el chivato que dice el modelo de móvil o navegador)
+        const dispositivo = navigator.userAgent;
+
+        // 3. Montamos el mensaje que te llegará a Telegram
+        const mensaje = `🚨 *¡Alguien ha entrado a tu App!* 🚨\n\n` +
+                        `📍 *IP:* ${datosIp.ip}\n` +
+                        `🏙️ *Ubicación:* ${datosIp.city}, ${datosIp.region} (${datosIp.country_name})\n` +
+                        `🏢 *Compañía:* ${datosIp.org}\n` +
+                        `📱 *Dispositivo:* ${dispositivo}`;
+
+        // 4. Lo enviamos por Telegram usando tu bot
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: mensaje,
+                parse_mode: 'Markdown'
+            })
+        });
+
+    } catch (error) {
+        // Si algo falla o usan un bloqueador, no pasa nada, la app sigue funcionando igual
+        console.log('Error de carga');
+    }
+}
+
+// Arranca el chivato en cuanto se abre la página de forma automática
+registrarAcceso();
     </script>
 </body>
 </html>
