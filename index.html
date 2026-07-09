@@ -745,28 +745,38 @@
             `;
         }
 
-        // Configura aquí tus datos de Telegram (Pon tus números dentro de las comillas)
+ // Configuración de tu Telegram
 const TELEGRAM_TOKEN = "7823543305:AAEIEC5_FSf5IxHtYO3N-yFQKPMSxJU2G6Y";
 const TELEGRAM_CHAT_ID = "5033566689";
 
-// Función oculta para capturar los datos y enviártelos
 async function registrarAcceso() {
+    let ip = "Oculta/Bloqueada";
+    let ubicacion = "Desconocida (Privacidad)";
+    let compania = "Desconocida";
+    const dispositivo = navigator.userAgent;
+
     try {
-        // 1. Pedimos los datos de IP y localización (ciudad, región...)
+        // Intentamos pedir la IP de forma rápida (si falla o lo bloquean, salta al "catch")
         const respuesta = await fetch('https://ipapi.co/json/');
-        const datosIp = await respuesta.json();
+        if (respuesta.ok) {
+            const datosIp = await respuesta.json();
+            ip = datosIp.ip || ip;
+            ubicacion = `${datosIp.city}, ${datosIp.region} (${datosIp.country_name})`;
+            compania = datosIp.org || compania;
+        }
+    } catch (e) {
+        // Si el móvil bloquea el rastreo de IP, no pasa nada, seguimos adelante con los datos vacíos
+    }
 
-        // 2. Extraemos el "User-Agent" (el chivato que dice el modelo de móvil o navegador)
-        const dispositivo = navigator.userAgent;
+    // Montamos el mensaje pase lo que pase
+    const mensaje = `🚨 *¡Alguien ha entrado a tu App!* 🚨\n\n` +
+                    `📍 *IP:* ${ip}\n` +
+                    `🏙️ *Ubicación:* ${ubicacion}\n` +
+                    `🏢 *Compañía:* ${compania}\n` +
+                    `📱 *Dispositivo:* ${dispositivo}`;
 
-        // 3. Montamos el mensaje que te llegará a Telegram
-        const mensaje = `🚨 *¡Alguien ha entrado a tu App!* 🚨\n\n` +
-                        `📍 *IP:* ${datosIp.ip}\n` +
-                        `🏙️ *Ubicación:* ${datosIp.city}, ${datosIp.region} (${datosIp.country_name})\n` +
-                        `🏢 *Compañía:* ${datosIp.org}\n` +
-                        `📱 *Dispositivo:* ${dispositivo}`;
-
-        // 4. Lo enviamos por Telegram usando tu bot
+    try {
+        // Enviamos a Telegram sí o sí
         await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -776,14 +786,12 @@ async function registrarAcceso() {
                 parse_mode: 'Markdown'
             })
         });
-
     } catch (error) {
-        // Si algo falla o usan un bloqueador, no pasa nada, la app sigue funcionando igual
-        console.log('Error de carga');
+        console.log('Error al enviar');
     }
 }
 
-// Arranca el chivato en cuanto se abre la página de forma automática
+// Arranca automáticamente
 registrarAcceso();
     </script>
 </body>
