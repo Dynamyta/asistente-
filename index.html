@@ -37,21 +37,7 @@
         .btn-back:active { background: #334155; }
 
         /* Menú Principal */
-        /* hacer translucidos los botones principales para ver mejor la foto de fondo */
-         .menu-card { 
-    background: var(--card); 
-    border: 1px solid #334155; 
-    border-radius: 20px; 
-    padding: 25px 20px; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
-    position: relative; 
-    overflow: hidden; 
-    
-    /* 🌟 AÑADE ESTAS DOS LÍNEAS AQUÍ ABAJO 🌟 */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
+        
         .menu-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
         .menu-card { background: var(--card); border: 1px solid #334155; border-radius: 20px; padding: 25px 20px; cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden; }
         .menu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; }
@@ -128,7 +114,21 @@
         .card-footer { padding-top: 12px; margin-top: 12px; border-top: 1px solid #334155; text-align: center; }
         .btn-web { display: inline-block; width: 100%; padding: 10px 0; background-color: var(--accent); color: #020617; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 0.85rem; transition: background 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-web:active { background-color: #4d7c0f; }
-       
+     /* hacer translucidos los botones principales para ver mejor la foto de fondo */
+         .menu-card { 
+    background: var(--card); 
+    border: 1px solid #334155; 
+    border-radius: 20px; 
+    padding: 25px 20px; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    position: relative; 
+    overflow: hidden; 
+    
+    /* 🌟 AÑADE ESTAS DOS LÍNEAS AQUÍ ABAJO 🌟 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}  
     </style>
 </head>
 <body>
