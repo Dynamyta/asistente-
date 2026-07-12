@@ -114,7 +114,7 @@
     </style>
 </head>
 <body>
-<!-- Imagen de fondo translúcida con tu chimenea -->
+<!-- Imagen de fondo translúcida ajustada hacia abajo -->
 <div style="
     position: fixed;
     top: 0;
@@ -123,9 +123,9 @@
     height: 100vh;
     background-image: url('chimenea.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center bottom; /* <--- Cambiado a 'bottom' para bajar las llamas */
     background-repeat: no-repeat;
-    opacity: 0.12; /* Un 12% para que sea sutil como en la simulación */
+    opacity: 0.15; /* Subido ligeramente a 15% para que resalten más abajo */
     z-index: -1;
     pointer-events: none;
 "></div>
