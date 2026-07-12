@@ -55,7 +55,20 @@
         .menu-card.biomasa-card h2 { color: var(--biomasa-orange); }
         .menu-card.catalog-card h2 { color: var(--ezviz-blue); }
         .menu-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; }
-         
+         .menu-card { 
+    background: var(--card); 
+    border: 1px solid #334155; 
+    border-radius: 20px; 
+    padding: 25px 20px; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    position: relative; 
+    overflow: hidden; 
+    
+    /* 🌟 AÑADE ESTAS DOS LÍNEAS AQUÍ ABAJO 🌟 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
 
         /* Sección Kits Solares */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
