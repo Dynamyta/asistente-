@@ -21,6 +21,21 @@
             --aerotermia-green: #a3e635;
             --biomasa-orange: #f97316;
         }
+        /* hacer translucidos los botones principales para ver mejor la foto de fondo */
+         .menu-card { 
+    background: var(--card); 
+    border: 1px solid #334155; 
+    border-radius: 20px; 
+    padding: 25px 20px; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    position: relative; 
+    overflow: hidden; 
+    
+    /* 🌟 AÑADE ESTAS DOS LÍNEAS AQUÍ ABAJO 🌟 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Urbanist', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         .container { max-width: 600px; width: 100%; background: #0f172a; padding: 20px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 20px; }
@@ -55,21 +70,7 @@
         .menu-card.biomasa-card h2 { color: var(--biomasa-orange); }
         .menu-card.catalog-card h2 { color: var(--ezviz-blue); }
         .menu-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; }
-       /* hacer translucidos los botones principales para ver mejor la foto de fondo */
-         .menu-card { 
-    background: var(--card); 
-    border: 1px solid #334155; 
-    border-radius: 20px; 
-    padding: 25px 20px; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
-    position: relative; 
-    overflow: hidden; 
-    
-    /* 🌟 AÑADE ESTAS DOS LÍNEAS AQUÍ ABAJO 🌟 */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
+       
 
         /* Sección Kits Solares */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
